@@ -63,6 +63,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.generativeai)
+    
+    // KOIN
+    implementation(libs.koin.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.navigation)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
