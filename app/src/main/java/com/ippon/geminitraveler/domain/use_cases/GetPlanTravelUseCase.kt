@@ -11,10 +11,11 @@ import java.lang.Exception
 class GetPlanTravelUseCase(
     private val planTravelRepository: PlanTravelRepository
 ) {
-    operator fun invoke(requestPlan: RequestPlan): Flow<State<PlanTravel>> = flow {
+    operator fun invoke(prompt: String): Flow<State<PlanTravel>> = flow {
         emit(State.Loading)
 
         try {
+            val requestPlan = RequestPlan(prompt)
             val response = planTravelRepository.getPlanTravel(requestPlan)
             emit(
                 State.Success(

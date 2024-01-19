@@ -3,7 +3,6 @@ package com.ippon.geminitraveler.domain.use_cases
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.core.utils.State
-import com.ippon.geminitraveler.data.repository.PlanTravelRepositoryImpl
 import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
@@ -13,7 +12,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
 
 import org.junit.After
 import org.junit.Before
@@ -53,7 +51,8 @@ class GetPlanTravelUseCaseTest {
     fun `should return success plan travel state when repository response is successful`() = runTest {
         // Given
         val planTravel = PlanTravel("")
-        val requestPlan = RequestPlan("")
+        val prompt = ""
+        val requestPlan = RequestPlan(prompt)
         val result: State<PlanTravel> = State.Success(data = planTravel)
 
         // When
@@ -61,7 +60,7 @@ class GetPlanTravelUseCaseTest {
             planTravelRepository.getPlanTravel(any())
         ).thenReturn(planTravel)
 
-        val response = getPlanTravelUseCase(requestPlan)
+        val response = getPlanTravelUseCase(prompt)
 
         // Then
         response.test {
@@ -78,7 +77,8 @@ class GetPlanTravelUseCaseTest {
     @Test
     fun `should return error plan travel state when repository response is not successful`() = runTest {
         // Given
-        val requestPlan = RequestPlan("")
+        val prompt = ""
+        val requestPlan = RequestPlan(prompt)
         val error = IllegalArgumentException("error")
         val result: State<PlanTravel> = State.Error(
             errorMessage = error.message,
@@ -90,7 +90,7 @@ class GetPlanTravelUseCaseTest {
             planTravelRepository.getPlanTravel(any())
         ).thenThrow(error)
 
-        val response = getPlanTravelUseCase(requestPlan)
+        val response = getPlanTravelUseCase(prompt)
 
         // Then
         response.test {
