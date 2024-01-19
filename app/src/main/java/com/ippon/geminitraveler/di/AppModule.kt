@@ -2,35 +2,17 @@ package com.ippon.geminitraveler.di
 
 import com.google.ai.client.generativeai.GenerativeModel
 import com.ippon.geminitraveler.BuildConfig
-import com.ippon.geminitraveler.data.datasource.GenerativeDataSourceImpl
-import com.ippon.geminitraveler.data.repository.PlanTravelRepositoryImpl
-import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
-import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
-import com.ippon.geminitraveler.domain.use_cases.GetPlanTravelUseCase
-import com.ippon.geminitraveler.ui.view_models.PlanTravelViewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
-import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
 
-val appModule = module {
-    single {
-        GenerativeModel(
-            modelName = "gemini-pro",
-            apiKey = BuildConfig.apiKey
-        )
-    }
-
-    // Datasource's
-    singleOf(::GenerativeDataSourceImpl) { bind<GenerativeDataSource>() }
-
-    // Repository
-    singleOf(::PlanTravelRepositoryImpl) { bind<PlanTravelRepository>() }
-
-    // Use Case
-    singleOf(::GetPlanTravelUseCase)
-
-    // View Model
-    viewModelOf(::PlanTravelViewModel)
+@Module
+@ComponentScan("com.ippon.geminitraveler")
+class AppModule {
+    @Single
+    fun provideGenerativeModel() = GenerativeModel(
+        modelName = "gemini-pro",
+        apiKey = BuildConfig.apiKey
+    )
 }

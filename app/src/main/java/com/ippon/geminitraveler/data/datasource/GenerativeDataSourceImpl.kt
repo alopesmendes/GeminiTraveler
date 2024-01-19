@@ -2,7 +2,9 @@ package com.ippon.geminitraveler.data.datasource
 
 import com.google.ai.client.generativeai.GenerativeModel
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
+import org.koin.core.annotation.Single
 
+@Single
 class GenerativeDataSourceImpl(
     private val generativeModel: GenerativeModel
 ): GenerativeDataSource {
