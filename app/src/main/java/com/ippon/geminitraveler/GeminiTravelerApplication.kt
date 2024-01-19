@@ -1,11 +1,10 @@
 package com.ippon.geminitraveler
 
 import android.app.Application
-import com.ippon.geminitraveler.di.AppModule
+import com.ippon.geminitraveler.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.ksp.generated.*
 
 class GeminiTravelerApplication: Application() {
     override fun onCreate() {
@@ -14,7 +13,7 @@ class GeminiTravelerApplication: Application() {
         startKoin{
             androidLogger()
             androidContext(this@GeminiTravelerApplication)
-            modules(AppModule().module)
+            modules(appModule)
         }
     }
 }
