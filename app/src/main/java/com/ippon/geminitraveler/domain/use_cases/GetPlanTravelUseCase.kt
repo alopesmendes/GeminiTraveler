@@ -6,8 +6,10 @@ import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.koin.core.annotation.Single
 import java.lang.Exception
 
+@Single
 class GetPlanTravelUseCase(
     private val planTravelRepository: PlanTravelRepository
 ) {
