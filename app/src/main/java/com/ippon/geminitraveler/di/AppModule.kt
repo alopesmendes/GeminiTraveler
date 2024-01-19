@@ -1,8 +1,29 @@
 package com.ippon.geminitraveler.di
 
-import org.koin.core.annotation.ComponentScan
-import org.koin.core.annotation.Module
+import com.google.ai.client.generativeai.GenerativeModel
+import com.ippon.geminitraveler.BuildConfig
+import com.ippon.geminitraveler.data.datasource.GenerativeDataSourceImpl
+import com.ippon.geminitraveler.data.repository.PlanTravelRepositoryImpl
+import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
+import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@ComponentScan
-class AppModule
+
+val appModule = module {
+    single {
+        GenerativeModel(
+            modelName = "gemini-pro",
+            apiKey = BuildConfig.apiKey
+        )
+    }
+
+    // Datasource's
+    singleOf(::GenerativeDataSourceImpl) { bind<GenerativeDataSource>() }
+
+    // Repository
+    singleOf(::PlanTravelRepositoryImpl) { bind<PlanTravelRepository>() }
+
+
+}
