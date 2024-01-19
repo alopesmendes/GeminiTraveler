@@ -2,11 +2,24 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.ippon.geminitraveler"
     compileSdk = 34
+
+    sourceSets["main"].apply {
+        java.srcDirs("src/main/kotlin", "src/test/kotlin")
+    }
+
+    applicationVariants.configureEach {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/${name}/kotlin")
+            }
+        }
+    }
 
     defaultConfig {
         applicationId = "com.ippon.geminitraveler"
@@ -63,6 +76,14 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.generativeai)
+    
+    // KOIN
+    implementation(libs.koin.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.navigation)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
