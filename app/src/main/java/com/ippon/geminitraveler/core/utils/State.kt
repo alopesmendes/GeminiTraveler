@@ -1,6 +1,7 @@
 package com.ippon.geminitraveler.core.utils
 
 sealed interface State<out T> {
+    data object Initial: State<Nothing>
     data object Loading: State<Nothing>
     data class Error(
         val errorMessage: String?,
