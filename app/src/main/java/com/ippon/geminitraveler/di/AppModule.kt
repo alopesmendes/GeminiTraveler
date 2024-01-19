@@ -7,6 +7,8 @@ import com.ippon.geminitraveler.data.repository.PlanTravelRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
 import com.ippon.geminitraveler.domain.use_cases.GetPlanTravelUseCase
+import com.ippon.geminitraveler.ui.view_models.PlanTravelViewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -28,4 +30,7 @@ val appModule = module {
 
     // Use Case
     singleOf(::GetPlanTravelUseCase)
+
+    // View Model
+    viewModelOf(::PlanTravelViewModel)
 }
