@@ -89,6 +89,10 @@ dependencies {
     testImplementation(libs.coroutines.test)
     testImplementation(libs.turbine)
 
+    // MARKDOWN
+    implementation(libs.richtext.commonmark)
+    implementation(libs.richtext.ui.material3)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.truth)

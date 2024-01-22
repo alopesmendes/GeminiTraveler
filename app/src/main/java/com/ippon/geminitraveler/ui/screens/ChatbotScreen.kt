@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.R
+import com.ippon.geminitraveler.core.components.MarkdownText
 import com.ippon.geminitraveler.core.components.StateContainer
 import com.ippon.geminitraveler.core.utils.State
 import com.ippon.geminitraveler.domain.model.PlanTravel
@@ -90,9 +91,8 @@ fun ChatbotScreen(
                     Icons.Outlined.Person,
                     contentDescription = "Person Icon"
                 )
-                Text(
-                    text = it.data,
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                MarkdownText(
+                    markdownContent = it.data
                 )
             }
         }
