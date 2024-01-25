@@ -1,6 +1,7 @@
 package com.ippon.geminitraveler.ui.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -10,8 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ippon.geminitraveler.R
-import com.ippon.geminitraveler.ui.theme.md_theme_light_onTertiary
-import com.ippon.geminitraveler.ui.theme.md_theme_light_tertiary
 
 @Composable
 fun CustomTextField(prompt: String, onPromptChange: (String) -> Unit, modifier: Modifier) {
@@ -21,12 +20,12 @@ fun CustomTextField(prompt: String, onPromptChange: (String) -> Unit, modifier: 
         onValueChange = { onPromptChange(it) },
         shape = RoundedCornerShape(100),
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = md_theme_light_tertiary,
-            focusedContainerColor = md_theme_light_tertiary,
-            focusedTextColor = md_theme_light_onTertiary,
+            unfocusedContainerColor = MaterialTheme.colorScheme.tertiary,
+            focusedContainerColor = MaterialTheme.colorScheme.tertiary,
+            focusedTextColor = MaterialTheme.colorScheme.onTertiary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            ),
+        ),
         modifier = modifier
     )
 }

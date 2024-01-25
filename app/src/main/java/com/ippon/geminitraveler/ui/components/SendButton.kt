@@ -5,18 +5,17 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.ippon.geminitraveler.ui.theme.md_theme_light_onPrimary
-import com.ippon.geminitraveler.ui.theme.md_theme_light_primary
 
 @Composable
 fun SendButton(sendMessage: () -> Unit, modifier: Modifier) {
     FilledIconButton(
         onClick = { sendMessage() },
         colors = IconButtonDefaults.filledIconButtonColors(
-            containerColor = md_theme_light_primary,
-            contentColor = md_theme_light_onPrimary,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         modifier = modifier
     ) {

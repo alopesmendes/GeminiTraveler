@@ -3,6 +3,7 @@ package com.ippon.geminitraveler.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,10 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ippon.geminitraveler.core.components.MarkdownText
 import com.ippon.geminitraveler.core.components.StateContainer
 import com.ippon.geminitraveler.core.utils.State
 import com.ippon.geminitraveler.domain.model.PlanTravel
+import com.ippon.geminitraveler.ui.components.ChatRow
 import com.ippon.geminitraveler.ui.components.CustomTextField
 import com.ippon.geminitraveler.ui.components.SendButton
 
@@ -50,6 +48,17 @@ fun ChatbotScreen(
             .padding(all = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        StateContainer(
+            modifier = Modifier.weight(1f),
+            uiState = uiState,
+            initialComponent = { /*TODO*/ },
+            loadingComponent = { LoadingChatbotScreenComponents() },
+            errorComponent = {
+                ErrorChatbotScreenComponents(it)
+            }
+        ) {
+            ChatRow(speechContent = it.data, isGemini = true)
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -74,38 +83,28 @@ fun ChatbotScreen(
                 }
             )
         }
-        StateContainer(
-            uiState = uiState,
-            initialComponent = { /*TODO*/ },
-            loadingComponent = {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(all = 8.dp)
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    CircularProgressIndicator()
-                }
-            },
-            errorComponent = {
-                Text(
-                    text = it.errorMessage ?: "",
-                    color = Color.Red,
-                    modifier = Modifier.padding(all = 8.dp)
-                )
-            }
-        ) {
-            Row(modifier = Modifier.padding(all = 8.dp)) {
-                Icon(
-                    Icons.Outlined.Person,
-                    contentDescription = "Person Icon"
-                )
-                MarkdownText(
-                    markdownContent = it.data
-                )
-            }
-        }
     }
+}
+
+@Composable
+private fun ColumnScope.LoadingChatbotScreenComponents() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .padding(all = 8.dp)
+            .align(Alignment.CenterHorizontally)
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun ErrorChatbotScreenComponents(stateError: State.Error) {
+    Text(
+        text = stateError.errorMessage ?: "",
+        color = Color.Red,
+        modifier = Modifier.padding(all = 8.dp)
+    )
 }
 
 @Composable
