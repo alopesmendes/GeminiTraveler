@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +14,7 @@ import com.ippon.geminitraveler.ui.theme.md_theme_light_onTertiary
 import com.ippon.geminitraveler.ui.theme.md_theme_light_tertiary
 
 @Composable
-fun CustomTextField(prompt: String, onPromptChange: (String) -> Unit) {
+fun CustomTextField(prompt: String, onPromptChange: (String) -> Unit, modifier: Modifier) {
     TextField(
         value = prompt,
         placeholder = { Text(stringResource(R.string.summarize_hint)) },
@@ -25,13 +26,13 @@ fun CustomTextField(prompt: String, onPromptChange: (String) -> Unit) {
             focusedTextColor = md_theme_light_onTertiary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-
-        )
+            ),
+        modifier = modifier
     )
 }
 
 @Composable
 @Preview
 fun CustomTextFieldPreview() {
-    CustomTextField(prompt = "", onPromptChange = { })
+    CustomTextField(prompt = "", onPromptChange = { }, modifier = Modifier)
 }
