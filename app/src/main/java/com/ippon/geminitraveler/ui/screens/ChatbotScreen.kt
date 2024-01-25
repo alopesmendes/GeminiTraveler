@@ -51,7 +51,7 @@ fun ChatbotScreen(
         StateContainer(
             modifier = Modifier.weight(1f),
             uiState = uiState,
-            initialComponent = { /*TODO*/ },
+            initialComponent = {  },
             loadingComponent = { LoadingChatbotScreenComponents() },
             errorComponent = {
                 ErrorChatbotScreenComponents(it)
