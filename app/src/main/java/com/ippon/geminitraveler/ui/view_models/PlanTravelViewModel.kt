@@ -2,7 +2,7 @@ package com.ippon.geminitraveler.ui.view_models
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ippon.geminitraveler.core.utils.State
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.domain.use_cases.GetPlanTravelUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import org.koin.android.annotation.KoinViewModel
 class PlanTravelViewModel(
     private val getPlanTravelUseCase: GetPlanTravelUseCase
 ): ViewModel() {
-    private val _uiState: MutableStateFlow<State<PlanTravel>> = MutableStateFlow(State.Initial)
+    private val _uiState: MutableStateFlow<Resource<PlanTravel>> = MutableStateFlow(Resource.Initial)
     val uiState = _uiState.asStateFlow()
 
     fun requestPlanTravel(prompt: String) {

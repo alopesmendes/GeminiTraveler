@@ -1,6 +1,6 @@
 package com.ippon.geminitraveler.domain.use_cases
 
-import com.ippon.geminitraveler.core.utils.State
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
@@ -13,20 +13,20 @@ import java.lang.Exception
 class GetPlanTravelUseCase(
     private val planTravelRepository: PlanTravelRepository
 ) {
-    operator fun invoke(prompt: String): Flow<State<PlanTravel>> = flow {
-        emit(State.Loading)
+    operator fun invoke(prompt: String): Flow<Resource<PlanTravel>> = flow {
+        emit(Resource.Loading)
 
         try {
             val requestPlan = RequestPlan(prompt)
             val response = planTravelRepository.getPlanTravel(requestPlan)
             emit(
-                State.Success(
+                Resource.Success(
                     data = response
                 )
             )
         } catch (e: Exception) {
             emit(
-                State.Error(
+                Resource.Error(
                     throwable = e,
                     errorMessage = e.message
                 )

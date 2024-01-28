@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.core.components.StateContainer
-import com.ippon.geminitraveler.core.utils.State
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.ui.components.ChatRow
 import com.ippon.geminitraveler.ui.components.CustomTextField
@@ -37,7 +37,7 @@ import com.ippon.geminitraveler.ui.components.SendButton
 
 @Composable
 fun ChatbotScreen(
-    uiState: State<PlanTravel> = State.Initial,
+    uiState: Resource<PlanTravel> = Resource.Initial,
     requestPlanTravel: (String) -> Unit = {}
 ) {
     var prompt by remember { mutableStateOf("") }
@@ -99,7 +99,7 @@ private fun ColumnScope.LoadingChatbotScreenComponents() {
 }
 
 @Composable
-private fun ErrorChatbotScreenComponents(stateError: State.Error) {
+private fun ErrorChatbotScreenComponents(stateError: Resource.Error) {
     Text(
         text = stateError.errorMessage ?: "",
         color = Color.Red,

@@ -1,10 +1,8 @@
 package com.ippon.geminitraveler.ui.view_models
 
-import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.State
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.PlanTravel
-import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.use_cases.GetPlanTravelUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +13,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
 
 import org.junit.After
 import org.junit.Before
@@ -27,7 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.refEq
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -57,7 +53,7 @@ class PlanTravelViewModelTest {
         // Given
         val planTravel = PlanTravel("")
         val prompt = ""
-        val result: State<PlanTravel> = State.Success(data = planTravel)
+        val result: Resource<PlanTravel> = Resource.Success(data = planTravel)
 
         // When
         whenever(
@@ -71,7 +67,7 @@ class PlanTravelViewModelTest {
             refEq(prompt)
         )
 
-        val values = mutableListOf<State<PlanTravel>>()
+        val values = mutableListOf<Resource<PlanTravel>>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
@@ -85,7 +81,7 @@ class PlanTravelViewModelTest {
         // Given
         val prompt = ""
         val error = IllegalStateException("error")
-        val result: State<PlanTravel> = State.Error(
+        val result: Resource<PlanTravel> = Resource.Error(
             errorMessage = error.message,
             throwable = error
         )
@@ -102,7 +98,7 @@ class PlanTravelViewModelTest {
             refEq(prompt)
         )
 
-        val values = mutableListOf<State<PlanTravel>>()
+        val values = mutableListOf<Resource<PlanTravel>>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
