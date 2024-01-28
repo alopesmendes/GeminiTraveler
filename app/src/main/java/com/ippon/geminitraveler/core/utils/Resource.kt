@@ -1,14 +1,14 @@
 package com.ippon.geminitraveler.core.utils
 
-sealed interface State<out T> {
-    data object Initial: State<Nothing>
-    data object Loading: State<Nothing>
+sealed interface Resource<out T> {
+    data object Initial: Resource<Nothing>
+    data object Loading: Resource<Nothing>
     data class Error(
         val errorMessage: String?,
         val throwable: Throwable?,
-    ): State<Nothing>
+    ): Resource<Nothing>
 
     data class Success<T>(
         val data: T
-    ): State<T>
+    ): Resource<T>
 }

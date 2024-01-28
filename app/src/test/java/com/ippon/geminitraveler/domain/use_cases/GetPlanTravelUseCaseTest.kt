@@ -2,7 +2,7 @@ package com.ippon.geminitraveler.domain.use_cases
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.State
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
@@ -53,7 +53,7 @@ class GetPlanTravelUseCaseTest {
         val planTravel = PlanTravel("")
         val prompt = ""
         val requestPlan = RequestPlan(prompt)
-        val result: State<PlanTravel> = State.Success(data = planTravel)
+        val result: Resource<PlanTravel> = Resource.Success(data = planTravel)
 
         // When
         whenever(
@@ -64,7 +64,7 @@ class GetPlanTravelUseCaseTest {
 
         // Then
         response.test {
-            Truth.assertThat(awaitItem()).isEqualTo(State.Loading)
+            Truth.assertThat(awaitItem()).isEqualTo(Resource.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(result)
             awaitComplete()
 
@@ -80,7 +80,7 @@ class GetPlanTravelUseCaseTest {
         val prompt = ""
         val requestPlan = RequestPlan(prompt)
         val error = IllegalArgumentException("error")
-        val result: State<PlanTravel> = State.Error(
+        val result: Resource<PlanTravel> = Resource.Error(
             errorMessage = error.message,
             throwable = error,
         )
@@ -94,7 +94,7 @@ class GetPlanTravelUseCaseTest {
 
         // Then
         response.test {
-            Truth.assertThat(awaitItem()).isEqualTo(State.Loading)
+            Truth.assertThat(awaitItem()).isEqualTo(Resource.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(result)
             awaitComplete()
 

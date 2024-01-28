@@ -3,23 +3,23 @@ package com.ippon.geminitraveler.core.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.ippon.geminitraveler.core.utils.State
+import com.ippon.geminitraveler.core.utils.Resource
 
 @Composable
 fun <T> StateContainer(
     modifier: Modifier,
-    uiState: State<T>,
+    uiState: Resource<T>,
     initialComponent: @Composable () -> Unit,
     loadingComponent: @Composable () -> Unit,
-    errorComponent: @Composable (State.Error) -> Unit,
+    errorComponent: @Composable (Resource.Error) -> Unit,
     contentComponent: @Composable (T) -> Unit
 ) {
     Box(modifier = modifier) {
         when (uiState) {
-            is State.Error -> errorComponent(uiState)
-            State.Initial -> initialComponent()
-            State.Loading -> loadingComponent()
-            is State.Success -> contentComponent(uiState.data)
+            is Resource.Error -> errorComponent(uiState)
+            Resource.Initial -> initialComponent()
+            Resource.Loading -> loadingComponent()
+            is Resource.Success -> contentComponent(uiState.data)
         }
     }
 }
