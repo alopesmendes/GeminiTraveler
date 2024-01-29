@@ -1,9 +1,9 @@
 package com.ippon.geminitraveler.ui.view_models
 
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.Resource
-import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.domain.use_cases.GetPlanTravelUseCase
+import com.ippon.geminitraveler.ui.models.PlanTravelUiState
+import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -13,7 +13,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -51,23 +50,26 @@ class PlanTravelViewModelTest {
     @Test
     fun `should update successfully plan travel ui state when use case response is successful`() = runTest {
         // Given
-        val planTravel = PlanTravel("")
-        val prompt = ""
-        val result: Resource<PlanTravel> = Resource.Success(data = planTravel)
+        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
+        val result = ConstantsTestHelper.successPlanTravelUiState
 
         // When
         whenever(
-            getPlanTravelUseCase.invoke(any())
+            getPlanTravelUseCase.invoke(
+                prompt = any(),
+                initialUiState = any()
+            )
         ).thenReturn(flowOf(result))
 
-        viewModel.requestPlanTravel(prompt)
+        viewModel.onHandleEvent(ConstantsTestHelper.requestModelEvent)
 
         // Then
         verify(getPlanTravelUseCase, atLeastOnce()).invoke(
-            refEq(prompt)
+            prompt = refEq(prompt),
+            initialUiState = refEq(ConstantsTestHelper.initialPlanTravelUiState),
         )
 
-        val values = mutableListOf<Resource<PlanTravel>>()
+        val values = mutableListOf<PlanTravelUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
@@ -79,26 +81,26 @@ class PlanTravelViewModelTest {
     @Test
     fun `should update error plan travel ui state when use case response is not successful`() = runTest {
         // Given
-        val prompt = ""
-        val error = IllegalStateException("error")
-        val result: Resource<PlanTravel> = Resource.Error(
-            errorMessage = error.message,
-            throwable = error
-        )
+        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
+        val result = ConstantsTestHelper.errorPlanTravelUiState
 
         // When
         whenever(
-            getPlanTravelUseCase.invoke(any())
+            getPlanTravelUseCase.invoke(
+                prompt = any(),
+                initialUiState = any(),
+            )
         ).thenReturn(flowOf(result))
 
-        viewModel.requestPlanTravel(prompt)
+        viewModel.onHandleEvent(ConstantsTestHelper.requestModelEvent)
 
         // Then
         verify(getPlanTravelUseCase, atLeastOnce()).invoke(
-            refEq(prompt)
+            prompt = refEq(prompt),
+            initialUiState = refEq(ConstantsTestHelper.initialPlanTravelUiState)
         )
 
-        val values = mutableListOf<Resource<PlanTravel>>()
+        val values = mutableListOf<PlanTravelUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }

@@ -6,6 +6,7 @@ import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
 import com.ippon.geminitraveler.domain.model.PlanTravel
 import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.model.Role
+import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
 import com.ippon.geminitraveler.ui.models.PlanTravelEvent
 import com.ippon.geminitraveler.ui.models.PlanTravelUiState
 
@@ -38,6 +39,8 @@ object ConstantsTestHelper {
 
     private val planTravels = listOf(planTravelModel)
 
+    val uiPlanTravels = planTravels.map { it.mapToPlanTravelUi() }
+
     val resourcePlanTravels = planTravels.map {
         Resource.Success(it)
     }
@@ -45,7 +48,7 @@ object ConstantsTestHelper {
     val initialPlanTravelUiState = PlanTravelUiState()
     val successPlanTravelUiState = PlanTravelUiState(
         dataState = DataState.SUCCESS,
-        planTravels = planTravels
+        planTravels = uiPlanTravels
     )
     val errorPlanTravelUiState = PlanTravelUiState(
         dataState = DataState.ERROR,
