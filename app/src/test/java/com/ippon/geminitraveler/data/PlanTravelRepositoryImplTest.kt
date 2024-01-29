@@ -1,12 +1,12 @@
 package com.ippon.geminitraveler.data
 
-import com.google.ai.client.generativeai.GenerativeModel
+import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.repository.PlanTravelRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
-import com.ippon.geminitraveler.domain.model.PlanTravel
-import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -50,20 +50,37 @@ class PlanTravelRepositoryImplTest {
     @Test
     fun `should return successful plan travel when request plan is good`() = runTest {
         // Given
-        val planTravel = PlanTravel("")
-        val requestPlan = RequestPlan("")
+        val planTravel = ConstantsTestHelper.planTravelModel
+        val requestPlan = ConstantsTestHelper.requestPlan
 
         // When
         whenever(
             generativeDataSource.generateContent(any())
-        ).thenReturn("")
+        ).thenReturn(ConstantsTestHelper.MODEL_RESPONSE)
 
-        val result = planTravelRepository.getPlanTravel(requestPlan)
+        val resourceFlow = planTravelRepository.getPlanTravel(requestPlan)
 
         // Then
-        verify(generativeDataSource, times(1))
-            .generateContent(refEq(""))
-        Truth.assertThat(result).isEqualTo(planTravel)
+        resourceFlow.test {
+            val userResource = awaitItem()
+            val loadingResource = awaitItem()
+            val modelResource = awaitItem()
 
+            // Starts with User Model Resource
+            Truth.assertThat(userResource).isInstanceOf(Resource.Success::class.java)
+            Truth.assertThat(userResource).isEqualTo(ConstantsTestHelper.userResource)
+
+            // Loading Resource afterwards
+            Truth.assertThat(loadingResource).isInstanceOf(Resource.Loading::class.java)
+
+            // Finally the response from the model
+            Truth.assertThat(modelResource).isInstanceOf(Resource.Success::class.java)
+            Truth.assertThat(modelResource).isEqualTo(ConstantsTestHelper.modelResource)
+
+            verify(generativeDataSource, times(1))
+                .generateContent(refEq(ConstantsTestHelper.REQUEST_PLAN_DATA))
+
+            awaitComplete()
+        }
     }
 }
