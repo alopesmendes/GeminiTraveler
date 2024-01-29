@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.R
 
 @Composable
@@ -18,11 +19,8 @@ fun CustomTextField(prompt: String, onPromptChange: (String) -> Unit, modifier: 
         value = prompt,
         placeholder = { Text(stringResource(R.string.summarize_hint)) },
         onValueChange = { onPromptChange(it) },
-        shape = RoundedCornerShape(100),
+        shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.tertiary,
-            focusedContainerColor = MaterialTheme.colorScheme.tertiary,
-            focusedTextColor = MaterialTheme.colorScheme.onTertiary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),

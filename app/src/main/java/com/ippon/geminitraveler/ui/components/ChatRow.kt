@@ -22,8 +22,7 @@ import com.ippon.geminitraveler.R
 fun ChatRow(speechContent: String, isGemini: Boolean) {
     Row(
         modifier = Modifier
-            .padding(8.dp)
-            .verticalScroll(rememberScrollState()),
+            .padding(8.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     )
