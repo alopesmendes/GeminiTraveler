@@ -2,17 +2,15 @@ package com.ippon.geminitraveler.domain.use_cases
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.Resource
-import com.ippon.geminitraveler.domain.model.PlanTravel
-import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -50,57 +48,56 @@ class GetPlanTravelUseCaseTest {
     @Test
     fun `should return success plan travel state when repository response is successful`() = runTest {
         // Given
-        val planTravel = PlanTravel("")
-        val prompt = ""
-        val requestPlan = RequestPlan(prompt)
-        val result: Resource<PlanTravel> = Resource.Success(data = planTravel)
+        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
+        val requestPlan = ConstantsTestHelper.requestPlan
+        val result = ConstantsTestHelper.successPlanTravelUiState
 
         // When
         whenever(
             planTravelRepository.getPlanTravel(any())
-        ).thenReturn(planTravel)
+        ).thenReturn(
+            flowOf(*ConstantsTestHelper.resourcePlanTravels.toTypedArray())
+        )
 
-        val response = getPlanTravelUseCase(prompt)
+        val response = getPlanTravelUseCase(
+            prompt = prompt,
+            initialUiState = ConstantsTestHelper.initialPlanTravelUiState
+        )
 
         // Then
         response.test {
-            Truth.assertThat(awaitItem()).isEqualTo(Resource.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(result)
             awaitComplete()
 
             verify(planTravelRepository, times(1))
                 .getPlanTravel(refEq(requestPlan))
         }
-
     }
 
     @Test
     fun `should return error plan travel state when repository response is not successful`() = runTest {
         // Given
-        val prompt = ""
-        val requestPlan = RequestPlan(prompt)
-        val error = IllegalArgumentException("error")
-        val result: Resource<PlanTravel> = Resource.Error(
-            errorMessage = error.message,
-            throwable = error,
-        )
+        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
+        val requestPlan = ConstantsTestHelper.requestPlan
+        val result = ConstantsTestHelper.errorPlanTravelUiState
 
         // When
         whenever(
             planTravelRepository.getPlanTravel(any())
-        ).thenThrow(error)
+        ).thenReturn(flowOf(ConstantsTestHelper.errorResource))
 
-        val response = getPlanTravelUseCase(prompt)
+        val response = getPlanTravelUseCase(
+            prompt = prompt,
+            initialUiState = ConstantsTestHelper.initialPlanTravelUiState
+        )
 
         // Then
         response.test {
-            Truth.assertThat(awaitItem()).isEqualTo(Resource.Loading)
             Truth.assertThat(awaitItem()).isEqualTo(result)
             awaitComplete()
 
             verify(planTravelRepository, times(1))
                 .getPlanTravel(refEq(requestPlan))
         }
-
     }
 }
