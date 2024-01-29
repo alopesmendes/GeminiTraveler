@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     val uiState by viewModel.uiState.collectAsState()
                     ChatbotScreen(
                         uiState = uiState,
-                        requestPlanTravel = viewModel::requestPlanTravel
+                        onHandleEvent = viewModel::onHandleEvent
                     )
                 }
             }
