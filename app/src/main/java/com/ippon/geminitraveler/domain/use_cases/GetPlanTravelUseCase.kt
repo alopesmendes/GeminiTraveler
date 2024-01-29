@@ -4,6 +4,7 @@ import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.RequestPlan
 import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
 import com.ippon.geminitraveler.ui.models.PlanTravelUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -40,7 +41,7 @@ class GetPlanTravelUseCase(
                             dataState = DataState.SUCCESS,
                             planTravels = listOf(
                                 *uiState.planTravels.toTypedArray(),
-                                resource.data
+                                resource.data.mapToPlanTravelUi(),
                             )
                         )
                     }
