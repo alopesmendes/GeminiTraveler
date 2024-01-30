@@ -20,16 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.core.components.StateContainer
 import com.ippon.geminitraveler.core.utils.DataState
-import com.ippon.geminitraveler.domain.model.PlanTravel
-import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.ui.models.PlanTravelUi
-import com.ippon.geminitraveler.ui.models.PlanTravelUiState
+import com.ippon.geminitraveler.ui.models.ModelResponseUi
+import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 import com.ippon.geminitraveler.ui.models.RoleUi
 
 @Composable
 fun ChatList(
     modifier: Modifier = Modifier,
-    plantTravelUiState: PlanTravelUiState,
+    plantTravelUiState: ModelResponseUiState,
 ) {
     val visibleIndex by remember(plantTravelUiState.planTravels.lastIndex) {
         derivedStateOf {
@@ -111,10 +109,10 @@ private fun LoadingChatbotScreenComponents(
 @Composable
 private fun PreviewChatList() {
     ChatList(
-        plantTravelUiState = PlanTravelUiState(
+        plantTravelUiState = ModelResponseUiState(
             dataState = DataState.SUCCESS,
             planTravels = (1..10).map { index ->
-                PlanTravelUi(
+                ModelResponseUi(
                     data = "text $index",
                     role = if (index % 2 == 0) {
                         RoleUi.USER

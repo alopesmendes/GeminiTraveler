@@ -2,24 +2,24 @@ package com.ippon.geminitraveler.domain.use_cases
 
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
-import com.ippon.geminitraveler.domain.model.RequestPlan
-import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import com.ippon.geminitraveler.domain.model.ModelRequest
+import com.ippon.geminitraveler.domain.repository.ModelRepository
 import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
-import com.ippon.geminitraveler.ui.models.PlanTravelUiState
+import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
 
 @Single
-class GetPlanTravelUseCase(
-    private val planTravelRepository: PlanTravelRepository
+class GetModelResponseUseCase(
+    private val planTravelRepository: ModelRepository
 ) {
     operator fun invoke(
         prompt: String,
-        initialUiState: PlanTravelUiState,
-    ): Flow<PlanTravelUiState> {
+        initialUiState: ModelResponseUiState,
+    ): Flow<ModelResponseUiState> {
         var uiState = initialUiState
-        val requestPlan = RequestPlan(prompt)
+        val requestPlan = ModelRequest(prompt)
 
         return planTravelRepository
             .getPlanTravel(requestPlan)

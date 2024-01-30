@@ -1,5 +1,5 @@
 package com.ippon.geminitraveler.domain.model
 
-data class RequestPlan(
+data class ModelRequest(
     val data: String
 )

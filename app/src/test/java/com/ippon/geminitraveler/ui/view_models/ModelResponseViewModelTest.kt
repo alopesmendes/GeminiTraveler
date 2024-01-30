@@ -1,8 +1,8 @@
 package com.ippon.geminitraveler.ui.view_models
 
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.domain.use_cases.GetPlanTravelUseCase
-import com.ippon.geminitraveler.ui.models.PlanTravelUiState
+import com.ippon.geminitraveler.domain.use_cases.GetModelResponseUseCase
+import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,18 +28,18 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 @ExperimentalCoroutinesApi
-class PlanTravelViewModelTest {
+class ModelResponseViewModelTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
-    private lateinit var getPlanTravelUseCase: GetPlanTravelUseCase
-    private lateinit var viewModel: PlanTravelViewModel
+    private lateinit var getPlanTravelUseCase: GetModelResponseUseCase
+    private lateinit var viewModel: ModelViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        viewModel = PlanTravelViewModel(getPlanTravelUseCase)
+        viewModel = ModelViewModel(getPlanTravelUseCase)
     }
 
     @After
@@ -69,7 +69,7 @@ class PlanTravelViewModelTest {
             initialUiState = refEq(ConstantsTestHelper.initialPlanTravelUiState),
         )
 
-        val values = mutableListOf<PlanTravelUiState>()
+        val values = mutableListOf<ModelResponseUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
@@ -100,7 +100,7 @@ class PlanTravelViewModelTest {
             initialUiState = refEq(ConstantsTestHelper.initialPlanTravelUiState)
         )
 
-        val values = mutableListOf<PlanTravelUiState>()
+        val values = mutableListOf<ModelResponseUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }

@@ -3,36 +3,36 @@ package com.ippon.geminitraveler.utils
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
-import com.ippon.geminitraveler.domain.model.PlanTravel
-import com.ippon.geminitraveler.domain.model.RequestPlan
+import com.ippon.geminitraveler.domain.model.ModelResponse
+import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
-import com.ippon.geminitraveler.ui.models.PlanTravelEvent
-import com.ippon.geminitraveler.ui.models.PlanTravelUiState
+import com.ippon.geminitraveler.ui.models.ModelEvent
+import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 
 object ConstantsTestHelper {
     const val MODEL_RESPONSE = "response"
     const val REQUEST_PLAN_DATA = "request"
 
-    val planTravelModel = PlanTravel(
+    val planTravelModel = ModelResponse(
         data = MODEL_RESPONSE,
         role = Role.MODEL
     )
 
-    val requestPlan = RequestPlan(REQUEST_PLAN_DATA)
+    val requestPlan = ModelRequest(REQUEST_PLAN_DATA)
 
-    val userResource: Resource<PlanTravel> = Resource.Success(
+    val userResource: Resource<ModelResponse> = Resource.Success(
         requestPlan.mapToPlanTravel()
     )
 
-    val modelResource: Resource<PlanTravel> = Resource.Success(
+    val modelResource: Resource<ModelResponse> = Resource.Success(
         planTravelModel
     )
 
     private const val ERROR_MESSAGE = "error"
     private val throwable = IllegalStateException(ERROR_MESSAGE)
 
-    val errorResource: Resource<PlanTravel> = Resource.Error(
+    val errorResource: Resource<ModelResponse> = Resource.Error(
         errorMessage = ERROR_MESSAGE,
         throwable = throwable
     )
@@ -45,17 +45,17 @@ object ConstantsTestHelper {
         Resource.Success(it)
     }
 
-    val initialPlanTravelUiState = PlanTravelUiState()
-    val successPlanTravelUiState = PlanTravelUiState(
+    val initialPlanTravelUiState = ModelResponseUiState()
+    val successPlanTravelUiState = ModelResponseUiState(
         dataState = DataState.SUCCESS,
         planTravels = uiPlanTravels
     )
-    val errorPlanTravelUiState = PlanTravelUiState(
+    val errorPlanTravelUiState = ModelResponseUiState(
         dataState = DataState.ERROR,
         errorMessage = ERROR_MESSAGE
     )
 
-    val requestModelEvent = PlanTravelEvent.ModelRequestEvent(
+    val requestModelEvent = ModelEvent.ModelRequestEvent(
         prompt = REQUEST_PLAN_DATA
     )
 }

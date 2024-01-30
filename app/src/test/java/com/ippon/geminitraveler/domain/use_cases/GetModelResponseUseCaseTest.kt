@@ -2,7 +2,7 @@ package com.ippon.geminitraveler.domain.use_cases
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import com.ippon.geminitraveler.domain.repository.ModelRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,18 +26,18 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 @ExperimentalCoroutinesApi
-class GetPlanTravelUseCaseTest {
+class GetModelResponseUseCaseTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
-    private lateinit var planTravelRepository: PlanTravelRepository
-    private lateinit var getPlanTravelUseCase: GetPlanTravelUseCase
+    private lateinit var planTravelRepository: ModelRepository
+    private lateinit var getPlanTravelUseCase: GetModelResponseUseCase
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        getPlanTravelUseCase = GetPlanTravelUseCase(planTravelRepository)
+        getPlanTravelUseCase = GetModelResponseUseCase(planTravelRepository)
     }
 
     @After

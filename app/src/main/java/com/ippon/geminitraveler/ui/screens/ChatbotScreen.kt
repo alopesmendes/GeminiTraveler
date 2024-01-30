@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.ui.components.ChatList
 import com.ippon.geminitraveler.ui.components.CustomTextField
 import com.ippon.geminitraveler.ui.components.SendButton
-import com.ippon.geminitraveler.ui.models.PlanTravelEvent
-import com.ippon.geminitraveler.ui.models.PlanTravelUiState
+import com.ippon.geminitraveler.ui.models.ModelEvent
+import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 
 @Composable
 fun ChatbotScreen(
-    uiState: PlanTravelUiState = PlanTravelUiState(),
-    onHandleEvent: (PlanTravelEvent) -> Unit = {}
+    uiState: ModelResponseUiState = ModelResponseUiState(),
+    onHandleEvent: (ModelEvent) -> Unit = {}
 ) {
     var prompt by remember { mutableStateOf("") }
 
@@ -56,7 +56,7 @@ fun ChatbotScreen(
                 sendMessage = {
                     if (prompt.isNotBlank()) {
                         onHandleEvent(
-                            PlanTravelEvent.ModelRequestEvent(prompt)
+                            ModelEvent.ModelRequestEvent(prompt)
                         )
                     }
                 }
@@ -68,7 +68,7 @@ fun ChatbotScreen(
 @Composable
 private fun SuccessChatbotScreenComponent(
     modifier: Modifier = Modifier,
-    planTravelUiState: PlanTravelUiState,
+    planTravelUiState: ModelResponseUiState,
 ) {
     ChatList(
         modifier = modifier,

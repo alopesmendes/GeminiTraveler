@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.ippon.geminitraveler.ui.screens.ChatbotScreen
 import com.ippon.geminitraveler.ui.theme.GeminiTravelerTheme
-import com.ippon.geminitraveler.ui.view_models.PlanTravelViewModel
+import com.ippon.geminitraveler.ui.view_models.ModelViewModel
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val viewModel: PlanTravelViewModel = koinViewModel()
+                    val viewModel: ModelViewModel = koinViewModel()
                     val uiState by viewModel.uiState.collectAsState()
                     ChatbotScreen(
                         uiState = uiState,

@@ -1,7 +1,7 @@
 package com.ippon.geminitraveler.ui.models
 
-sealed interface PlanTravelEvent {
+sealed interface ModelEvent {
     data class ModelRequestEvent(
         val prompt: String
-    ): PlanTravelEvent
+    ): ModelEvent
 }

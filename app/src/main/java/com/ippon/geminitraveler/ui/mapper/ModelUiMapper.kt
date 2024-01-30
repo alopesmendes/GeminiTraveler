@@ -1,11 +1,11 @@
 package com.ippon.geminitraveler.ui.mapper
 
-import com.ippon.geminitraveler.domain.model.PlanTravel
+import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.ui.models.PlanTravelUi
+import com.ippon.geminitraveler.ui.models.ModelResponseUi
 import com.ippon.geminitraveler.ui.models.RoleUi
 
-fun PlanTravel.mapToPlanTravelUi(): PlanTravelUi = PlanTravelUi(
+fun ModelResponse.mapToPlanTravelUi(): ModelResponseUi = ModelResponseUi(
     data = data,
     role = role.mapToRoleUi()
 )

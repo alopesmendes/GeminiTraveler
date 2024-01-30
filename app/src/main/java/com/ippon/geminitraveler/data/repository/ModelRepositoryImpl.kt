@@ -3,21 +3,20 @@ package com.ippon.geminitraveler.data.repository
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
-import com.ippon.geminitraveler.domain.model.PlanTravel
-import com.ippon.geminitraveler.domain.model.RequestPlan
+import com.ippon.geminitraveler.domain.model.ModelResponse
+import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
-import kotlinx.coroutines.delay
+import com.ippon.geminitraveler.domain.repository.ModelRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.koin.core.annotation.Single
 
 @Single
-class PlanTravelRepositoryImpl(
+class ModelRepositoryImpl(
     private val generativeDataSource: GenerativeDataSource,
-): PlanTravelRepository {
+): ModelRepository {
 
-    override fun getPlanTravel(requestPlan: RequestPlan): Flow<Resource<PlanTravel>> = flow {
+    override fun getPlanTravel(requestPlan: ModelRequest): Flow<Resource<ModelResponse>> = flow {
         try {
             // User Input
             val userResource = Resource.Success(requestPlan.mapToPlanTravel())
@@ -30,7 +29,7 @@ class PlanTravelRepositoryImpl(
             val modelResponse = generativeDataSource.generateContent(requestPlan.data)
             emit(
                 Resource.Success(
-                    PlanTravel(
+                    ModelResponse(
                         data = modelResponse ?: "",
                         role = Role.MODEL
                     )

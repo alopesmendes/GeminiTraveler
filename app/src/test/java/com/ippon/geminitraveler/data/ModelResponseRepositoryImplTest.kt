@@ -3,9 +3,9 @@ package com.ippon.geminitraveler.data
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.core.utils.Resource
-import com.ippon.geminitraveler.data.repository.PlanTravelRepositoryImpl
+import com.ippon.geminitraveler.data.repository.ModelRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
-import com.ippon.geminitraveler.domain.repository.PlanTravelRepository
+import com.ippon.geminitraveler.domain.repository.ModelRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,18 +28,18 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 @ExperimentalCoroutinesApi
-class PlanTravelRepositoryImplTest {
+class ModelResponseRepositoryImplTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
     private lateinit var generativeDataSource: GenerativeDataSource
-    private lateinit var planTravelRepository: PlanTravelRepository
+    private lateinit var planTravelRepository: ModelRepository
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        planTravelRepository = PlanTravelRepositoryImpl(generativeDataSource)
+        planTravelRepository = ModelRepositoryImpl(generativeDataSource)
     }
 
     @After
