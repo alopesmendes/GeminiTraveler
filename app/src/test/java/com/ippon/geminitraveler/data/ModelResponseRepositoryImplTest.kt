@@ -3,8 +3,10 @@ package com.ippon.geminitraveler.data
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.core.utils.Resource
+import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
 import com.ippon.geminitraveler.data.repository.ModelRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
+import com.ippon.geminitraveler.domain.datasources.MessageDatasource
 import com.ippon.geminitraveler.domain.repository.ModelRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +23,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.refEq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -33,13 +36,18 @@ class ModelResponseRepositoryImplTest {
 
     @Mock
     private lateinit var generativeDataSource: GenerativeDataSource
+    @Mock
+    private lateinit var messageDatasource: MessageDatasource
     private lateinit var planTravelRepository: ModelRepository
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        planTravelRepository = ModelRepositoryImpl(generativeDataSource)
+        planTravelRepository = ModelRepositoryImpl(
+            generativeDataSource = generativeDataSource,
+            messageDatasource = messageDatasource
+        )
     }
 
     @After
@@ -79,6 +87,10 @@ class ModelResponseRepositoryImplTest {
 
             verify(generativeDataSource, times(1))
                 .generateContent(refEq(ConstantsTestHelper.REQUEST_PLAN_DATA))
+            verify(messageDatasource, atLeastOnce())
+                .addMessage(refEq(requestPlan.mapToPlanTravel()))
+            verify(messageDatasource, atLeastOnce())
+                .addMessage(refEq(planTravel))
 
             awaitComplete()
         }
