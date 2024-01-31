@@ -32,6 +32,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -93,6 +102,14 @@ dependencies {
     implementation(libs.richtext.commonmark)
     implementation(libs.richtext.ui.material3)
 
+    // ROOM
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    testImplementation(libs.room.testing)
+
+    // TEST
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.truth)
@@ -100,6 +117,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // DEBUG
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
