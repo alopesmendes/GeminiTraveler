@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel: ModelViewModel = koinViewModel()
                     val uiState by viewModel.uiState.collectAsState()
-                    ContainerScreen {
+                    ContainerScreen(chatHistoryItems = emptyList()) {
                         ChatbotScreen(
                             uiState = uiState,
                             onHandleEvent = viewModel::onHandleEvent
