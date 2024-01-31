@@ -2,15 +2,14 @@ package com.ippon.geminitraveler.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -26,23 +25,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.ippon.geminitraveler.R
+import com.ippon.geminitraveler.ui.components.ChatHistoryList
 import com.ippon.geminitraveler.ui.components.CustomTopBar
+import com.ippon.geminitraveler.ui.models.ChatHistoryItem
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContainerScreen(
+    chatHistoryItems: List<ChatHistoryItem>,
     content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+
     ModalNavigationDrawer(
         gesturesEnabled = true,
         drawerState = drawerState,
@@ -53,30 +55,32 @@ fun ContainerScreen(
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column {
-                        Text(
-                            stringResource(id = R.string.history_title),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
-                            modifier = Modifier.padding(16.dp)
-                        )
+                    ChatHistoryList(
+                        modifier = Modifier
+                            .weight(1F)
+                            .padding(bottom = 8.dp),
+                        chatHistoryItems = chatHistoryItems,
+                        scope = scope,
+                        drawerState = drawerState,
+                        onNavigate = {}
+                    )
 
-                        // Use DrawerItem here
-                    }
-                    Button(
-                        modifier = Modifier.padding(16.dp),
+                    ExtendedFloatingActionButton(
+                        text = { Text(text = stringResource(id = R.string.btn_new_chat)) },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = ""
+                            )
+                        },
                         onClick = {
                             scope.launch {
                                 drawerState.close()
                             }
-                        }) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = ""
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = stringResource(id = R.string.btn_new_chat))
-                    }
+                        },
+                        shape = FloatingActionButtonDefaults.largeShape,
+                        modifier = Modifier.padding(16.dp),
+                    )
                 }
             }
         }
@@ -101,7 +105,9 @@ fun ContainerScreen(
 @Preview
 @Composable
 fun ContainerScreenPreview() {
-    ContainerScreen {
+    ContainerScreen(
+        chatHistoryItems = (1..20).map { ChatHistoryItem(id = it, title = "test", "01/01/2023") }
+    ) {
         Text(text = "Je suis un chatbot")
     }
 }
