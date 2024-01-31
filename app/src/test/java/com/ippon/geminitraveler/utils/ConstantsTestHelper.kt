@@ -2,9 +2,10 @@ package com.ippon.geminitraveler.utils
 
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
+import com.ippon.geminitraveler.data.mappers.mapToMessageEntity
 import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
-import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
+import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
 import com.ippon.geminitraveler.ui.models.ModelEvent
@@ -58,4 +59,6 @@ object ConstantsTestHelper {
     val requestModelEvent = ModelEvent.ModelRequestEvent(
         prompt = REQUEST_PLAN_DATA
     )
+
+    val messageEntity = planTravelModel.mapToMessageEntity()
 }
