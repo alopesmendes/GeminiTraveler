@@ -3,4 +3,5 @@
     <string name="action_go">Go</string>
     <string name="summarize_label">Text to summarize</string>
     <string name="summarize_hint">Send message…</string>
+    <string name="app_title">Gemini Traveler</string>
 </resources>
