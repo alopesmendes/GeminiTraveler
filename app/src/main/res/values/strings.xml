@@ -4,4 +4,6 @@
     <string name="summarize_label">Text to summarize</string>
     <string name="summarize_hint">Send message…</string>
     <string name="app_title">Gemini Traveler</string>
+    <string name="history_title">Chat history</string>
+    <string name="btn_new_chat">New chat</string>
 </resources>
