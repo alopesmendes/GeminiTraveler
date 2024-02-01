@@ -14,3 +14,8 @@ fun ModelResponse.mapToMessageEntity(): MessageEntity = MessageEntity(
     message = data,
     isGemini = role == Role.MODEL,
 )
+
+fun MessageEntity.mapToModelResponse(): ModelResponse = ModelResponse(
+    data = message,
+    role = if (isGemini) Role.MODEL else Role.USER
+)
