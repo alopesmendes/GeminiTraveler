@@ -18,8 +18,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
-import org.mockito.kotlin.refEq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -48,20 +46,17 @@ class GetModelResponseUseCaseTest {
     @Test
     fun `should return success plan travel state when repository response is successful`() = runTest {
         // Given
-        val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
-        val requestPlan = ConstantsTestHelper.modelRequest
         val result = ConstantsTestHelper.successPlanTravelUiState
 
         // When
         whenever(
-            planTravelRepository.getMessages(any())
+            planTravelRepository.getMessages()
         ).thenReturn(
-            flowOf(*ConstantsTestHelper.resourcePlanTravels.toTypedArray())
+            flowOf(ConstantsTestHelper.resourceSuccessMessages)
         )
 
         val response = getPlanTravelUseCase(
-            prompt = prompt,
-            initialUiState = ConstantsTestHelper.initialPlanTravelUiState
+            uiState = ConstantsTestHelper.initialPlanTravelUiState
         )
 
         // Then
@@ -70,25 +65,22 @@ class GetModelResponseUseCaseTest {
             awaitComplete()
 
             verify(planTravelRepository, times(1))
-                .getMessages(refEq(requestPlan))
+                .getMessages()
         }
     }
 
     @Test
     fun `should return error plan travel state when repository response is not successful`() = runTest {
         // Given
-        val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
-        val requestPlan = ConstantsTestHelper.modelRequest
         val result = ConstantsTestHelper.errorPlanTravelUiState
 
         // When
         whenever(
-            planTravelRepository.getMessages(any())
-        ).thenReturn(flowOf(ConstantsTestHelper.modelResponseErrorResource))
+            planTravelRepository.getMessages()
+        ).thenReturn(flowOf(ConstantsTestHelper.resourceErrorMessages))
 
         val response = getPlanTravelUseCase(
-            prompt = prompt,
-            initialUiState = ConstantsTestHelper.initialPlanTravelUiState
+            uiState = ConstantsTestHelper.initialPlanTravelUiState
         )
 
         // Then
@@ -97,7 +89,7 @@ class GetModelResponseUseCaseTest {
             awaitComplete()
 
             verify(planTravelRepository, times(1))
-                .getMessages(refEq(requestPlan))
+                .getMessages()
         }
     }
 }

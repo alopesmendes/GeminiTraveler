@@ -6,7 +6,7 @@ import com.ippon.geminitraveler.data.mappers.mapToMessageEntity
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
+import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
 import com.ippon.geminitraveler.ui.models.ModelEvent
 import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 
@@ -28,7 +28,7 @@ object ConstantsTestHelper {
 
     val messagesEntities = responses.map { it.mapToMessageEntity() }
 
-    private val uiPlanTravels = responses.map { it.mapToPlanTravelUi() }
+    private val uiPlanTravels = responses.map { it.mapToModelResponseUi() }
 
     val resourceLoadingMessages: Resource<List<ModelResponse>> = Resource.Loading
     val resourceSuccessMessages: Resource<List<ModelResponse>> = Resource.Success(responses)
