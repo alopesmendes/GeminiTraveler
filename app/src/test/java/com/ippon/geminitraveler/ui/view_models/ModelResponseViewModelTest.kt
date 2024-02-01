@@ -50,7 +50,7 @@ class ModelResponseViewModelTest {
     @Test
     fun `should update successfully plan travel ui state when use case response is successful`() = runTest {
         // Given
-        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
+        val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
         val result = ConstantsTestHelper.successPlanTravelUiState
 
         // When
@@ -81,7 +81,7 @@ class ModelResponseViewModelTest {
     @Test
     fun `should update error plan travel ui state when use case response is not successful`() = runTest {
         // Given
-        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
+        val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
         val result = ConstantsTestHelper.errorPlanTravelUiState
 
         // When

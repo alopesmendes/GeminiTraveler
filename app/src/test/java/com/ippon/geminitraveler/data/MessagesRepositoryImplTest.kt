@@ -3,11 +3,11 @@ package com.ippon.geminitraveler.data
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.core.utils.Resource
-import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
-import com.ippon.geminitraveler.data.repository.ModelRepositoryImpl
+import com.ippon.geminitraveler.data.mappers.mapToModelResponse
+import com.ippon.geminitraveler.data.repository.MessagesRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
-import com.ippon.geminitraveler.domain.repository.ModelRepository
+import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,20 +31,20 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 @ExperimentalCoroutinesApi
-class ModelResponseRepositoryImplTest {
+class MessagesRepositoryImplTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
     private lateinit var generativeDataSource: GenerativeDataSource
     @Mock
     private lateinit var messageDatasource: MessageDatasource
-    private lateinit var planTravelRepository: ModelRepository
+    private lateinit var planTravelRepository: MessagesRepository
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        planTravelRepository = ModelRepositoryImpl(
+        planTravelRepository = MessagesRepositoryImpl(
             generativeDataSource = generativeDataSource,
             messageDatasource = messageDatasource
         )
@@ -58,15 +58,15 @@ class ModelResponseRepositoryImplTest {
     @Test
     fun `should return successful plan travel when request plan is good`() = runTest {
         // Given
-        val planTravel = ConstantsTestHelper.planTravelModel
-        val requestPlan = ConstantsTestHelper.requestPlan
+        val planTravel = ConstantsTestHelper.modelResponse
+        val requestPlan = ConstantsTestHelper.modelRequest
 
         // When
         whenever(
             generativeDataSource.generateContent(any())
         ).thenReturn(ConstantsTestHelper.MODEL_RESPONSE)
 
-        val resourceFlow = planTravelRepository.getPlanTravel(requestPlan)
+        val resourceFlow = planTravelRepository.getMessages(requestPlan)
 
         // Then
         resourceFlow.test {
@@ -86,9 +86,9 @@ class ModelResponseRepositoryImplTest {
             Truth.assertThat(modelResource).isEqualTo(ConstantsTestHelper.modelResource)
 
             verify(generativeDataSource, times(1))
-                .generateContent(refEq(ConstantsTestHelper.REQUEST_PLAN_DATA))
+                .generateContent(refEq(ConstantsTestHelper.MODEL_REQUEST_DATA))
             verify(messageDatasource, atLeastOnce())
-                .addMessage(refEq(requestPlan.mapToPlanTravel()))
+                .addMessage(refEq(requestPlan.mapToModelResponse()))
             verify(messageDatasource, atLeastOnce())
                 .addMessage(refEq(planTravel))
 

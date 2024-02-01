@@ -5,7 +5,7 @@ import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.Role
 
-fun ModelRequest.mapToPlanTravel(): ModelResponse = ModelResponse(
+fun ModelRequest.mapToModelResponse(): ModelResponse = ModelResponse(
     data = data,
     role = Role.USER,
 )

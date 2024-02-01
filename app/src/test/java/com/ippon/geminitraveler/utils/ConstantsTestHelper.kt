@@ -3,7 +3,7 @@ package com.ippon.geminitraveler.utils
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.mappers.mapToMessageEntity
-import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
+import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
@@ -13,21 +13,21 @@ import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 
 object ConstantsTestHelper {
     const val MODEL_RESPONSE = "response"
-    const val REQUEST_PLAN_DATA = "request"
+    const val MODEL_REQUEST_DATA = "request"
 
-    val planTravelModel = ModelResponse(
+    val modelResponse = ModelResponse(
         data = MODEL_RESPONSE,
         role = Role.MODEL
     )
 
-    val requestPlan = ModelRequest(REQUEST_PLAN_DATA)
+    val modelRequest = ModelRequest(MODEL_REQUEST_DATA)
 
     val userResource: Resource<ModelResponse> = Resource.Success(
-        requestPlan.mapToPlanTravel()
+        modelRequest.mapToModelResponse()
     )
 
     val modelResource: Resource<ModelResponse> = Resource.Success(
-        planTravelModel
+        modelResponse
     )
 
     private const val ERROR_MESSAGE = "error"
@@ -38,13 +38,13 @@ object ConstantsTestHelper {
         throwable = throwable
     )
 
-    val planTravels = listOf(planTravelModel)
+    val responses = listOf(modelResponse)
 
-    val messagesEntities = planTravels.map { it.mapToMessageEntity() }
+    val messagesEntities = responses.map { it.mapToMessageEntity() }
 
-    private val uiPlanTravels = planTravels.map { it.mapToPlanTravelUi() }
+    private val uiPlanTravels = responses.map { it.mapToPlanTravelUi() }
 
-    val resourcePlanTravels = planTravels.map {
+    val resourcePlanTravels = responses.map {
         Resource.Success(it)
     }
 
@@ -59,8 +59,8 @@ object ConstantsTestHelper {
     )
 
     val requestModelEvent = ModelEvent.ModelRequestEvent(
-        prompt = REQUEST_PLAN_DATA
+        prompt = MODEL_REQUEST_DATA
     )
 
-    val messageEntity = planTravelModel.mapToMessageEntity()
+    val messageEntity = modelResponse.mapToMessageEntity()
 }

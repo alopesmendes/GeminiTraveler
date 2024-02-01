@@ -49,7 +49,7 @@ class MessageLocalDatasourceTest {
     @Test
     fun `should add message to database when using message local datasource`() = runTest {
         // Given
-        val message = ConstantsTestHelper.planTravelModel
+        val message = ConstantsTestHelper.modelResponse
         val messageEntity = ConstantsTestHelper.messageEntity
 
         // When
@@ -65,7 +65,7 @@ class MessageLocalDatasourceTest {
     @Test
     fun `should return messages successfully when getting messages from local datasource`() = runTest {
         // Given
-        val messages = ConstantsTestHelper.planTravels
+        val messages = ConstantsTestHelper.responses
 
         // When
         whenever(dao.findAllMessages())

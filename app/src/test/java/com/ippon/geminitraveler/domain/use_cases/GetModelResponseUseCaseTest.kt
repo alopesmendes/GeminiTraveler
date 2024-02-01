@@ -2,7 +2,7 @@ package com.ippon.geminitraveler.domain.use_cases
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.domain.repository.ModelRepository
+import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +30,7 @@ class GetModelResponseUseCaseTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
-    private lateinit var planTravelRepository: ModelRepository
+    private lateinit var planTravelRepository: MessagesRepository
     private lateinit var getPlanTravelUseCase: GetModelResponseUseCase
 
     @Before
@@ -48,13 +48,13 @@ class GetModelResponseUseCaseTest {
     @Test
     fun `should return success plan travel state when repository response is successful`() = runTest {
         // Given
-        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
-        val requestPlan = ConstantsTestHelper.requestPlan
+        val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
+        val requestPlan = ConstantsTestHelper.modelRequest
         val result = ConstantsTestHelper.successPlanTravelUiState
 
         // When
         whenever(
-            planTravelRepository.getPlanTravel(any())
+            planTravelRepository.getMessages(any())
         ).thenReturn(
             flowOf(*ConstantsTestHelper.resourcePlanTravels.toTypedArray())
         )
@@ -70,20 +70,20 @@ class GetModelResponseUseCaseTest {
             awaitComplete()
 
             verify(planTravelRepository, times(1))
-                .getPlanTravel(refEq(requestPlan))
+                .getMessages(refEq(requestPlan))
         }
     }
 
     @Test
     fun `should return error plan travel state when repository response is not successful`() = runTest {
         // Given
-        val prompt = ConstantsTestHelper.REQUEST_PLAN_DATA
-        val requestPlan = ConstantsTestHelper.requestPlan
+        val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
+        val requestPlan = ConstantsTestHelper.modelRequest
         val result = ConstantsTestHelper.errorPlanTravelUiState
 
         // When
         whenever(
-            planTravelRepository.getPlanTravel(any())
+            planTravelRepository.getMessages(any())
         ).thenReturn(flowOf(ConstantsTestHelper.errorResource))
 
         val response = getPlanTravelUseCase(
@@ -97,7 +97,7 @@ class GetModelResponseUseCaseTest {
             awaitComplete()
 
             verify(planTravelRepository, times(1))
-                .getPlanTravel(refEq(requestPlan))
+                .getMessages(refEq(requestPlan))
         }
     }
 }

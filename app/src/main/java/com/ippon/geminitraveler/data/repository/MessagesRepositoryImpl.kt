@@ -1,27 +1,27 @@
 package com.ippon.geminitraveler.data.repository
 
 import com.ippon.geminitraveler.core.utils.Resource
-import com.ippon.geminitraveler.data.mappers.mapToPlanTravel
+import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.domain.repository.ModelRepository
+import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.koin.core.annotation.Single
 
 @Single
-class ModelRepositoryImpl(
+class MessagesRepositoryImpl(
     private val generativeDataSource: GenerativeDataSource,
     private val messageDatasource: MessageDatasource,
-): ModelRepository {
+): MessagesRepository {
 
-    override fun getPlanTravel(requestPlan: ModelRequest): Flow<Resource<ModelResponse>> = flow {
+    override fun getMessages(modelRequest: ModelRequest): Flow<Resource<ModelResponse>> = flow {
         try {
             // User Input
-            val message = requestPlan.mapToPlanTravel()
+            val message = modelRequest.mapToModelResponse()
             val userResource = Resource.Success(message)
             emit(userResource)
 
@@ -31,7 +31,7 @@ class ModelRepositoryImpl(
             emit(Resource.Loading)
 
             // AI model response
-            val promptMessage = generativeDataSource.generateContent(requestPlan.data)
+            val promptMessage = generativeDataSource.generateContent(modelRequest.data)
             val modelResponse = ModelResponse(
                 data = promptMessage ?: "",
                 role = Role.MODEL

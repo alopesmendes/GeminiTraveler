@@ -5,6 +5,6 @@ import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import kotlinx.coroutines.flow.Flow
 
-interface ModelRepository {
-    fun getPlanTravel(requestPlan: ModelRequest): Flow<Resource<ModelResponse>>
+interface MessagesRepository {
+    fun getMessages(modelRequest: ModelRequest): Flow<Resource<ModelResponse>>
 }

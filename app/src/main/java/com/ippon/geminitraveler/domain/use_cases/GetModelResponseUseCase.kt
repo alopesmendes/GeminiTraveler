@@ -3,7 +3,7 @@ package com.ippon.geminitraveler.domain.use_cases
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.ModelRequest
-import com.ippon.geminitraveler.domain.repository.ModelRepository
+import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.ui.mapper.mapToPlanTravelUi
 import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ import org.koin.core.annotation.Single
 
 @Single
 class GetModelResponseUseCase(
-    private val planTravelRepository: ModelRepository
+    private val planTravelRepository: MessagesRepository
 ) {
     operator fun invoke(
         prompt: String,
@@ -22,7 +22,7 @@ class GetModelResponseUseCase(
         val requestPlan = ModelRequest(prompt)
 
         return planTravelRepository
-            .getPlanTravel(requestPlan)
+            .getMessages(requestPlan)
             .map { resource ->
                 uiState = when (resource) {
                     is Resource.Error -> {
