@@ -56,7 +56,7 @@ fun ChatbotScreen(
                 sendMessage = {
                     if (prompt.isNotBlank()) {
                         onHandleEvent(
-                            ModelEvent.ModelRequestEvent(prompt)
+                            ModelEvent.UserSendMessage(prompt)
                         )
                     }
                 }

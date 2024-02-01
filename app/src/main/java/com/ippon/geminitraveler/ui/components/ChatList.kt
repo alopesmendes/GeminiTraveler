@@ -29,12 +29,12 @@ fun ChatList(
     modifier: Modifier = Modifier,
     plantTravelUiState: ModelResponseUiState,
 ) {
-    val visibleIndex by remember(plantTravelUiState.planTravels.lastIndex) {
+    val visibleIndex by remember(plantTravelUiState.messages.lastIndex) {
         derivedStateOf {
-            if (plantTravelUiState.planTravels.lastIndex == -1) {
+            if (plantTravelUiState.messages.lastIndex == -1) {
                 0
             } else {
-                plantTravelUiState.planTravels.lastIndex
+                plantTravelUiState.messages.lastIndex
             }
         }
     }
@@ -46,7 +46,7 @@ fun ChatList(
         modifier = modifier,
         state = state
     ) {
-        items(plantTravelUiState.planTravels) { planTravel ->
+        items(plantTravelUiState.messages) { planTravel ->
             ChatRow(
                 speechContent = planTravel.data,
                 isGemini = planTravel.role == RoleUi.MODEL,
@@ -111,7 +111,7 @@ private fun PreviewChatList() {
     ChatList(
         plantTravelUiState = ModelResponseUiState(
             dataState = DataState.SUCCESS,
-            planTravels = (1..10).map { index ->
+            messages = (1..10).map { index ->
                 ModelResponseUi(
                     data = "text $index",
                     role = if (index % 2 == 0) {

@@ -2,7 +2,8 @@ package com.ippon.geminitraveler.ui.view_models
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ippon.geminitraveler.domain.use_cases.GetModelResponseUseCase
+import com.ippon.geminitraveler.domain.use_cases.AddMessageUseCase
+import com.ippon.geminitraveler.domain.use_cases.GetMessagesUseCase
 import com.ippon.geminitraveler.ui.models.ModelEvent
 import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 import kotlinx.coroutines.channels.Channel
@@ -15,7 +16,8 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class ModelViewModel(
-    private val getPlanTravelUseCase: GetModelResponseUseCase
+    private val addMessageUseCase: AddMessageUseCase,
+    private val getMessagesUseCase: GetMessagesUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<ModelResponseUiState> = MutableStateFlow(ModelResponseUiState())
     val uiState = _uiState.asStateFlow()
@@ -38,13 +40,20 @@ class ModelViewModel(
                 .receiveAsFlow()
                 .collect { event ->
                     when (event) {
-                        is ModelEvent.ModelRequestEvent -> {
-                            getPlanTravelUseCase(
-                                prompt = event.prompt,
-                                initialUiState = _uiState.value
+                        is ModelEvent.GetMessages -> {
+                            getMessagesUseCase(
+                                uiState = _uiState.value
                             ).collect { newState ->
                                 _uiState.update { newState }
                             }
+                        }
+
+                        is ModelEvent.UserSendMessage -> {
+                            val newState = addMessageUseCase(
+                                prompt = event.prompt,
+                                uiState = _uiState.value
+                            )
+                            _uiState.update { newState }
                         }
                     }
 
