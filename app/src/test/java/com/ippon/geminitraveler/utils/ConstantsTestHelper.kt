@@ -31,9 +31,9 @@ object ConstantsTestHelper {
     )
 
     private const val ERROR_MESSAGE = "error"
-    private val throwable = IllegalStateException(ERROR_MESSAGE)
+    val throwable = IllegalStateException(ERROR_MESSAGE)
 
-    val errorResource: Resource<ModelResponse> = Resource.Error(
+    val modelResponseErrorResource: Resource<ModelResponse> = Resource.Error(
         errorMessage = ERROR_MESSAGE,
         throwable = throwable
     )
@@ -63,4 +63,11 @@ object ConstantsTestHelper {
     )
 
     val messageEntity = modelResponse.mapToMessageEntity()
+
+    val resourceSuccess: Resource<Unit> = Resource.Success(Unit)
+
+    val resourceError: Resource<Unit> = Resource.Error(
+        throwable = throwable,
+        errorMessage = ERROR_MESSAGE
+    )
 }

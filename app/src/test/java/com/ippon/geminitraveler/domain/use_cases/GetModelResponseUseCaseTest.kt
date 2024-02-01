@@ -84,7 +84,7 @@ class GetModelResponseUseCaseTest {
         // When
         whenever(
             planTravelRepository.getMessages(any())
-        ).thenReturn(flowOf(ConstantsTestHelper.errorResource))
+        ).thenReturn(flowOf(ConstantsTestHelper.modelResponseErrorResource))
 
         val response = getPlanTravelUseCase(
             prompt = prompt,
