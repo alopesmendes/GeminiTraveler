@@ -46,7 +46,7 @@ class GetMessagesUseCaseTest {
     @Test
     fun `should return success model response state when repository response is successful`() = runTest {
         // Given
-        val result = ConstantsTestHelper.successModelResponseUiState
+        val result = ConstantsTestHelper.successMessagesUiState
 
         // When
         whenever(
@@ -56,7 +56,7 @@ class GetMessagesUseCaseTest {
         )
 
         val response = getMessagesUseCase(
-            uiState = ConstantsTestHelper.initialModelResponseUiState
+            uiState = ConstantsTestHelper.initialMessagesUiState
         )
 
         // Then
@@ -72,7 +72,7 @@ class GetMessagesUseCaseTest {
     @Test
     fun `should return error model response state when repository response is not successful`() = runTest {
         // Given
-        val result = ConstantsTestHelper.errorModelResponseUiState
+        val result = ConstantsTestHelper.errorMessagesUiState
 
         // When
         whenever(
@@ -80,7 +80,7 @@ class GetMessagesUseCaseTest {
         ).thenReturn(flowOf(ConstantsTestHelper.resourceErrorMessages))
 
         val response = getMessagesUseCase(
-            uiState = ConstantsTestHelper.initialModelResponseUiState
+            uiState = ConstantsTestHelper.initialMessagesUiState
         )
 
         // Then

@@ -20,21 +20,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.core.components.StateContainer
 import com.ippon.geminitraveler.core.utils.DataState
-import com.ippon.geminitraveler.ui.models.ModelResponseUi
-import com.ippon.geminitraveler.ui.models.ModelResponseUiState
+import com.ippon.geminitraveler.ui.models.MessageUi
+import com.ippon.geminitraveler.ui.models.MessagesUiState
 import com.ippon.geminitraveler.ui.models.RoleUi
 
 @Composable
 fun ChatList(
     modifier: Modifier = Modifier,
-    plantTravelUiState: ModelResponseUiState,
+    messagesUiState: MessagesUiState,
 ) {
-    val visibleIndex by remember(plantTravelUiState.messages.lastIndex) {
+    val visibleIndex by remember(messagesUiState.messages.lastIndex) {
         derivedStateOf {
-            if (plantTravelUiState.messages.lastIndex == -1) {
+            if (messagesUiState.messages.lastIndex == -1) {
                 0
             } else {
-                plantTravelUiState.messages.lastIndex
+                messagesUiState.messages.lastIndex
             }
         }
     }
@@ -46,16 +46,16 @@ fun ChatList(
         modifier = modifier,
         state = state
     ) {
-        items(plantTravelUiState.messages) { planTravel ->
+        items(messagesUiState.messages) { messageUi ->
             ChatRow(
-                speechContent = planTravel.data,
-                isGemini = planTravel.role == RoleUi.MODEL,
+                speechContent = messageUi.data,
+                isGemini = messageUi.role == RoleUi.MODEL,
             )
         }
         item {
             StateContainer(
                 modifier = Modifier.fillMaxWidth(),
-                uiState = plantTravelUiState,
+                uiState = messagesUiState,
                 initialComponent = {  },
                 loadingComponent = {
                     LoadingChatbotScreenComponents(
@@ -64,7 +64,7 @@ fun ChatList(
                                    },
                 errorComponent = {
                     ErrorChatbotScreenComponents(
-                        errorMessage = plantTravelUiState.errorMessage
+                        errorMessage = messagesUiState.errorMessage
                     )
                 },
                 contentComponent = { }
@@ -109,10 +109,10 @@ private fun LoadingChatbotScreenComponents(
 @Composable
 private fun PreviewChatList() {
     ChatList(
-        plantTravelUiState = ModelResponseUiState(
+        messagesUiState = MessagesUiState(
             dataState = DataState.SUCCESS,
             messages = (1..10).map { index ->
-                ModelResponseUi(
+                MessageUi(
                     data = "text $index",
                     role = if (index % 2 == 0) {
                         RoleUi.USER

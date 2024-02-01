@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ippon.geminitraveler.domain.use_cases.AddMessageUseCase
 import com.ippon.geminitraveler.domain.use_cases.GetMessagesUseCase
 import com.ippon.geminitraveler.ui.models.ModelEvent
-import com.ippon.geminitraveler.ui.models.ModelResponseUiState
+import com.ippon.geminitraveler.ui.models.MessagesUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,7 @@ class ModelViewModel(
     private val addMessageUseCase: AddMessageUseCase,
     private val getMessagesUseCase: GetMessagesUseCase
 ): ViewModel() {
-    private val _uiState: MutableStateFlow<ModelResponseUiState> = MutableStateFlow(ModelResponseUiState())
+    private val _uiState: MutableStateFlow<MessagesUiState> = MutableStateFlow(MessagesUiState())
     val uiState = _uiState.asStateFlow()
 
     private val events = Channel<ModelEvent>()

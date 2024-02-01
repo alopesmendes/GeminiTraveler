@@ -4,15 +4,15 @@ import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
-import com.ippon.geminitraveler.ui.models.ModelResponseUiState
+import com.ippon.geminitraveler.ui.models.MessagesUiState
 
 class AddMessageUseCase(
     private val messagesRepository: MessagesRepository
 ) {
     suspend operator fun invoke(
         prompt: String,
-        uiState: ModelResponseUiState
-    ): ModelResponseUiState {
+        uiState: MessagesUiState
+    ): MessagesUiState {
         val modelRequest = ModelRequest(prompt)
         return when (val resource = messagesRepository.addUserAndModelMessages(modelRequest)) {
             is Resource.Error -> uiState.copy(

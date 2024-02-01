@@ -5,8 +5,8 @@ import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.UiState
 
 @Immutable
-data class ModelResponseUiState(
+data class MessagesUiState(
     override val dataState: DataState = DataState.INITIAL,
-    val messages: List<ModelResponseUi> = emptyList(),
+    val messages: List<MessageUi> = emptyList(),
     val errorMessage: String? = null,
 ): UiState

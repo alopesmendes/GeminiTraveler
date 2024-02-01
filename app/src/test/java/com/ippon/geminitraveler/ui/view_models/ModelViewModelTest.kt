@@ -3,7 +3,7 @@ package com.ippon.geminitraveler.ui.view_models
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.domain.use_cases.AddMessageUseCase
 import com.ippon.geminitraveler.domain.use_cases.GetMessagesUseCase
-import com.ippon.geminitraveler.ui.models.ModelResponseUiState
+import com.ippon.geminitraveler.ui.models.MessagesUiState
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -57,7 +57,7 @@ class ModelViewModelTest {
     fun `should update ui state when user send message succeed`() = runTest {
         // Given
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
-        val exceptedResult = ConstantsTestHelper.successModelResponseUiState
+        val exceptedResult = ConstantsTestHelper.successMessagesUiState
 
         // When
         whenever(
@@ -72,10 +72,10 @@ class ModelViewModelTest {
         // Then
         verify(addMessageUseCase, atLeastOnce()).invoke(
             prompt = refEq(prompt),
-            uiState = refEq(ConstantsTestHelper.initialModelResponseUiState),
+            uiState = refEq(ConstantsTestHelper.initialMessagesUiState),
         )
 
-        val values = mutableListOf<ModelResponseUiState>()
+        val values = mutableListOf<MessagesUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
@@ -89,7 +89,7 @@ class ModelViewModelTest {
     fun `should update ui state when user send message failed`() = runTest {
         // Given
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
-        val expectedResult = ConstantsTestHelper.successModelResponseUiState
+        val expectedResult = ConstantsTestHelper.successMessagesUiState
 
         // When
         whenever(
@@ -104,10 +104,10 @@ class ModelViewModelTest {
         // Then
         verify(addMessageUseCase, atLeastOnce()).invoke(
             prompt = refEq(prompt),
-            uiState = refEq(ConstantsTestHelper.initialModelResponseUiState)
+            uiState = refEq(ConstantsTestHelper.initialMessagesUiState)
         )
 
-        val values = mutableListOf<ModelResponseUiState>()
+        val values = mutableListOf<MessagesUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
@@ -119,7 +119,7 @@ class ModelViewModelTest {
     @Test
     fun `should update ui state when get messages succeed`() = runTest {
         // Given
-        val expectedResult = ConstantsTestHelper.successModelResponseUiState
+        val expectedResult = ConstantsTestHelper.successMessagesUiState
 
         // When
         whenever(
@@ -132,10 +132,10 @@ class ModelViewModelTest {
 
         // Then
         verify(getMessagesUseCase, atLeastOnce()).invoke(
-            uiState = refEq(ConstantsTestHelper.initialModelResponseUiState)
+            uiState = refEq(ConstantsTestHelper.initialMessagesUiState)
         )
 
-        val values = mutableListOf<ModelResponseUiState>()
+        val values = mutableListOf<MessagesUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }
@@ -147,7 +147,7 @@ class ModelViewModelTest {
     @Test
     fun `should update ui state when get messages failed`() = runTest {
         // Given
-        val expectedResult = ConstantsTestHelper.errorModelResponseUiState
+        val expectedResult = ConstantsTestHelper.errorMessagesUiState
 
         // When
         whenever(
@@ -160,10 +160,10 @@ class ModelViewModelTest {
 
         // Then
         verify(getMessagesUseCase, atLeastOnce()).invoke(
-            uiState = refEq(ConstantsTestHelper.initialModelResponseUiState)
+            uiState = refEq(ConstantsTestHelper.initialMessagesUiState)
         )
 
-        val values = mutableListOf<ModelResponseUiState>()
+        val values = mutableListOf<MessagesUiState>()
         val job = launch(dispatcher) {
             viewModel.uiState.toList(values)
         }

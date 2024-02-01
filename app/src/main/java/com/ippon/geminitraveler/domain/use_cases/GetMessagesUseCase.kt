@@ -4,7 +4,7 @@ import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
-import com.ippon.geminitraveler.ui.models.ModelResponseUiState
+import com.ippon.geminitraveler.ui.models.MessagesUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
@@ -14,8 +14,8 @@ class GetMessagesUseCase(
     private val messagesRepository: MessagesRepository
 ) {
     operator fun invoke(
-        uiState: ModelResponseUiState,
-    ): Flow<ModelResponseUiState> {
+        uiState: MessagesUiState,
+    ): Flow<MessagesUiState> {
 
         return messagesRepository
             .getMessages()

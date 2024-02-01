@@ -8,7 +8,7 @@ import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
 import com.ippon.geminitraveler.ui.models.ModelEvent
-import com.ippon.geminitraveler.ui.models.ModelResponseUiState
+import com.ippon.geminitraveler.ui.models.MessagesUiState
 
 object ConstantsTestHelper {
     private const val MODEL_RESPONSE = "response"
@@ -37,12 +37,12 @@ object ConstantsTestHelper {
         throwable = throwable
     )
 
-    val initialModelResponseUiState = ModelResponseUiState()
-    val successModelResponseUiState = ModelResponseUiState(
+    val initialMessagesUiState = MessagesUiState()
+    val successMessagesUiState = MessagesUiState(
         dataState = DataState.SUCCESS,
         messages = uiMessages
     )
-    val errorModelResponseUiState = ModelResponseUiState(
+    val errorMessagesUiState = MessagesUiState(
         dataState = DataState.ERROR,
         errorMessage = ERROR_MESSAGE
     )

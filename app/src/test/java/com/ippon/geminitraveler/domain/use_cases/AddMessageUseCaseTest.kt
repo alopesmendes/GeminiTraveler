@@ -49,9 +49,9 @@ class AddMessageUseCaseTest {
         // Given
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
         val userMessage = ConstantsTestHelper.modelRequest
-        val initialUiState = ConstantsTestHelper.initialModelResponseUiState
+        val initialUiState = ConstantsTestHelper.initialMessagesUiState
             .copy(messages = ConstantsTestHelper.uiMessages)
-        val expectedResult = ConstantsTestHelper.successModelResponseUiState
+        val expectedResult = ConstantsTestHelper.successMessagesUiState
 
         // When
         whenever(
@@ -76,8 +76,8 @@ class AddMessageUseCaseTest {
         // Given
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
         val userMessage = ConstantsTestHelper.modelRequest
-        val initialUiState = ConstantsTestHelper.initialModelResponseUiState
-        val expectedResult = ConstantsTestHelper.errorModelResponseUiState
+        val initialUiState = ConstantsTestHelper.initialMessagesUiState
+        val expectedResult = ConstantsTestHelper.errorMessagesUiState
 
         // When
         whenever(
