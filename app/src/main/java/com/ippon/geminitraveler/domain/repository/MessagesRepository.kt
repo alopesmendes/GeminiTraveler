@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MessagesRepository {
     fun getMessages(modelRequest: ModelRequest): Flow<Resource<ModelResponse>>
+
+    suspend fun addUserAndModelMessages(modelRequest: ModelRequest): Resource<Unit>
 }

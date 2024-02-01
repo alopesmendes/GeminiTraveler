@@ -50,4 +50,25 @@ class MessagesRepositoryImpl(
             )
         }
     }
+
+    override suspend fun addUserAndModelMessages(modelRequest: ModelRequest): Resource<Unit> {
+        return try {
+            messageDatasource.addMessage(modelRequest.mapToModelResponse())
+
+            val content = generativeDataSource.generateContent(modelRequest.data)
+            messageDatasource.addMessage(
+                ModelResponse(
+                    role = Role.MODEL,
+                    data = content ?: ""
+                )
+            )
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(
+                errorMessage = e.message,
+                throwable = e,
+            )
+        }
+
+    }
 }
