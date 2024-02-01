@@ -12,10 +12,10 @@ fun ModelRequest.mapToPlanTravel(): ModelResponse = ModelResponse(
 
 fun ModelResponse.mapToMessageEntity(): MessageEntity = MessageEntity(
     message = data,
-    isGemini = role == Role.MODEL,
+    role = role,
 )
 
 fun MessageEntity.mapToModelResponse(): ModelResponse = ModelResponse(
     data = message,
-    role = if (isGemini) Role.MODEL else Role.USER
+    role = role
 )
