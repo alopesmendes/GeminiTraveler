@@ -6,7 +6,7 @@ import com.ippon.geminitraveler.domain.model.ModelRequest
 import kotlinx.coroutines.flow.Flow
 
 interface MessagesRepository {
-    fun getMessages(modelRequest: ModelRequest): Flow<Resource<ModelResponse>>
+    fun getMessages(): Flow<Resource<List<ModelResponse>>>
 
     suspend fun addUserAndModelMessages(modelRequest: ModelRequest): Resource<Unit>
 }

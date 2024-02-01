@@ -9,7 +9,9 @@ import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
 
 @Single
@@ -18,29 +20,11 @@ class MessagesRepositoryImpl(
     private val messageDatasource: MessageDatasource,
 ): MessagesRepository {
 
-    override fun getMessages(modelRequest: ModelRequest): Flow<Resource<ModelResponse>> = flow {
+    override fun getMessages(): Flow<Resource<List<ModelResponse>>> = flow {
+        emit(Resource.Loading)
         try {
-            // User Input
-            val message = modelRequest.mapToModelResponse()
-            val userResource = Resource.Success(message)
-            emit(userResource)
-
-            messageDatasource.addMessage(message)
-
-            // Waiting for AI model response
-            emit(Resource.Loading)
-
-            // AI model response
-            val promptMessage = generativeDataSource.generateContent(modelRequest.data)
-            val modelResponse = ModelResponse(
-                data = promptMessage ?: "",
-                role = Role.MODEL
-            )
-            emit(
-                Resource.Success(modelResponse)
-            )
-
-            messageDatasource.addMessage(modelResponse)
+            val messages = messageDatasource.getMessages()
+            emitAll(messages.map { Resource.Success(it) })
         } catch (e: Exception) {
             emit(
                 Resource.Error(
