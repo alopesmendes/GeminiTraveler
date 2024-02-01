@@ -24,18 +24,18 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 @ExperimentalCoroutinesApi
-class GetModelResponseUseCaseTest {
+class GetMessagesUseCaseTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
-    private lateinit var planTravelRepository: MessagesRepository
-    private lateinit var getPlanTravelUseCase: GetModelResponseUseCase
+    private lateinit var messagesRepository: MessagesRepository
+    private lateinit var getMessagesUseCase: GetMessagesUseCase
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        getPlanTravelUseCase = GetModelResponseUseCase(planTravelRepository)
+        getMessagesUseCase = GetMessagesUseCase(messagesRepository)
     }
 
     @After
@@ -44,19 +44,19 @@ class GetModelResponseUseCaseTest {
     }
 
     @Test
-    fun `should return success plan travel state when repository response is successful`() = runTest {
+    fun `should return success model response state when repository response is successful`() = runTest {
         // Given
-        val result = ConstantsTestHelper.successPlanTravelUiState
+        val result = ConstantsTestHelper.successModelResponseUiState
 
         // When
         whenever(
-            planTravelRepository.getMessages()
+            messagesRepository.getMessages()
         ).thenReturn(
             flowOf(ConstantsTestHelper.resourceSuccessMessages)
         )
 
-        val response = getPlanTravelUseCase(
-            uiState = ConstantsTestHelper.initialPlanTravelUiState
+        val response = getMessagesUseCase(
+            uiState = ConstantsTestHelper.initialModelResponseUiState
         )
 
         // Then
@@ -64,23 +64,23 @@ class GetModelResponseUseCaseTest {
             Truth.assertThat(awaitItem()).isEqualTo(result)
             awaitComplete()
 
-            verify(planTravelRepository, times(1))
+            verify(messagesRepository, times(1))
                 .getMessages()
         }
     }
 
     @Test
-    fun `should return error plan travel state when repository response is not successful`() = runTest {
+    fun `should return error model response state when repository response is not successful`() = runTest {
         // Given
-        val result = ConstantsTestHelper.errorPlanTravelUiState
+        val result = ConstantsTestHelper.errorModelResponseUiState
 
         // When
         whenever(
-            planTravelRepository.getMessages()
+            messagesRepository.getMessages()
         ).thenReturn(flowOf(ConstantsTestHelper.resourceErrorMessages))
 
-        val response = getPlanTravelUseCase(
-            uiState = ConstantsTestHelper.initialPlanTravelUiState
+        val response = getMessagesUseCase(
+            uiState = ConstantsTestHelper.initialModelResponseUiState
         )
 
         // Then
@@ -88,7 +88,7 @@ class GetModelResponseUseCaseTest {
             Truth.assertThat(awaitItem()).isEqualTo(result)
             awaitComplete()
 
-            verify(planTravelRepository, times(1))
+            verify(messagesRepository, times(1))
                 .getMessages()
         }
     }

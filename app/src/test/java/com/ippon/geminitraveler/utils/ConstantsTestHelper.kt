@@ -28,7 +28,7 @@ object ConstantsTestHelper {
 
     val messagesEntities = responses.map { it.mapToMessageEntity() }
 
-    private val uiPlanTravels = responses.map { it.mapToModelResponseUi() }
+    val uiMessages = responses.map { it.mapToModelResponseUi() }
 
     val resourceLoadingMessages: Resource<List<ModelResponse>> = Resource.Loading
     val resourceSuccessMessages: Resource<List<ModelResponse>> = Resource.Success(responses)
@@ -37,19 +37,20 @@ object ConstantsTestHelper {
         throwable = throwable
     )
 
-    val initialPlanTravelUiState = ModelResponseUiState()
-    val successPlanTravelUiState = ModelResponseUiState(
+    val initialModelResponseUiState = ModelResponseUiState()
+    val successModelResponseUiState = ModelResponseUiState(
         dataState = DataState.SUCCESS,
-        planTravels = uiPlanTravels
+        messages = uiMessages
     )
-    val errorPlanTravelUiState = ModelResponseUiState(
+    val errorModelResponseUiState = ModelResponseUiState(
         dataState = DataState.ERROR,
         errorMessage = ERROR_MESSAGE
     )
 
-    val requestModelEvent = ModelEvent.ModelRequestEvent(
+    val userSendMessage = ModelEvent.UserSendMessage(
         prompt = MODEL_REQUEST_DATA
     )
+    val getMessages = ModelEvent.GetMessages
 
     val messageEntity = modelResponse.mapToMessageEntity()
 
