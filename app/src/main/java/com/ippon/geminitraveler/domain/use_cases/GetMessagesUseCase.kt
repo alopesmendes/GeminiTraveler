@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
 
 @Single
-class GetModelResponseUseCase(
-    private val planTravelRepository: MessagesRepository
+class GetMessagesUseCase(
+    private val messagesRepository: MessagesRepository
 ) {
     operator fun invoke(
         uiState: ModelResponseUiState,
     ): Flow<ModelResponseUiState> {
 
-        return planTravelRepository
+        return messagesRepository
             .getMessages()
             .map { resource ->
                 when (resource) {
@@ -35,7 +35,7 @@ class GetModelResponseUseCase(
                     is Resource.Success -> {
                         uiState.copy(
                             dataState = DataState.SUCCESS,
-                            planTravels = resource.data.map { it.mapToModelResponseUi() }
+                            messages = resource.data.map { it.mapToModelResponseUi() }
                         )
                     }
                 }
