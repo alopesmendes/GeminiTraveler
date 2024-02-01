@@ -38,9 +38,11 @@ object ConstantsTestHelper {
         throwable = throwable
     )
 
-    private val planTravels = listOf(planTravelModel)
+    val planTravels = listOf(planTravelModel)
 
-    val uiPlanTravels = planTravels.map { it.mapToPlanTravelUi() }
+    val messagesEntities = planTravels.map { it.mapToMessageEntity() }
+
+    private val uiPlanTravels = planTravels.map { it.mapToPlanTravelUi() }
 
     val resourcePlanTravels = planTravels.map {
         Resource.Success(it)
