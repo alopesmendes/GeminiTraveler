@@ -3,7 +3,6 @@ package com.ippon.geminitraveler.utils
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.mappers.mapToMessageEntity
-import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
@@ -12,7 +11,7 @@ import com.ippon.geminitraveler.ui.models.ModelEvent
 import com.ippon.geminitraveler.ui.models.ModelResponseUiState
 
 object ConstantsTestHelper {
-    const val MODEL_RESPONSE = "response"
+    private const val MODEL_RESPONSE = "response"
     const val MODEL_REQUEST_DATA = "request"
 
     val modelResponse = ModelResponse(
@@ -22,21 +21,8 @@ object ConstantsTestHelper {
 
     val modelRequest = ModelRequest(MODEL_REQUEST_DATA)
 
-    val userResource: Resource<ModelResponse> = Resource.Success(
-        modelRequest.mapToModelResponse()
-    )
-
-    val modelResource: Resource<ModelResponse> = Resource.Success(
-        modelResponse
-    )
-
     private const val ERROR_MESSAGE = "error"
     val throwable = IllegalStateException(ERROR_MESSAGE)
-
-    val modelResponseErrorResource: Resource<ModelResponse> = Resource.Error(
-        errorMessage = ERROR_MESSAGE,
-        throwable = throwable
-    )
 
     val responses = listOf(modelResponse)
 
@@ -44,9 +30,12 @@ object ConstantsTestHelper {
 
     private val uiPlanTravels = responses.map { it.mapToPlanTravelUi() }
 
-    val resourcePlanTravels = responses.map {
-        Resource.Success(it)
-    }
+    val resourceLoadingMessages: Resource<List<ModelResponse>> = Resource.Loading
+    val resourceSuccessMessages: Resource<List<ModelResponse>> = Resource.Success(responses)
+    val resourceErrorMessages: Resource<List<ModelResponse>> = Resource.Error(
+        errorMessage = ERROR_MESSAGE,
+        throwable = throwable
+    )
 
     val initialPlanTravelUiState = ModelResponseUiState()
     val successPlanTravelUiState = ModelResponseUiState(

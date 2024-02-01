@@ -2,7 +2,6 @@ package com.ippon.geminitraveler.data
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.data.repository.MessagesRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
@@ -11,6 +10,7 @@ import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -56,42 +56,44 @@ class MessagesRepositoryImplTest {
     }
 
     @Test
-    fun `should return successful plan travel when request plan is good`() = runTest {
+    fun `should return a flow of messages when asking to get messages`() = runTest {
         // Given
-        val modelResponse = ConstantsTestHelper.modelResponse
-        val modelRequest = ConstantsTestHelper.modelRequest
+        val messages = ConstantsTestHelper.responses
+        val expectedFirstResult = ConstantsTestHelper.resourceLoadingMessages
+        val expectedSecondResult = ConstantsTestHelper.resourceSuccessMessages
 
         // When
-        whenever(
-            generativeDataSource.generateContent(any())
-        ).thenReturn(ConstantsTestHelper.MODEL_RESPONSE)
-
-        val resourceFlow = messagesRepository.getMessages(modelRequest)
+        whenever(messageDatasource.getMessages())
+            .thenReturn(flowOf(messages))
+        val result = messagesRepository.getMessages()
 
         // Then
-        resourceFlow.test {
-            val userResource = awaitItem()
-            val loadingResource = awaitItem()
-            val modelResource = awaitItem()
+        result.test {
+            Truth.assertThat(awaitItem()).isEqualTo(expectedFirstResult)
+            Truth.assertThat(awaitItem()).isEqualTo(expectedSecondResult)
 
-            // Starts with User Model Resource
-            Truth.assertThat(userResource).isInstanceOf(Resource.Success::class.java)
-            Truth.assertThat(userResource).isEqualTo(ConstantsTestHelper.userResource)
+            verify(messageDatasource, times(1)).getMessages()
+            awaitComplete()
+        }
+    }
 
-            // Loading Resource afterwards
-            Truth.assertThat(loadingResource).isInstanceOf(Resource.Loading::class.java)
+    @Test
+    fun `should return a flow Error when asking to get messages fails`() = runTest {
+        // Given
+        val expectedFirstResult = ConstantsTestHelper.resourceLoadingMessages
+        val expectedSecondResult = ConstantsTestHelper.resourceErrorMessages
 
-            // Finally the response from the model
-            Truth.assertThat(modelResource).isInstanceOf(Resource.Success::class.java)
-            Truth.assertThat(modelResource).isEqualTo(ConstantsTestHelper.modelResource)
+        // When
+        whenever(messageDatasource.getMessages())
+            .thenThrow(ConstantsTestHelper.throwable)
+        val result = messagesRepository.getMessages()
 
-            verify(generativeDataSource, times(1))
-                .generateContent(refEq(ConstantsTestHelper.MODEL_REQUEST_DATA))
-            verify(messageDatasource, atLeastOnce())
-                .addMessage(refEq(modelRequest.mapToModelResponse()))
-            verify(messageDatasource, atLeastOnce())
-                .addMessage(refEq(modelResponse))
+        // Then
+        result.test {
+            Truth.assertThat(awaitItem()).isEqualTo(expectedFirstResult)
+            Truth.assertThat(awaitItem()).isEqualTo(expectedSecondResult)
 
+            verify(messageDatasource, times(1)).getMessages()
             awaitComplete()
         }
     }
