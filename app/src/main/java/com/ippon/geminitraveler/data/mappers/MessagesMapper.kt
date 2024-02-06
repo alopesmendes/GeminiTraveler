@@ -5,12 +5,20 @@ import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.Role
 
-fun ModelRequest.mapToPlanTravel(): ModelResponse = ModelResponse(
+fun ModelRequest.mapToModelResponse(): ModelResponse = ModelResponse(
     data = data,
     role = Role.USER,
+    createAt = createAt,
 )
 
 fun ModelResponse.mapToMessageEntity(): MessageEntity = MessageEntity(
     message = data,
-    isGemini = role == Role.MODEL,
+    role = role,
+    createAt = createAt,
+)
+
+fun MessageEntity.mapToModelResponse(): ModelResponse = ModelResponse(
+    data = message,
+    role = role,
+    createAt = createAt
 )

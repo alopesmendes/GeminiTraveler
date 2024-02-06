@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.ippon.geminitraveler.data.datasource.database.converter.DateConverter
+import com.ippon.geminitraveler.data.datasource.database.converter.RoleConverter
 import com.ippon.geminitraveler.data.datasource.database.dao.MessageDao
 import com.ippon.geminitraveler.data.datasource.database.entities.MessageEntity
 import org.koin.core.annotation.Single
@@ -11,6 +14,9 @@ import org.koin.core.annotation.Single
 @Database(
     entities = [MessageEntity::class],
     version = 1,
+)
+@TypeConverters(
+    value = [RoleConverter::class, DateConverter::class]
 )
 abstract class GeminiLocalDatabase: RoomDatabase() {
     @Single

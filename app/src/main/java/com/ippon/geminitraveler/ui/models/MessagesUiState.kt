@@ -5,14 +5,8 @@ import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.UiState
 
 @Immutable
-data class ModelResponseUiState(
+data class MessagesUiState(
     override val dataState: DataState = DataState.INITIAL,
-    val planTravels: List<ModelResponseUi> = emptyList(),
+    val messages: List<MessageUi> = emptyList(),
     val errorMessage: String? = null,
-): UiState {
-    operator fun plus(uiState: ModelResponseUiState): ModelResponseUiState {
-        return copy(
-            planTravels = planTravels + uiState.planTravels
-        )
-    }
-}
+): UiState

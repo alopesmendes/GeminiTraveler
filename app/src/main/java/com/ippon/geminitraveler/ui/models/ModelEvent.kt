@@ -1,7 +1,7 @@
 package com.ippon.geminitraveler.ui.models
 
 sealed interface ModelEvent {
-    data class ModelRequestEvent(
+    data class UserSendMessage(
         val prompt: String
     ): ModelEvent
 }
