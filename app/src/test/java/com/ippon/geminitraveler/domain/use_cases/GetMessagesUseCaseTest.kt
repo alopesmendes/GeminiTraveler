@@ -2,6 +2,7 @@ package com.ippon.geminitraveler.domain.use_cases
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,9 @@ class GetMessagesUseCaseTest {
     @Test
     fun `should return success model response state when repository response is successful`() = runTest {
         // Given
-        val result = ConstantsTestHelper.successMessagesUiState
+        val initialState = ConstantsTestHelper.initialMessagesUiState
+        val expectedResult = ConstantsTestHelper.successMessagesUiState
+        var result = ConstantsTestHelper.initialMessagesUiState
 
         // When
         whenever(
@@ -54,42 +57,34 @@ class GetMessagesUseCaseTest {
         ).thenReturn(
             flowOf(ConstantsTestHelper.resourceSuccessMessages)
         )
-
-        val response = getMessagesUseCase(
-            uiState = ConstantsTestHelper.initialMessagesUiState
+        getMessagesUseCase(
+            updateState = { state ->
+                result = state.invoke(initialState.copy(dataState = DataState.SUCCESS))
+            }
         )
 
         // Then
-        response.test {
-            Truth.assertThat(awaitItem()).isEqualTo(result)
-            awaitComplete()
-
-            verify(messagesRepository, times(1))
-                .getMessages()
-        }
+        Truth.assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test
     fun `should return error model response state when repository response is not successful`() = runTest {
         // Given
-        val result = ConstantsTestHelper.errorMessagesUiState
+        val initialState = ConstantsTestHelper.initialMessagesUiState
+        val expectedResult = ConstantsTestHelper.errorMessagesUiState
+        var result = ConstantsTestHelper.initialMessagesUiState
 
         // When
         whenever(
             messagesRepository.getMessages()
         ).thenReturn(flowOf(ConstantsTestHelper.resourceErrorMessages))
-
-        val response = getMessagesUseCase(
-            uiState = ConstantsTestHelper.initialMessagesUiState
+        getMessagesUseCase(
+            updateState = { state ->
+                result = state.invoke(initialState)
+            }
         )
 
         // Then
-        response.test {
-            Truth.assertThat(awaitItem()).isEqualTo(result)
-            awaitComplete()
-
-            verify(messagesRepository, times(1))
-                .getMessages()
-        }
+        Truth.assertThat(result).isEqualTo(expectedResult)
     }
 }

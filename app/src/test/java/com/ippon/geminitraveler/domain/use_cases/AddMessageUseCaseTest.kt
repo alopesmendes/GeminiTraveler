@@ -1,10 +1,13 @@
 package com.ippon.geminitraveler.domain.use_cases
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -48,53 +51,61 @@ class AddMessageUseCaseTest {
     fun `should return success model response state when repository response is successful`() = runTest {
         // Given
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
-        val userMessage = ConstantsTestHelper.modelRequest
-        val initialUiState = ConstantsTestHelper.initialMessagesUiState
+        val modelRequest = ConstantsTestHelper.modelRequest
+        val initialState = ConstantsTestHelper.initialMessagesUiState
             .copy(messages = ConstantsTestHelper.uiMessages)
-        val expectedResult = ConstantsTestHelper.successMessagesUiState
+        val resourceSuccess = ConstantsTestHelper.resourceSuccess
+        val expectResult = ConstantsTestHelper.successMessagesUiState
+        var result = ConstantsTestHelper.initialMessagesUiState
 
         // When
-        whenever(
-            messagesRepository.addUserAndModelMessages(any())
-        ).thenReturn(
-            ConstantsTestHelper.resourceSuccess
-        )
-
-        val result = addMessageUseCase(
+        whenever(messagesRepository.addUserMessage(any()))
+            .thenReturn(resourceSuccess)
+        whenever(messagesRepository.addModelMessage(any()))
+            .thenReturn(resourceSuccess)
+        addMessageUseCase.invoke(
             prompt = prompt,
-            uiState = initialUiState
+            updateState = { state ->
+                result = state.invoke(initialState)
+            }
         )
 
         // Then
+        Truth.assertThat(result).isEqualTo(expectResult)
         verify(messagesRepository, times(1))
-            .addUserAndModelMessages(refEq(userMessage))
-        Truth.assertThat(result.dataState).isEqualTo(expectedResult.dataState)
+            .addUserMessage(modelRequest)
+        verify(messagesRepository, times(1))
+            .addModelMessage(modelRequest)
     }
 
     @Test
     fun `should return error model response state when repository response fails`() = runTest {
         // Given
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
-        val userMessage = ConstantsTestHelper.modelRequest
-        val initialUiState = ConstantsTestHelper.initialMessagesUiState
-        val expectedResult = ConstantsTestHelper.errorMessagesUiState
+        val modelRequest = ConstantsTestHelper.modelRequest
+        val initialState = ConstantsTestHelper.initialMessagesUiState
+        val resourceSuccess = ConstantsTestHelper.resourceSuccess
+        val resourceError = ConstantsTestHelper.resourceError
+        val expectResult = ConstantsTestHelper.errorMessagesUiState
+        var result = ConstantsTestHelper.initialMessagesUiState
 
         // When
-        whenever(
-            messagesRepository.addUserAndModelMessages(any())
-        ).thenReturn(
-            ConstantsTestHelper.resourceError
-        )
-
-        val result = addMessageUseCase(
+        whenever(messagesRepository.addUserMessage(any()))
+            .thenReturn(resourceSuccess)
+        whenever(messagesRepository.addModelMessage(any()))
+            .thenReturn(resourceError)
+        addMessageUseCase.invoke(
             prompt = prompt,
-            uiState = initialUiState
+            updateState = { state ->
+                result = state.invoke(initialState)
+            }
         )
 
         // Then
+        Truth.assertThat(result).isEqualTo(expectResult)
         verify(messagesRepository, times(1))
-            .addUserAndModelMessages(refEq(userMessage))
-        Truth.assertThat(result.dataState).isEqualTo(expectedResult.dataState)
-        Truth.assertThat(result.errorMessage).isEqualTo(expectedResult.errorMessage)
+            .addUserMessage(modelRequest)
+        verify(messagesRepository, times(1))
+            .addModelMessage(modelRequest)
     }
 }

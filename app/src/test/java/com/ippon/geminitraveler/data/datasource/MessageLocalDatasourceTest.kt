@@ -3,6 +3,7 @@ package com.ippon.geminitraveler.data.datasource
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.data.datasource.database.dao.MessageDao
+import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +52,7 @@ class MessageLocalDatasourceTest {
         // Given
         val message = ConstantsTestHelper.modelResponse
         val messageEntity = ConstantsTestHelper.messageEntity
+        messageEntity.mapToModelResponse()
 
         // When
         whenever(

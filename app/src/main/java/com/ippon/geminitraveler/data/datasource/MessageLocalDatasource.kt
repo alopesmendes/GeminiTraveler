@@ -18,7 +18,7 @@ class MessageLocalDatasource(
         messageDao.insert(messageEntity)
     }
 
-    override suspend fun getMessages(): Flow<List<ModelResponse>> {
+    override fun getMessages(): Flow<List<ModelResponse>> {
         return messageDao.findAllMessages().map { messageEntities ->
             messageEntities.map { it.mapToModelResponse() }
         }

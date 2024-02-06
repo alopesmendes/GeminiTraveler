@@ -4,24 +4,24 @@ import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
-import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.ModelRequest
+import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
+import java.time.Instant
 
 @Single
 class MessagesRepositoryImpl(
     private val generativeDataSource: GenerativeDataSource,
     private val messageDatasource: MessageDatasource,
 ): MessagesRepository {
-
     override fun getMessages(): Flow<Resource<List<ModelResponse>>> = flow {
-        emit(Resource.Loading)
         try {
             val messages = messageDatasource.getMessages()
             emitAll(messages.map { Resource.Success(it) })
@@ -35,24 +35,34 @@ class MessagesRepositoryImpl(
         }
     }
 
-    override suspend fun addUserAndModelMessages(modelRequest: ModelRequest): Resource<Unit> {
+    override suspend fun addUserMessage(modelRequest: ModelRequest): Resource<Unit> {
         return try {
             messageDatasource.addMessage(modelRequest.mapToModelResponse())
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(
+                errorMessage = e.message,
+                throwable = e
+            )
+        }
+    }
 
-            val content = generativeDataSource.generateContent(modelRequest.data)
+    override suspend fun addModelMessage(modelRequest: ModelRequest): Resource<Unit> {
+        return try {
+            val generateContent = generativeDataSource.generateContent(modelRequest.data)
             messageDatasource.addMessage(
                 ModelResponse(
+                    data = generateContent ?: "",
                     role = Role.MODEL,
-                    data = content ?: ""
+                    createAt = Instant.now(),
                 )
             )
             Resource.Success(Unit)
         } catch (e: Exception) {
             Resource.Error(
                 errorMessage = e.message,
-                throwable = e,
+                throwable = e
             )
         }
-
     }
 }

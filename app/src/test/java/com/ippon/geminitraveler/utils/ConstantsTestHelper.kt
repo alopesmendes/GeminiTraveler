@@ -9,17 +9,23 @@ import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
 import com.ippon.geminitraveler.ui.models.ModelEvent
 import com.ippon.geminitraveler.ui.models.MessagesUiState
+import java.time.Instant
 
 object ConstantsTestHelper {
-    private const val MODEL_RESPONSE = "response"
+    const val MODEL_RESPONSE = "response"
     const val MODEL_REQUEST_DATA = "request"
+    private val createAt = Instant.parse("2024-02-06T08:51:17.775268Z")
 
     val modelResponse = ModelResponse(
         data = MODEL_RESPONSE,
-        role = Role.MODEL
+        role = Role.MODEL,
+        createAt = createAt
     )
 
-    val modelRequest = ModelRequest(MODEL_REQUEST_DATA)
+    val modelRequest = ModelRequest(
+        data = MODEL_REQUEST_DATA,
+        createAt = createAt
+    )
 
     private const val ERROR_MESSAGE = "error"
     val throwable = IllegalStateException(ERROR_MESSAGE)
@@ -30,7 +36,6 @@ object ConstantsTestHelper {
 
     val uiMessages = responses.map { it.mapToModelResponseUi() }
 
-    val resourceLoadingMessages: Resource<List<ModelResponse>> = Resource.Loading
     val resourceSuccessMessages: Resource<List<ModelResponse>> = Resource.Success(responses)
     val resourceErrorMessages: Resource<List<ModelResponse>> = Resource.Error(
         errorMessage = ERROR_MESSAGE,
@@ -46,16 +51,17 @@ object ConstantsTestHelper {
         dataState = DataState.ERROR,
         errorMessage = ERROR_MESSAGE
     )
+    val loadingMessagesUiState = MessagesUiState(
+        dataState = DataState.LOADING
+    )
 
     val userSendMessage = ModelEvent.UserSendMessage(
         prompt = MODEL_REQUEST_DATA
     )
-    val getMessages = ModelEvent.GetMessages
 
     val messageEntity = modelResponse.mapToMessageEntity()
 
     val resourceSuccess: Resource<Unit> = Resource.Success(Unit)
-
     val resourceError: Resource<Unit> = Resource.Error(
         throwable = throwable,
         errorMessage = ERROR_MESSAGE

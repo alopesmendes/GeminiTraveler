@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface MessageDatasource {
     suspend fun addMessage(message: ModelResponse)
 
-    suspend fun getMessages(): Flow<List<ModelResponse>>
+    fun getMessages(): Flow<List<ModelResponse>>
 }

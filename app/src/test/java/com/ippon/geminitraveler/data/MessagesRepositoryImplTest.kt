@@ -59,8 +59,7 @@ class MessagesRepositoryImplTest {
     fun `should return a flow of messages when asking to get messages`() = runTest {
         // Given
         val messages = ConstantsTestHelper.responses
-        val expectedFirstResult = ConstantsTestHelper.resourceLoadingMessages
-        val expectedSecondResult = ConstantsTestHelper.resourceSuccessMessages
+        val expectedResult = ConstantsTestHelper.resourceSuccessMessages
 
         // When
         whenever(messageDatasource.getMessages())
@@ -69,8 +68,7 @@ class MessagesRepositoryImplTest {
 
         // Then
         result.test {
-            Truth.assertThat(awaitItem()).isEqualTo(expectedFirstResult)
-            Truth.assertThat(awaitItem()).isEqualTo(expectedSecondResult)
+            Truth.assertThat(awaitItem()).isEqualTo(expectedResult)
 
             verify(messageDatasource, times(1)).getMessages()
             awaitComplete()
@@ -80,8 +78,7 @@ class MessagesRepositoryImplTest {
     @Test
     fun `should return a flow Error when asking to get messages fails`() = runTest {
         // Given
-        val expectedFirstResult = ConstantsTestHelper.resourceLoadingMessages
-        val expectedSecondResult = ConstantsTestHelper.resourceErrorMessages
+        val expectedResult = ConstantsTestHelper.resourceErrorMessages
 
         // When
         whenever(messageDatasource.getMessages())
@@ -90,8 +87,7 @@ class MessagesRepositoryImplTest {
 
         // Then
         result.test {
-            Truth.assertThat(awaitItem()).isEqualTo(expectedFirstResult)
-            Truth.assertThat(awaitItem()).isEqualTo(expectedSecondResult)
+            Truth.assertThat(awaitItem()).isEqualTo(expectedResult)
 
             verify(messageDatasource, times(1)).getMessages()
             awaitComplete()
@@ -99,29 +95,20 @@ class MessagesRepositoryImplTest {
     }
 
     @Test
-    fun `should return success resource when add messages user and model messages`() = runTest {
+    fun `should return success resource when add messages user messages`() = runTest {
         // Given
         val modelRequest = ConstantsTestHelper.modelRequest
-        val modelResponse = ConstantsTestHelper.modelResponse
         val expectedResult = ConstantsTestHelper.resourceSuccess
 
         // When
         whenever(messageDatasource.addMessage(any())).thenReturn(Unit)
-        whenever(generativeDataSource.generateContent(any())).thenReturn(modelResponse.data)
-
-        val result = messagesRepository.addUserAndModelMessages(modelRequest)
+        val result = messagesRepository.addUserMessage(modelRequest)
 
         // Then
+        Truth.assertThat(result).isEqualTo(expectedResult)
+
         verify(messageDatasource, atLeastOnce())
             .addMessage(refEq(modelRequest.mapToModelResponse()))
-
-        verify(generativeDataSource, atLeastOnce())
-            .generateContent(modelRequest.data)
-
-        verify(messageDatasource, atLeastOnce())
-            .addMessage(refEq(modelResponse))
-
-        Truth.assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test
@@ -133,19 +120,34 @@ class MessagesRepositoryImplTest {
         // When
         whenever(messageDatasource.addMessage(any()))
             .thenThrow(ConstantsTestHelper.throwable)
-        whenever(generativeDataSource.generateContent(any()))
-            .thenReturn(modelRequest.data)
-
-        val result = messagesRepository.addUserAndModelMessages(modelRequest)
+        val result = messagesRepository.addUserMessage(modelRequest)
 
         // Then
-        verify(messageDatasource, atLeastOnce())
-            .addMessage(modelRequest.mapToModelResponse())
-
-        verify(generativeDataSource, times(0))
-            .generateContent(modelRequest.data)
-
         Truth.assertThat(result).isEqualTo(expectedResult)
+
+        verify(messageDatasource, atLeastOnce())
+            .addMessage(refEq(modelRequest.mapToModelResponse()))
+    }
+
+    @Test
+    fun `should return success resource when add messages model generate message`() = runTest {
+        // Given
+        val modelRequest = ConstantsTestHelper.modelRequest
+        val expectedResult = ConstantsTestHelper.resourceSuccess
+
+        // When
+        whenever(messageDatasource.addMessage(any()))
+            .thenReturn(Unit)
+        whenever(generativeDataSource.generateContent(any()))
+            .thenReturn(ConstantsTestHelper.MODEL_RESPONSE)
+        val result = messagesRepository.addModelMessage(modelRequest)
+
+        // Then
+        Truth.assertThat(result).isEqualTo(expectedResult)
+        verify(generativeDataSource, times(1))
+            .generateContent(modelRequest.data)
+        verify(messageDatasource, times(1))
+            .addMessage(ConstantsTestHelper.modelResponse)
     }
 
     @Test
@@ -155,21 +157,16 @@ class MessagesRepositoryImplTest {
         val expectedResult = ConstantsTestHelper.resourceError
 
         // When
-        whenever(messageDatasource.addMessage(any()))
-            .thenReturn(Unit)
-
         whenever(generativeDataSource.generateContent(any()))
             .thenThrow(ConstantsTestHelper.throwable)
 
-        val result = messagesRepository.addUserAndModelMessages(modelRequest)
+        val result = messagesRepository.addModelMessage(modelRequest)
 
         // Then
-        verify(messageDatasource, atLeastOnce())
-            .addMessage(modelRequest.mapToModelResponse())
-
-        verify(generativeDataSource, atLeastOnce())
-            .generateContent(modelRequest.data)
-
         Truth.assertThat(result).isEqualTo(expectedResult)
+        verify(generativeDataSource, times(1))
+            .generateContent(modelRequest.data)
+        verify(messageDatasource, times(0))
+            .addMessage(ConstantsTestHelper.modelResponse)
     }
 }

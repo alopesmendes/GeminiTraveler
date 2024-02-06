@@ -1,7 +1,6 @@
 package com.ippon.geminitraveler.core.utils
 
 sealed interface Resource<out T> {
-    data object Loading: Resource<Nothing>
     data class Error(
         val errorMessage: String?,
         val throwable: Throwable?,

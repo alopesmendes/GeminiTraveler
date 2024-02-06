@@ -1,5 +1,6 @@
 package com.ippon.geminitraveler.data.datasource.database.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ippon.geminitraveler.core.utils.Constants
@@ -14,5 +15,6 @@ data class MessageEntity(
     val id: Long = 0,
     val message: String,
     val role: Role,
-    val creation: Instant = Instant.now()
+    @ColumnInfo(name = "create_at")
+    val createAt: Instant = Instant.now()
 )
