@@ -2,12 +2,13 @@ package com.ippon.geminitraveler.utils
 
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
+import com.ippon.geminitraveler.data.mappers.mapToChatEntity
 import com.ippon.geminitraveler.data.mappers.mapToMessageEntity
+import com.ippon.geminitraveler.domain.model.Chat
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
-import com.ippon.geminitraveler.ui.models.ModelEvent
 import com.ippon.geminitraveler.ui.models.MessagesUiState
 import java.time.Instant
 
@@ -51,18 +52,26 @@ object ConstantsTestHelper {
         dataState = DataState.ERROR,
         errorMessage = ERROR_MESSAGE
     )
-    val loadingMessagesUiState = MessagesUiState(
-        dataState = DataState.LOADING
-    )
-
-    val userSendMessage = ModelEvent.UserSendMessage(
-        prompt = MODEL_REQUEST_DATA
-    )
 
     val messageEntity = modelResponse.mapToMessageEntity()
 
     val resourceSuccess: Resource<Unit> = Resource.Success(Unit)
     val resourceError: Resource<Unit> = Resource.Error(
+        throwable = throwable,
+        errorMessage = ERROR_MESSAGE
+    )
+
+    val chat = Chat(
+        id = 0,
+        createAt = createAt,
+        title = "Title"
+    )
+    val chatEntity = chat.mapToChatEntity()
+    val chats = listOf(chat)
+    val chatsEntities = chats.map { it.mapToChatEntity() }
+
+    val resourceSuccessChats: Resource<List<Chat>> = Resource.Success(chats)
+    val resourceErrorChats: Resource<List<Chat>> = Resource.Error(
         throwable = throwable,
         errorMessage = ERROR_MESSAGE
     )

@@ -1,4 +1,4 @@
-package com.ippon.geminitraveler.data
+package com.ippon.geminitraveler.data.repository
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
