@@ -1,4 +1,4 @@
-package com.ippon.geminitraveler.data
+package com.ippon.geminitraveler.data.repository
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
@@ -6,6 +6,7 @@ import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.data.repository.MessagesRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
+import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.refEq
 import org.mockito.kotlin.times
@@ -145,9 +147,13 @@ class MessagesRepositoryImplTest {
         // Then
         Truth.assertThat(result).isEqualTo(expectedResult)
         verify(generativeDataSource, times(1))
-            .generateContent(modelRequest.data)
+            .generateContent(refEq(modelRequest.data))
         verify(messageDatasource, times(1))
-            .addMessage(ConstantsTestHelper.modelResponse)
+            .addMessage(
+                argThat {
+                    data == ConstantsTestHelper.MODEL_RESPONSE && role == Role.MODEL
+                }
+            )
     }
 
     @Test

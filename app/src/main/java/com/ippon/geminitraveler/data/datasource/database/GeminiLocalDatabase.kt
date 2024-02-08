@@ -7,25 +7,27 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.ippon.geminitraveler.data.datasource.database.converter.DateConverter
 import com.ippon.geminitraveler.data.datasource.database.converter.RoleConverter
+import com.ippon.geminitraveler.data.datasource.database.dao.ChatDao
 import com.ippon.geminitraveler.data.datasource.database.dao.MessageDao
+import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntity
 import com.ippon.geminitraveler.data.datasource.database.entities.MessageEntity
 import org.koin.core.annotation.Single
 
 @Database(
-    entities = [MessageEntity::class],
+    entities = [MessageEntity::class, ChatEntity::class],
     version = 1,
 )
 @TypeConverters(
     value = [RoleConverter::class, DateConverter::class]
 )
 abstract class GeminiLocalDatabase: RoomDatabase() {
-    @Single
     abstract fun messageDao(): MessageDao
+
+    abstract fun chatDao(): ChatDao
 
     companion object {
         @Volatile private var INSTANCE: GeminiLocalDatabase? = null
 
-        @Single
         fun getInstance(context: Context): GeminiLocalDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }

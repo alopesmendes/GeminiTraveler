@@ -2,19 +2,25 @@ package com.ippon.geminitraveler.utils
 
 import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
+import com.ippon.geminitraveler.data.mappers.mapToChat
+import com.ippon.geminitraveler.data.mappers.mapToChatEntity
 import com.ippon.geminitraveler.data.mappers.mapToMessageEntity
+import com.ippon.geminitraveler.domain.model.Chat
+import com.ippon.geminitraveler.domain.model.ChatRequest
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
+import com.ippon.geminitraveler.ui.mapper.mapToChatUi
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
-import com.ippon.geminitraveler.ui.models.ModelEvent
+import com.ippon.geminitraveler.ui.models.ChatUiState
 import com.ippon.geminitraveler.ui.models.MessagesUiState
 import java.time.Instant
 
 object ConstantsTestHelper {
     const val MODEL_RESPONSE = "response"
     const val MODEL_REQUEST_DATA = "request"
-    private val createAt = Instant.parse("2024-02-06T08:51:17.775268Z")
+    const val CHAT_TITLE = "chat title"
+    val createAt = Instant.parse("2024-02-06T08:51:17.775268Z")
 
     val modelResponse = ModelResponse(
         data = MODEL_RESPONSE,
@@ -51,13 +57,6 @@ object ConstantsTestHelper {
         dataState = DataState.ERROR,
         errorMessage = ERROR_MESSAGE
     )
-    val loadingMessagesUiState = MessagesUiState(
-        dataState = DataState.LOADING
-    )
-
-    val userSendMessage = ModelEvent.UserSendMessage(
-        prompt = MODEL_REQUEST_DATA
-    )
 
     val messageEntity = modelResponse.mapToMessageEntity()
 
@@ -65,5 +64,31 @@ object ConstantsTestHelper {
     val resourceError: Resource<Unit> = Resource.Error(
         throwable = throwable,
         errorMessage = ERROR_MESSAGE
+    )
+    val chatRequest = ChatRequest(
+        title = CHAT_TITLE,
+        createAt = createAt
+    )
+    val chatEntity = chatRequest.mapToChatEntity()
+    private val chat = chatEntity.mapToChat()
+    val chats = listOf(chat)
+    val chatsEntities = chats.map { it.mapToChatEntity() }
+
+    val resourceSuccessChats: Resource<List<Chat>> = Resource.Success(chats)
+    val resourceErrorChats: Resource<List<Chat>> = Resource.Error(
+        throwable = throwable,
+        errorMessage = ERROR_MESSAGE
+    )
+
+    val uiChats = chats.map { it.mapToChatUi() }
+
+    val initialChatsUiState = ChatUiState()
+    val errorChatsUiState = ChatUiState(
+        errorMessage = throwable.message,
+        dataState = DataState.ERROR
+    )
+    val successChatsUiState = ChatUiState(
+        dataState = DataState.SUCCESS,
+        chats = uiChats,
     )
 }
