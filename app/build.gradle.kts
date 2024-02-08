@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.navigation)
     implementation(libs.koin.annotations)
+    implementation(libs.androidx.navigation.compose)
     ksp(libs.koin.ksp.compiler)
 
     // COROUTINES
