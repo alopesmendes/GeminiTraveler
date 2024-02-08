@@ -52,15 +52,17 @@ class ChatLocalDataSourceTest {
         // Given
         val chat = ConstantsTestHelper.chatRequest
         val chatEntity = ConstantsTestHelper.chatEntity
+        val expectResult = 1L
 
         // When
         whenever(
             dao.insert(any())
-        ).thenReturn(Unit)
-        chatDatasource.insert(chat)
+        ).thenReturn(expectResult)
+        val result = chatDatasource.insert(chat)
 
         // Then
         verify(dao, times(1)).insert(refEq(chatEntity))
+        Truth.assertThat(result).isEqualTo(expectResult)
     }
 
     @Test

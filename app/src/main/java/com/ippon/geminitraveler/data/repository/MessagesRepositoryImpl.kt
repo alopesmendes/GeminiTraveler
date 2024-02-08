@@ -9,7 +9,6 @@ import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -35,10 +34,10 @@ class MessagesRepositoryImpl(
         }
     }
 
-    override suspend fun addUserMessage(modelRequest: ModelRequest): Resource<Unit> {
+    override suspend fun addUserMessage(modelRequest: ModelRequest): Resource<Long> {
         return try {
-            messageDatasource.addMessage(modelRequest.mapToModelResponse())
-            Resource.Success(Unit)
+            val id = messageDatasource.insertMessage(modelRequest.mapToModelResponse())
+            Resource.Success(id)
         } catch (e: Exception) {
             Resource.Error(
                 errorMessage = e.message,
@@ -47,17 +46,17 @@ class MessagesRepositoryImpl(
         }
     }
 
-    override suspend fun addModelMessage(modelRequest: ModelRequest): Resource<Unit> {
+    override suspend fun addModelMessage(modelRequest: ModelRequest): Resource<Long> {
         return try {
             val generateContent = generativeDataSource.generateContent(modelRequest.data)
-            messageDatasource.addMessage(
+            val id = messageDatasource.insertMessage(
                 ModelResponse(
                     data = generateContent ?: "",
                     role = Role.MODEL,
                     createAt = Instant.now(),
                 )
             )
-            Resource.Success(Unit)
+            Resource.Success(id)
         } catch (e: Exception) {
             Resource.Error(
                 errorMessage = e.message,

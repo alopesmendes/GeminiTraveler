@@ -9,4 +9,5 @@ data class ChatUiState(
     override val dataState: DataState = DataState.INITIAL,
     val chats: List<ChatHistoryItem> = emptyList(),
     val errorMessage: String? = null,
+    val currentChatId: Long? = null,
 ): UiState

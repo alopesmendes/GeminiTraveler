@@ -9,4 +9,5 @@ data class MessagesUiState(
     override val dataState: DataState = DataState.INITIAL,
     val messages: List<MessageUi> = emptyList(),
     val errorMessage: String? = null,
+    val currentMessageId: Long? = null,
 ): UiState

@@ -27,7 +27,11 @@ class ChatHistoryViewModel(
         viewModelScope.launch {
             when (chatEvent) {
                 is ChatEvent.SelectChat -> {
-
+                    _uiState.update { state ->
+                        state.copy(
+                            currentChatId = chatEvent.chatId
+                        )
+                    }
                 }
 
                 ChatEvent.CreateNewChat -> {

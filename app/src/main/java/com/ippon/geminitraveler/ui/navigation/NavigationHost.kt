@@ -1,6 +1,7 @@
 package com.ippon.geminitraveler.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
@@ -19,11 +20,14 @@ fun NavigationHost() {
     val chatHistoryViewModel: ChatHistoryViewModel = koinViewModel()
     val chatUiState by chatHistoryViewModel.uiState.collectAsState()
 
+    LaunchedEffect(chatUiState.currentChatId) {
+        chatUiState.currentChatId?.let {
+            navController.navigate("${Destination.Chat.route}/$it")
+        }
+    }
+
     ContainerScreen(
         chatHistoryItems = chatUiState.chats,
-        onNavigate = {
-            navController.navigate("${Destination.Chat.route}/$it")
-        },
         onHandleEvent = chatHistoryViewModel::onHandleEvent,
     ) {
         NavHost(

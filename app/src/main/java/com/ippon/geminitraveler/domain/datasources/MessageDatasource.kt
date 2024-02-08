@@ -4,7 +4,7 @@ import com.ippon.geminitraveler.domain.model.ModelResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MessageDatasource {
-    suspend fun addMessage(message: ModelResponse)
+    suspend fun insertMessage(message: ModelResponse): Long
 
     fun getMessages(): Flow<List<ModelResponse>>
 }

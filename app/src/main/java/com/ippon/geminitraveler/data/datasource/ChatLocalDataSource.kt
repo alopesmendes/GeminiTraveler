@@ -20,8 +20,8 @@ class ChatLocalDataSource(
         }
     }
 
-    override suspend fun insert(chat: ChatRequest) {
+    override suspend fun insert(chat: ChatRequest): Long {
         val chatEntity = chat.mapToChatEntity()
-        chatDao.insert(chatEntity)
+        return chatDao.insert(chatEntity)
     }
 }

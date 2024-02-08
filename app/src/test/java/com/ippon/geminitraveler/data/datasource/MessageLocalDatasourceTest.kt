@@ -52,16 +52,17 @@ class MessageLocalDatasourceTest {
         // Given
         val message = ConstantsTestHelper.modelResponse
         val messageEntity = ConstantsTestHelper.messageEntity
-        messageEntity.mapToModelResponse()
+        val expectResult = 1L
 
         // When
         whenever(
             dao.insert(any())
-        ).thenReturn(Unit)
-        messageLocalDatasource.addMessage(message)
+        ).thenReturn(expectResult)
+        val result = messageLocalDatasource.insertMessage(message)
 
         // Then
         verify(dao, times(1)).insert(refEq(messageEntity))
+        Truth.assertThat(result).isEqualTo(expectResult)
     }
 
     @Test

@@ -39,7 +39,6 @@ import kotlinx.coroutines.launch
 fun ContainerScreen(
     chatHistoryItems: List<ChatHistoryItem>,
     onHandleEvent: (ChatEvent) -> Unit,
-    onNavigate: (Long) -> Unit,
     content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -64,7 +63,11 @@ fun ContainerScreen(
                         chatHistoryItems = chatHistoryItems,
                         scope = scope,
                         drawerState = drawerState,
-                        onNavigate = onNavigate
+                        onNavigate = {
+                            onHandleEvent(
+                                ChatEvent.SelectChat(it)
+                            )
+                        }
                     )
 
                     ExtendedFloatingActionButton(
@@ -110,7 +113,6 @@ fun ContainerScreen(
 fun ContainerScreenPreview() {
     ContainerScreen(
         chatHistoryItems = (1..20).map { ChatHistoryItem(id = it.toLong(), title = "test", "01/01/2023") },
-        onNavigate = { },
         onHandleEvent = { },
     ) {
         Text(text = "Je suis un chatbot")

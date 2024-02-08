@@ -13,9 +13,9 @@ import org.koin.core.annotation.Single
 class MessageLocalDatasource(
     private val messageDao: MessageDao
 ): MessageDatasource {
-    override suspend fun addMessage(message: ModelResponse) {
+    override suspend fun insertMessage(message: ModelResponse): Long {
         val messageEntity = message.mapToMessageEntity()
-        messageDao.insert(messageEntity)
+        return messageDao.insert(messageEntity)
     }
 
     override fun getMessages(): Flow<List<ModelResponse>> {
