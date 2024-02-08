@@ -10,7 +10,7 @@ import com.ippon.geminitraveler.domain.model.ChatRequest
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.ui.mapper.mapToChatUi
+import com.ippon.geminitraveler.ui.mapper.mapToChatHistoryItem
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
 import com.ippon.geminitraveler.ui.models.ChatUiState
 import com.ippon.geminitraveler.ui.models.MessagesUiState
@@ -20,7 +20,10 @@ object ConstantsTestHelper {
     const val MODEL_RESPONSE = "response"
     const val MODEL_REQUEST_DATA = "request"
     const val CHAT_TITLE = "chat title"
-    val createAt = Instant.parse("2024-02-06T08:51:17.775268Z")
+    val createAt: Instant = Instant.parse("2024-02-06T08:51:17.775268Z")
+    const val CHAT_ID = 1L
+    const val MESSAGE_USER_ID = 1L
+    const val MESSAGE_MODEL_ID = 2L
 
     val modelResponse = ModelResponse(
         data = MODEL_RESPONSE,
@@ -51,7 +54,8 @@ object ConstantsTestHelper {
     val initialMessagesUiState = MessagesUiState()
     val successMessagesUiState = MessagesUiState(
         dataState = DataState.SUCCESS,
-        messages = uiMessages
+        messages = uiMessages,
+        currentMessageId = MESSAGE_USER_ID
     )
     val errorMessagesUiState = MessagesUiState(
         dataState = DataState.ERROR,
@@ -60,8 +64,8 @@ object ConstantsTestHelper {
 
     val messageEntity = modelResponse.mapToMessageEntity()
 
-    val resourceSuccess: Resource<Unit> = Resource.Success(Unit)
-    val resourceError: Resource<Unit> = Resource.Error(
+    val resourceSuccess: Resource<Long> = Resource.Success(CHAT_ID)
+    val resourceError: Resource<Long> = Resource.Error(
         throwable = throwable,
         errorMessage = ERROR_MESSAGE
     )
@@ -80,7 +84,7 @@ object ConstantsTestHelper {
         errorMessage = ERROR_MESSAGE
     )
 
-    val uiChats = chats.map { it.mapToChatUi() }
+    val uiChats = chats.map { it.mapToChatHistoryItem() }
 
     val initialChatsUiState = ChatUiState()
     val errorChatsUiState = ChatUiState(
@@ -90,5 +94,6 @@ object ConstantsTestHelper {
     val successChatsUiState = ChatUiState(
         dataState = DataState.SUCCESS,
         chats = uiChats,
+        currentChatId = CHAT_ID
     )
 }

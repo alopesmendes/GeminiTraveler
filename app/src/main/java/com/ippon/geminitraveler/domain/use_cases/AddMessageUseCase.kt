@@ -35,7 +35,7 @@ class AddMessageUseCase(
 
 
 
-    private fun Resource<Unit>.handleResource(uiState: MessagesUiState): MessagesUiState {
+    private fun Resource<Long>.handleResource(uiState: MessagesUiState): MessagesUiState {
         return when(this) {
             is Resource.Error -> uiState.copy(
                 dataState = DataState.ERROR,
@@ -43,6 +43,7 @@ class AddMessageUseCase(
             )
             is Resource.Success -> uiState.copy(
                 dataState = DataState.SUCCESS,
+                currentMessageId = data
             )
         }
     }

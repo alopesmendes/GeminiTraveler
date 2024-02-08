@@ -91,7 +91,7 @@ class ChatRepositoryImplTest {
 
         // When
         whenever(chatDatasource.insert(any()))
-            .thenReturn(Unit)
+            .thenReturn(ConstantsTestHelper.CHAT_ID)
         val result = chatRepository.addChat(chat)
 
         // Then

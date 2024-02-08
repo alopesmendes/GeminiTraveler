@@ -31,10 +31,10 @@ class ChatRepositoryImpl(
         }
     }
 
-    override suspend fun addChat(chat: ChatRequest): Resource<Unit> {
+    override suspend fun addChat(chat: ChatRequest): Resource<Long> {
         return try {
-            chatDatasource.insert(chat)
-            Resource.Success(Unit)
+            val id = chatDatasource.insert(chat)
+            Resource.Success(id)
         } catch (e: Exception) {
             Resource.Error(
                 errorMessage = e.message,

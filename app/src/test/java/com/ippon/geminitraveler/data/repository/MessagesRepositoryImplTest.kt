@@ -3,7 +3,6 @@ package com.ippon.geminitraveler.data.repository
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.data.mappers.mapToModelResponse
-import com.ippon.geminitraveler.data.repository.MessagesRepositoryImpl
 import com.ippon.geminitraveler.domain.datasources.GenerativeDataSource
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
 import com.ippon.geminitraveler.domain.model.Role
@@ -103,14 +102,14 @@ class MessagesRepositoryImplTest {
         val expectedResult = ConstantsTestHelper.resourceSuccess
 
         // When
-        whenever(messageDatasource.addMessage(any())).thenReturn(Unit)
+        whenever(messageDatasource.insertMessage(any())).thenReturn(ConstantsTestHelper.MESSAGE_USER_ID)
         val result = messagesRepository.addUserMessage(modelRequest)
 
         // Then
         Truth.assertThat(result).isEqualTo(expectedResult)
 
         verify(messageDatasource, atLeastOnce())
-            .addMessage(refEq(modelRequest.mapToModelResponse()))
+            .insertMessage(refEq(modelRequest.mapToModelResponse()))
     }
 
     @Test
@@ -120,7 +119,7 @@ class MessagesRepositoryImplTest {
         val expectedResult = ConstantsTestHelper.resourceError
 
         // When
-        whenever(messageDatasource.addMessage(any()))
+        whenever(messageDatasource.insertMessage(any()))
             .thenThrow(ConstantsTestHelper.throwable)
         val result = messagesRepository.addUserMessage(modelRequest)
 
@@ -128,7 +127,7 @@ class MessagesRepositoryImplTest {
         Truth.assertThat(result).isEqualTo(expectedResult)
 
         verify(messageDatasource, atLeastOnce())
-            .addMessage(refEq(modelRequest.mapToModelResponse()))
+            .insertMessage(refEq(modelRequest.mapToModelResponse()))
     }
 
     @Test
@@ -138,8 +137,8 @@ class MessagesRepositoryImplTest {
         val expectedResult = ConstantsTestHelper.resourceSuccess
 
         // When
-        whenever(messageDatasource.addMessage(any()))
-            .thenReturn(Unit)
+        whenever(messageDatasource.insertMessage(any()))
+            .thenReturn(ConstantsTestHelper.MESSAGE_USER_ID)
         whenever(generativeDataSource.generateContent(any()))
             .thenReturn(ConstantsTestHelper.MODEL_RESPONSE)
         val result = messagesRepository.addModelMessage(modelRequest)
@@ -149,7 +148,7 @@ class MessagesRepositoryImplTest {
         verify(generativeDataSource, times(1))
             .generateContent(refEq(modelRequest.data))
         verify(messageDatasource, times(1))
-            .addMessage(
+            .insertMessage(
                 argThat {
                     data == ConstantsTestHelper.MODEL_RESPONSE && role == Role.MODEL
                 }
@@ -173,6 +172,6 @@ class MessagesRepositoryImplTest {
         verify(generativeDataSource, times(1))
             .generateContent(modelRequest.data)
         verify(messageDatasource, times(0))
-            .addMessage(ConstantsTestHelper.modelResponse)
+            .insertMessage(ConstantsTestHelper.modelResponse)
     }
 }

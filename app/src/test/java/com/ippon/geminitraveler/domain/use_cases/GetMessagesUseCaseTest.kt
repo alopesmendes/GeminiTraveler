@@ -59,11 +59,17 @@ class GetMessagesUseCaseTest {
         )
         getMessagesUseCase(
             updateState = { state ->
-                result = state.invoke(initialState.copy(dataState = DataState.SUCCESS))
+                result = state.invoke(
+                    initialState.copy(
+                        dataState = DataState.SUCCESS,
+                        currentMessageId = ConstantsTestHelper.MESSAGE_USER_ID
+                    )
+                )
             }
         )
 
         // Then
+        verify(messagesRepository, times(1)).getMessages()
         Truth.assertThat(result).isEqualTo(expectedResult)
     }
 

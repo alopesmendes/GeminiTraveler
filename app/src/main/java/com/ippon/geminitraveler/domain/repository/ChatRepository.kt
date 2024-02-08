@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface ChatRepository {
     fun getChats(): Flow<Resource<List<Chat>>>
 
-    suspend fun addChat(chat: ChatRequest): Resource<Unit>
+    suspend fun addChat(chat: ChatRequest): Resource<Long>
 }

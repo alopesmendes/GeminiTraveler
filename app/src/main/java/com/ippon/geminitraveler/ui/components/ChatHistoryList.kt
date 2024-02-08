@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -24,9 +24,9 @@ fun ChatHistoryList(
     chatHistoryItems: List<ChatHistoryItem>,
     scope: CoroutineScope,
     drawerState: DrawerState,
-    onNavigate: (Int) -> Unit,
+    onNavigate: (Long) -> Unit,
 ) {
-    var selectedItem by rememberSaveable { mutableIntStateOf(-1) }
+    var selectedItem by rememberSaveable { mutableLongStateOf(-1) }
     LazyColumn(modifier = modifier) {
         item {
             Text(
@@ -40,7 +40,7 @@ fun ChatHistoryList(
                 label = it.title,
                 scope = scope,
                 drawerState = drawerState,
-                date = it.date,
+                date = it.createAt,
                 selected = it.id == selectedItem
             ) {
                 selectedItem = it.id

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class ChatHistoryItem(
-    val id: Int,
+    val id: Long,
     val title: String,
-    val date: String
+    val createAt: String
 )

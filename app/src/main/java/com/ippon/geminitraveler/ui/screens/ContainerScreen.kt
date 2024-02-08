@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.R
 import com.ippon.geminitraveler.ui.components.ChatHistoryList
 import com.ippon.geminitraveler.ui.components.CustomTopBar
+import com.ippon.geminitraveler.ui.models.ChatEvent
 import com.ippon.geminitraveler.ui.models.ChatHistoryItem
 import kotlinx.coroutines.launch
 
@@ -37,14 +38,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun ContainerScreen(
     chatHistoryItems: List<ChatHistoryItem>,
-    onNavigate: (Int) -> Unit,
+    onHandleEvent: (ChatEvent) -> Unit,
     content: @Composable () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-
 
     ModalNavigationDrawer(
         gesturesEnabled = true,
@@ -63,7 +63,11 @@ fun ContainerScreen(
                         chatHistoryItems = chatHistoryItems,
                         scope = scope,
                         drawerState = drawerState,
-                        onNavigate = onNavigate
+                        onNavigate = {
+                            onHandleEvent(
+                                ChatEvent.SelectChat(it)
+                            )
+                        }
                     )
 
                     ExtendedFloatingActionButton(
@@ -75,6 +79,7 @@ fun ContainerScreen(
                             )
                         },
                         onClick = {
+                            onHandleEvent(ChatEvent.CreateNewChat)
                             scope.launch {
                                 drawerState.close()
                             }
@@ -107,8 +112,8 @@ fun ContainerScreen(
 @Composable
 fun ContainerScreenPreview() {
     ContainerScreen(
-        chatHistoryItems = (1..20).map { ChatHistoryItem(id = it, title = "test", "01/01/2023") },
-        onNavigate = { }
+        chatHistoryItems = (1..20).map { ChatHistoryItem(id = it.toLong(), title = "test", "01/01/2023") },
+        onHandleEvent = { },
     ) {
         Text(text = "Je suis un chatbot")
     }

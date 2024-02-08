@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface ChatDatasource {
     fun getChats(): Flow<List<Chat>>
 
-    suspend fun insert(chat: ChatRequest)
+    suspend fun insert(chat: ChatRequest): Long
 }
