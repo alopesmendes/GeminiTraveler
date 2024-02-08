@@ -3,7 +3,6 @@ package com.ippon.geminitraveler.data.datasource
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.data.datasource.database.dao.MessageDao
-import com.ippon.geminitraveler.data.mappers.mapToModelResponse
 import com.ippon.geminitraveler.domain.datasources.MessageDatasource
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
@@ -68,18 +67,20 @@ class MessageLocalDatasourceTest {
     @Test
     fun `should return messages successfully when getting messages from local datasource`() = runTest {
         // Given
-        val messages = ConstantsTestHelper.responses
+        val chatId = ConstantsTestHelper.CHAT_ID
+        val expectResult = ConstantsTestHelper.responses
 
         // When
-        whenever(dao.findAllMessages())
+        whenever(dao.findAllMessages(any()))
             .thenReturn(flowOf(ConstantsTestHelper.messagesEntities))
-        val result = messageLocalDatasource.getMessages()
+        val result = messageLocalDatasource
+            .getMessagesFromChat(chatId)
 
         // Then
         result.test {
-            Truth.assertThat(awaitItem()).isEqualTo(messages)
+            Truth.assertThat(awaitItem()).isEqualTo(expectResult)
 
-            verify(dao, times(1)).findAllMessages()
+            verify(dao, times(1)).findAllMessages(chatId)
             awaitComplete()
         }
     }

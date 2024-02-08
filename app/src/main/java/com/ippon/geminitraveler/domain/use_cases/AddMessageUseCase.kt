@@ -15,11 +15,13 @@ class AddMessageUseCase(
     suspend operator fun invoke(
         prompt: String,
         createAt: Instant = Instant.now(),
+        chatId: Long,
         updateState: ((MessagesUiState) -> MessagesUiState) -> Unit
     ) {
         val modelRequest = ModelRequest(
             data = prompt,
-            createAt = createAt
+            createAt = createAt,
+            chatId = chatId,
         )
 
         // Update user state message

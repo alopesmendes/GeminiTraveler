@@ -5,5 +5,6 @@ import java.time.Instant
 data class ModelResponse(
     val data: String,
     val role: Role,
-    val createAt: Instant
+    val createAt: Instant,
+    val chatId: Long,
 )

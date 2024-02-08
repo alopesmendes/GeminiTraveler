@@ -59,19 +59,21 @@ class MessagesRepositoryImplTest {
     @Test
     fun `should return a flow of messages when asking to get messages`() = runTest {
         // Given
+        val chatId = ConstantsTestHelper.CHAT_ID
         val messages = ConstantsTestHelper.responses
         val expectedResult = ConstantsTestHelper.resourceSuccessMessages
 
         // When
-        whenever(messageDatasource.getMessages())
+        whenever(messageDatasource.getMessagesFromChat(any()))
             .thenReturn(flowOf(messages))
-        val result = messagesRepository.getMessages()
+        val result = messagesRepository.getMessagesFromChat(chatId)
 
         // Then
         result.test {
             Truth.assertThat(awaitItem()).isEqualTo(expectedResult)
 
-            verify(messageDatasource, times(1)).getMessages()
+            verify(messageDatasource, times(1))
+                .getMessagesFromChat(refEq(chatId))
             awaitComplete()
         }
     }
@@ -79,18 +81,20 @@ class MessagesRepositoryImplTest {
     @Test
     fun `should return a flow Error when asking to get messages fails`() = runTest {
         // Given
+        val chatId = ConstantsTestHelper.CHAT_ID
         val expectedResult = ConstantsTestHelper.resourceErrorMessages
 
         // When
-        whenever(messageDatasource.getMessages())
+        whenever(messageDatasource.getMessagesFromChat(any()))
             .thenThrow(ConstantsTestHelper.throwable)
-        val result = messagesRepository.getMessages()
+        val result = messagesRepository.getMessagesFromChat(chatId)
 
         // Then
         result.test {
             Truth.assertThat(awaitItem()).isEqualTo(expectedResult)
 
-            verify(messageDatasource, times(1)).getMessages()
+            verify(messageDatasource, times(1))
+                .getMessagesFromChat(refEq(chatId))
             awaitComplete()
         }
     }

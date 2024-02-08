@@ -18,8 +18,8 @@ class MessageLocalDatasource(
         return messageDao.insert(messageEntity)
     }
 
-    override fun getMessages(): Flow<List<ModelResponse>> {
-        return messageDao.findAllMessages().map { messageEntities ->
+    override fun getMessagesFromChat(chatId: Long): Flow<List<ModelResponse>> {
+        return messageDao.findAllMessages(chatId).map { messageEntities ->
             messageEntities.map { it.mapToModelResponse() }
         }
     }

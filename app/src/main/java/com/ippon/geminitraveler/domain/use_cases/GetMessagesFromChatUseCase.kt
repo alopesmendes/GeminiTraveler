@@ -8,12 +8,15 @@ import com.ippon.geminitraveler.ui.models.MessagesUiState
 import org.koin.core.annotation.Single
 
 @Single
-class GetMessagesUseCase(
+class GetMessagesFromChatUseCase(
     private val messagesRepository: MessagesRepository
 ) {
-    suspend operator fun invoke(updateState: ((MessagesUiState) -> MessagesUiState) -> Unit) {
+    suspend operator fun invoke(
+        chatId: Long,
+        updateState: ((MessagesUiState) -> MessagesUiState) -> Unit
+    ) {
         messagesRepository
-            .getMessages()
+            .getMessagesFromChat(chatId)
             .collect { resource ->
                 when (resource) {
                     is Resource.Error -> updateState.invoke { state ->
