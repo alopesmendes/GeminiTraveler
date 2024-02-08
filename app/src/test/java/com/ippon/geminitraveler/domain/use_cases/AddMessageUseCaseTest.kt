@@ -64,7 +64,8 @@ class AddMessageUseCaseTest {
             createAt = ConstantsTestHelper.createAt,
             updateState = { state ->
                 result = state.invoke(initialState)
-            }
+            },
+            chatId = ConstantsTestHelper.CHAT_ID,
         )
 
         // Then
@@ -96,7 +97,8 @@ class AddMessageUseCaseTest {
             createAt = ConstantsTestHelper.createAt,
             updateState = { state ->
                 result = state.invoke(initialState)
-            }
+            },
+            chatId = ConstantsTestHelper.CHAT_ID
         )
 
         // Then

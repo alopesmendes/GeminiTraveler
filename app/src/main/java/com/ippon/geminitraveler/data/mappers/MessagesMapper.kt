@@ -9,16 +9,19 @@ fun ModelRequest.mapToModelResponse(): ModelResponse = ModelResponse(
     data = data,
     role = Role.USER,
     createAt = createAt,
+    chatId = chatId
 )
 
 fun ModelResponse.mapToMessageEntity(): MessageEntity = MessageEntity(
     message = data,
     role = role,
     createAt = createAt,
+    chatId = chatId
 )
 
 fun MessageEntity.mapToModelResponse(): ModelResponse = ModelResponse(
     data = message,
     role = role,
-    createAt = createAt
+    createAt = createAt,
+    chatId = chatId
 )

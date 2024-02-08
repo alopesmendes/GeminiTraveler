@@ -22,7 +22,7 @@ sealed class Destination(
     data object Chat: Destination(
         route = "chat",
         arguments = listOf(
-            navArgument("id") { type = NavType.IntType }
+            navArgument("id") { type = NavType.LongType }
         )
     )
 }

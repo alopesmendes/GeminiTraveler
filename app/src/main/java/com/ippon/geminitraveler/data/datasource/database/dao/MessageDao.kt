@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class MessageDao: BaseDao<MessageEntity> {
-    @Query("SELECT * FROM messages")
-    abstract fun findAllMessages(): Flow<List<MessageEntity>>
+    @Query("SELECT * FROM messages WHERE chat_id = :chatId")
+    abstract fun findAllMessages(chatId: Long): Flow<List<MessageEntity>>
 }

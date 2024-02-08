@@ -20,9 +20,9 @@ class MessagesRepositoryImpl(
     private val generativeDataSource: GenerativeDataSource,
     private val messageDatasource: MessageDatasource,
 ): MessagesRepository {
-    override fun getMessages(): Flow<Resource<List<ModelResponse>>> = flow {
+    override fun getMessagesFromChat(chatId: Long): Flow<Resource<List<ModelResponse>>> = flow {
         try {
-            val messages = messageDatasource.getMessages()
+            val messages = messageDatasource.getMessagesFromChat(chatId)
             emitAll(messages.map { Resource.Success(it) })
         } catch (e: Exception) {
             emit(
@@ -54,6 +54,7 @@ class MessagesRepositoryImpl(
                     data = generateContent ?: "",
                     role = Role.MODEL,
                     createAt = Instant.now(),
+                    chatId = modelRequest.chatId,
                 )
             )
             Resource.Success(id)
