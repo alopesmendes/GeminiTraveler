@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.ippon.geminitraveler.ui.navigation.NavigationHost
 import com.ippon.geminitraveler.ui.screens.ChatbotScreen
 import com.ippon.geminitraveler.ui.screens.ContainerScreen
 import com.ippon.geminitraveler.ui.theme.GeminiTravelerTheme
@@ -25,14 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val viewModel: ModelViewModel = koinViewModel()
-                    val uiState by viewModel.uiState.collectAsState()
-                    ContainerScreen(chatHistoryItems = emptyList()) {
-                        ChatbotScreen(
-                            uiState = uiState,
-                            onHandleEvent = viewModel::onHandleEvent
-                        )
-                    }
+                    NavigationHost()
                 }
             }
         }
