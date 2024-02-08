@@ -6,35 +6,25 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ippon.geminitraveler.ui.models.ChatHistoryItem
 import com.ippon.geminitraveler.ui.screens.ChatbotScreen
 import com.ippon.geminitraveler.ui.screens.ContainerScreen
 import com.ippon.geminitraveler.ui.screens.HomeScreen
+import com.ippon.geminitraveler.ui.view_models.ChatHistoryViewModel
 import com.ippon.geminitraveler.ui.view_models.ModelViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NavigationHost() {
     val navController = rememberNavController()
+    val chatHistoryViewModel: ChatHistoryViewModel = koinViewModel()
+    val chatUiState by chatHistoryViewModel.uiState.collectAsState()
 
-    // TODO to get chats for database
-    val chatHistoryItems = listOf(
-        ChatHistoryItem(
-            id = 1,
-            title = "Chat 1",
-            date = "01/01/2023"
-        ),
-        ChatHistoryItem(
-            id = 2,
-            title = "Chat 2",
-            date = "01/01/2023"
-        ),
-    )
     ContainerScreen(
-        chatHistoryItems = chatHistoryItems,
+        chatHistoryItems = chatUiState.chats,
         onNavigate = {
             navController.navigate("${Destination.Chat.route}/$it")
-        }
+        },
+        onHandleEvent = chatHistoryViewModel::onHandleEvent,
     ) {
         NavHost(
             navController = navController,

@@ -3,7 +3,7 @@ package com.ippon.geminitraveler.ui.mapper
 import com.ippon.geminitraveler.domain.model.Chat
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.ui.models.ChatUi
+import com.ippon.geminitraveler.ui.models.ChatHistoryItem
 import com.ippon.geminitraveler.ui.models.MessageUi
 import com.ippon.geminitraveler.ui.models.RoleUi
 
@@ -19,7 +19,8 @@ fun Role.mapToRoleUi(): RoleUi {
     }
 }
 
-fun Chat.mapToChatUi(): ChatUi = ChatUi(
+fun Chat.mapToChatHistoryItem(): ChatHistoryItem = ChatHistoryItem(
     id = id,
-    title = title
+    title = title,
+    createAt = createAt.toString()
 )

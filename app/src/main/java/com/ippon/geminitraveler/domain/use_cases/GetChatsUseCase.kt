@@ -4,9 +4,11 @@ import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.Chat
 import com.ippon.geminitraveler.domain.repository.ChatRepository
-import com.ippon.geminitraveler.ui.mapper.mapToChatUi
+import com.ippon.geminitraveler.ui.mapper.mapToChatHistoryItem
 import com.ippon.geminitraveler.ui.models.ChatUiState
+import org.koin.core.annotation.Single
 
+@Single
 class GetChatsUseCase(
     private val chatRepository: ChatRepository
 ) {
@@ -27,7 +29,7 @@ class GetChatsUseCase(
                 errorMessage = errorMessage
             )
             is Resource.Success -> state.copy(
-                chats = data.map { it.mapToChatUi() }
+                chats = data.map { it.mapToChatHistoryItem() }
             )
         }
     }

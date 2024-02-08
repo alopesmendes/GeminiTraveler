@@ -10,7 +10,7 @@ import com.ippon.geminitraveler.domain.model.ChatRequest
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
-import com.ippon.geminitraveler.ui.mapper.mapToChatUi
+import com.ippon.geminitraveler.ui.mapper.mapToChatHistoryItem
 import com.ippon.geminitraveler.ui.mapper.mapToModelResponseUi
 import com.ippon.geminitraveler.ui.models.ChatUiState
 import com.ippon.geminitraveler.ui.models.MessagesUiState
@@ -80,7 +80,7 @@ object ConstantsTestHelper {
         errorMessage = ERROR_MESSAGE
     )
 
-    val uiChats = chats.map { it.mapToChatUi() }
+    val uiChats = chats.map { it.mapToChatHistoryItem() }
 
     val initialChatsUiState = ChatUiState()
     val errorChatsUiState = ChatUiState(
