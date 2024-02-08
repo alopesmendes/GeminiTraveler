@@ -50,7 +50,7 @@ class ChatLocalDataSourceTest {
     @Test
     fun `should add message to database when using message local datasource`() = runTest {
         // Given
-        val chat = ConstantsTestHelper.chat
+        val chat = ConstantsTestHelper.chatRequest
         val chatEntity = ConstantsTestHelper.chatEntity
 
         // When

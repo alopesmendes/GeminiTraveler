@@ -5,9 +5,6 @@ import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.model.ModelRequest
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.ui.models.MessagesUiState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
 import org.koin.core.annotation.Single
 import java.time.Instant
 
@@ -17,11 +14,12 @@ class AddMessageUseCase(
 ) {
     suspend operator fun invoke(
         prompt: String,
+        createAt: Instant = Instant.now(),
         updateState: ((MessagesUiState) -> MessagesUiState) -> Unit
     ) {
         val modelRequest = ModelRequest(
             data = prompt,
-            createAt = Instant.now()
+            createAt = createAt
         )
 
         // Update user state message

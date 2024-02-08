@@ -5,6 +5,7 @@ import com.ippon.geminitraveler.data.mappers.mapToChat
 import com.ippon.geminitraveler.data.mappers.mapToChatEntity
 import com.ippon.geminitraveler.domain.datasources.ChatDatasource
 import com.ippon.geminitraveler.domain.model.Chat
+import com.ippon.geminitraveler.domain.model.ChatRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Single
@@ -19,7 +20,7 @@ class ChatLocalDataSource(
         }
     }
 
-    override suspend fun insert(chat: Chat) {
+    override suspend fun insert(chat: ChatRequest) {
         val chatEntity = chat.mapToChatEntity()
         chatDao.insert(chatEntity)
     }

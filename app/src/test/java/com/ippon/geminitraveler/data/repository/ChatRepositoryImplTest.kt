@@ -86,7 +86,7 @@ class ChatRepositoryImplTest {
     @Test
     fun `should return success resource when adding chat succeed`() = runTest {
         // Given
-        val chat = ConstantsTestHelper.chat
+        val chat = ConstantsTestHelper.chatRequest
         val expectResult = ConstantsTestHelper.resourceSuccess
 
         // When
@@ -104,7 +104,7 @@ class ChatRepositoryImplTest {
     @Test
     fun `should return error resource when adding chat failed`() = runTest {
         // Given
-        val chat = ConstantsTestHelper.chat
+        val chat = ConstantsTestHelper.chatRequest
         val expectResult = ConstantsTestHelper.resourceError
 
         // When

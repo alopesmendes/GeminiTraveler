@@ -1,7 +1,9 @@
 package com.ippon.geminitraveler.ui.mapper
 
+import com.ippon.geminitraveler.domain.model.Chat
 import com.ippon.geminitraveler.domain.model.ModelResponse
 import com.ippon.geminitraveler.domain.model.Role
+import com.ippon.geminitraveler.ui.models.ChatUi
 import com.ippon.geminitraveler.ui.models.MessageUi
 import com.ippon.geminitraveler.ui.models.RoleUi
 
@@ -16,3 +18,8 @@ fun Role.mapToRoleUi(): RoleUi {
         Role.MODEL -> RoleUi.MODEL
     }
 }
+
+fun Chat.mapToChatUi(): ChatUi = ChatUi(
+    id = id,
+    title = title
+)

@@ -1,13 +1,10 @@
 package com.ippon.geminitraveler.domain.use_cases
 
-import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -21,7 +18,6 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
-import org.mockito.kotlin.refEq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -65,6 +61,7 @@ class AddMessageUseCaseTest {
             .thenReturn(resourceSuccess)
         addMessageUseCase.invoke(
             prompt = prompt,
+            createAt = ConstantsTestHelper.createAt,
             updateState = { state ->
                 result = state.invoke(initialState)
             }
@@ -96,6 +93,7 @@ class AddMessageUseCaseTest {
             .thenReturn(resourceError)
         addMessageUseCase.invoke(
             prompt = prompt,
+            createAt = ConstantsTestHelper.createAt,
             updateState = { state ->
                 result = state.invoke(initialState)
             }
