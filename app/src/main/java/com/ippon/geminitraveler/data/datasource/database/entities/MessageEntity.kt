@@ -14,7 +14,16 @@ import java.time.Instant
         ForeignKey(
             entity = ChatEntity::class,
             parentColumns = ["id"],
-            childColumns = ["chat_id"]
+            childColumns = ["chat_id"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = MessageEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["message_parent_id"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         )
     ]
 )
@@ -27,4 +36,6 @@ data class MessageEntity(
     val createAt: Instant = Instant.now(),
     @ColumnInfo(name = "chat_id")
     val chatId: Long,
+    @ColumnInfo(name = "message_parent_id")
+    val messageParentId: Long? = null
 )

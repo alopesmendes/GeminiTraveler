@@ -46,7 +46,10 @@ class MessagesRepositoryImpl(
         }
     }
 
-    override suspend fun addModelMessage(modelRequest: ModelRequest): Resource<Long> {
+    override suspend fun addModelMessage(
+        modelRequest: ModelRequest,
+        messageParentId: Long,
+    ): Resource<Long> {
         return try {
             val generateContent = generativeDataSource.generateContent(modelRequest.data)
             val id = messageDatasource.insertMessage(
@@ -55,6 +58,7 @@ class MessagesRepositoryImpl(
                     role = Role.MODEL,
                     createAt = Instant.now(),
                     chatId = modelRequest.chatId,
+                    messageParentId = messageParentId
                 )
             )
             Resource.Success(id)

@@ -28,7 +28,8 @@ object ConstantsTestHelper {
         data = MODEL_RESPONSE,
         role = Role.MODEL,
         createAt = createAt,
-        chatId = CHAT_ID
+        chatId = CHAT_ID,
+        messageParentId = MESSAGE_USER_ID
     )
 
     val modelRequest = ModelRequest(

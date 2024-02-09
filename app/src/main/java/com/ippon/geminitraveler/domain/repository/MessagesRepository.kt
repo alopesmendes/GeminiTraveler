@@ -10,5 +10,8 @@ interface MessagesRepository {
 
     suspend fun addUserMessage(modelRequest: ModelRequest): Resource<Long>
 
-    suspend fun addModelMessage(modelRequest: ModelRequest): Resource<Long>
+    suspend fun addModelMessage(
+        modelRequest: ModelRequest,
+        messageParentId: Long,
+    ): Resource<Long>
 }

@@ -145,7 +145,10 @@ class MessagesRepositoryImplTest {
             .thenReturn(ConstantsTestHelper.MESSAGE_USER_ID)
         whenever(generativeDataSource.generateContent(any()))
             .thenReturn(ConstantsTestHelper.MODEL_RESPONSE)
-        val result = messagesRepository.addModelMessage(modelRequest)
+        val result = messagesRepository.addModelMessage(
+            modelRequest = modelRequest,
+            messageParentId = ConstantsTestHelper.MESSAGE_USER_ID
+        )
 
         // Then
         Truth.assertThat(result).isEqualTo(expectedResult)
@@ -169,7 +172,10 @@ class MessagesRepositoryImplTest {
         whenever(generativeDataSource.generateContent(any()))
             .thenThrow(ConstantsTestHelper.throwable)
 
-        val result = messagesRepository.addModelMessage(modelRequest)
+        val result = messagesRepository.addModelMessage(
+            modelRequest = modelRequest,
+            messageParentId = ConstantsTestHelper.MESSAGE_USER_ID
+        )
 
         // Then
         Truth.assertThat(result).isEqualTo(expectedResult)

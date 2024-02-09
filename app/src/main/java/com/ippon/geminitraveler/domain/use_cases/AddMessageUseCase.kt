@@ -29,9 +29,16 @@ class AddMessageUseCase(
         val userResource = messagesRepository.addUserMessage(modelRequest)
         updateState.invoke { state -> userResource.handleResource(state) }
 
+        if (userResource !is Resource.Success) {
+            return
+        }
+
         // Update model state message
         updateState.invoke { state -> state.copy(dataState = DataState.LOADING) }
-        val modelResource = messagesRepository.addModelMessage(modelRequest)
+        val modelResource = messagesRepository.addModelMessage(
+            modelRequest = modelRequest,
+            messageParentId = userResource.data
+        )
         updateState.invoke { state -> modelResource.handleResource(state) }
     }
 
