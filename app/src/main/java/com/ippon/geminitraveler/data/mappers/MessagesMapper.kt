@@ -16,12 +16,14 @@ fun ModelResponse.mapToMessageEntity(): MessageEntity = MessageEntity(
     message = data,
     role = role,
     createAt = createAt,
-    chatId = chatId
+    chatId = chatId,
+    messageParentId = messageParentId,
 )
 
 fun MessageEntity.mapToModelResponse(): ModelResponse = ModelResponse(
     data = message,
     role = role,
     createAt = createAt,
-    chatId = chatId
+    chatId = chatId,
+    messageParentId = messageParentId
 )

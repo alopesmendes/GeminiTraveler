@@ -7,4 +7,5 @@ data class ModelResponse(
     val role: Role,
     val createAt: Instant,
     val chatId: Long,
+    val messageParentId: Long? = null,
 )
