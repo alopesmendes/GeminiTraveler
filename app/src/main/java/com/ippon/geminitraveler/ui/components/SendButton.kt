@@ -1,6 +1,7 @@
 package com.ippon.geminitraveler.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -19,6 +20,6 @@ fun SendButton(sendMessage: () -> Unit, modifier: Modifier) {
         ),
         modifier = modifier
     ) {
-        Icon(imageVector = Icons.Filled.Send, contentDescription = "Send message")
+        Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = "Send message")
     }
 }

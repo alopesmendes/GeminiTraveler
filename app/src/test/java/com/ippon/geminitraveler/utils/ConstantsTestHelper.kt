@@ -66,8 +66,8 @@ object ConstantsTestHelper {
 
     val messageEntity = modelResponse.mapToMessageEntity()
 
-    val resourceSuccess: Resource<Long> = Resource.Success(CHAT_ID)
-    val resourceError: Resource<Long> = Resource.Error(
+    val resourceSuccessChatId: Resource<Long> = Resource.Success(CHAT_ID)
+    val resourceErrorChatId: Resource<Long> = Resource.Error(
         throwable = throwable,
         errorMessage = ERROR_MESSAGE
     )
@@ -76,9 +76,15 @@ object ConstantsTestHelper {
         createAt = createAt
     )
     val chatEntity = chatRequest.mapToChatEntity()
-    private val chat = chatEntity.mapToChat()
+    val chat = chatEntity.mapToChat()
     val chats = listOf(chat)
     val chatsEntities = chats.map { it.mapToChatEntity() }
+
+    val resourceSuccessChat: Resource<Chat> = Resource.Success(chat)
+    val resourceErrorChat: Resource<Chat> = Resource.Error(
+        throwable = throwable,
+        errorMessage = ERROR_MESSAGE
+    )
 
     val resourceSuccessChats: Resource<List<Chat>> = Resource.Success(chats)
     val resourceErrorChats: Resource<List<Chat>> = Resource.Error(

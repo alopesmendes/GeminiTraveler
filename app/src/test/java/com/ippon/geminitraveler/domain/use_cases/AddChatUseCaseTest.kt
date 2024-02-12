@@ -1,9 +1,7 @@
 package com.ippon.geminitraveler.domain.use_cases
 
 import com.google.common.truth.Truth
-import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.repository.ChatRepository
-import com.ippon.geminitraveler.domain.repository.MessagesRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,7 +9,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
 
 import org.junit.After
 import org.junit.Before
@@ -58,7 +55,7 @@ class AddChatUseCaseTest {
 
         // When
         whenever(chatRepository.addChat(any()))
-            .thenReturn(ConstantsTestHelper.resourceSuccess)
+            .thenReturn(ConstantsTestHelper.resourceSuccessChatId)
         addChatUseCase.invoke(
             title = ConstantsTestHelper.CHAT_TITLE,
             createAt = ConstantsTestHelper.createAt,
@@ -83,7 +80,7 @@ class AddChatUseCaseTest {
 
         // When
         whenever(chatRepository.addChat(any()))
-            .thenReturn(ConstantsTestHelper.resourceError)
+            .thenReturn(ConstantsTestHelper.resourceErrorChatId)
         addChatUseCase.invoke(
             title = ConstantsTestHelper.CHAT_TITLE,
             createAt = ConstantsTestHelper.createAt,

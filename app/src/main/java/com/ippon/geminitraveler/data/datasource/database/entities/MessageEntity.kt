@@ -34,8 +34,8 @@ data class MessageEntity(
     val role: Role,
     @ColumnInfo(name = "create_at")
     val createAt: Instant = Instant.now(),
-    @ColumnInfo(name = "chat_id")
+    @ColumnInfo(name = "chat_id", index = true)
     val chatId: Long,
-    @ColumnInfo(name = "message_parent_id")
+    @ColumnInfo(name = "message_parent_id", index = true)
     val messageParentId: Long? = null
 )

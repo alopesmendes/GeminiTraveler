@@ -67,6 +67,11 @@ fun ContainerScreen(
                             onHandleEvent(
                                 ChatEvent.SelectChat(it)
                             )
+                        },
+                        onDelete = {
+                            onHandleEvent(
+                                ChatEvent.DeleteChat(it)
+                            )
                         }
                     )
 

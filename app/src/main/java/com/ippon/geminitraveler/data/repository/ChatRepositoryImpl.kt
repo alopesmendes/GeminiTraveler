@@ -43,4 +43,28 @@ class ChatRepositoryImpl(
         }
     }
 
+    override suspend fun deleteChat(chatId: Long): Resource<Long> {
+        return try {
+            chatDatasource.delete(chatId)
+            Resource.Success(chatId)
+        } catch (e: Exception) {
+            Resource.Error(
+                errorMessage = e.message,
+                throwable = e
+            )
+        }
+    }
+
+    override suspend fun updateChat(chat: Chat): Resource<Chat> {
+        return try {
+            chatDatasource.update(chat)
+            Resource.Success(chat)
+        } catch (e: Exception) {
+            Resource.Error(
+                errorMessage = e.message,
+                throwable = e
+            )
+        }
+    }
+
 }

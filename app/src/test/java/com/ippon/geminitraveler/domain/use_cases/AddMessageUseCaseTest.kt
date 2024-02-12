@@ -51,7 +51,7 @@ class AddMessageUseCaseTest {
         val modelRequest = ConstantsTestHelper.modelRequest
         val initialState = ConstantsTestHelper.initialMessagesUiState
             .copy(messages = ConstantsTestHelper.uiMessages)
-        val resourceSuccess = ConstantsTestHelper.resourceSuccess
+        val resourceSuccess = ConstantsTestHelper.resourceSuccessChatId
         val expectResult = ConstantsTestHelper.successMessagesUiState
         var result = ConstantsTestHelper.initialMessagesUiState
 
@@ -86,8 +86,8 @@ class AddMessageUseCaseTest {
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
         val modelRequest = ConstantsTestHelper.modelRequest
         val initialState = ConstantsTestHelper.initialMessagesUiState
-        val resourceSuccess = ConstantsTestHelper.resourceSuccess
-        val resourceError = ConstantsTestHelper.resourceError
+        val resourceSuccess = ConstantsTestHelper.resourceSuccessChatId
+        val resourceError = ConstantsTestHelper.resourceErrorChatId
         val expectResult = ConstantsTestHelper.errorMessagesUiState
         var result = ConstantsTestHelper.initialMessagesUiState
 
@@ -122,8 +122,8 @@ class AddMessageUseCaseTest {
         val prompt = ConstantsTestHelper.MODEL_REQUEST_DATA
         val modelRequest = ConstantsTestHelper.modelRequest
         val initialState = ConstantsTestHelper.initialMessagesUiState
-        val resourceSuccess = ConstantsTestHelper.resourceSuccess
-        val resourceError = ConstantsTestHelper.resourceError
+        val resourceSuccess = ConstantsTestHelper.resourceSuccessChatId
+        val resourceError = ConstantsTestHelper.resourceErrorChatId
         val expectResult = ConstantsTestHelper.errorMessagesUiState
         var result = ConstantsTestHelper.initialMessagesUiState
 

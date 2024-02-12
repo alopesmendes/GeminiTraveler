@@ -3,6 +3,7 @@ package com.ippon.geminitraveler.ui.view_models
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ippon.geminitraveler.domain.use_cases.AddChatUseCase
+import com.ippon.geminitraveler.domain.use_cases.DeleteChatUseCase
 import com.ippon.geminitraveler.domain.use_cases.GetChatsUseCase
 import com.ippon.geminitraveler.ui.models.ChatEvent
 import com.ippon.geminitraveler.ui.models.ChatUiState
@@ -15,7 +16,8 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class ChatHistoryViewModel(
     private val getChatsUseCase: GetChatsUseCase,
-    private val addChatUseCase: AddChatUseCase
+    private val addChatUseCase: AddChatUseCase,
+    private val deleteChatUseCase: DeleteChatUseCase,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState = _uiState.asStateFlow()
@@ -37,6 +39,16 @@ class ChatHistoryViewModel(
                 ChatEvent.CreateNewChat -> {
                     addChatUseCase.invoke(
                         title = "Default title",
+                        updateState = _uiState::update
+                    )
+                }
+
+                is ChatEvent.ChangeChatTitle -> {
+
+                }
+                is ChatEvent.DeleteChat -> {
+                    deleteChatUseCase(
+                        chatId = chatEvent.chatId,
                         updateState = _uiState::update
                     )
                 }

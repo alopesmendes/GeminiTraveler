@@ -9,4 +9,8 @@ interface ChatRepository {
     fun getChats(): Flow<Resource<List<Chat>>>
 
     suspend fun addChat(chat: ChatRequest): Resource<Long>
+
+    suspend fun deleteChat(chatId: Long): Resource<Long>
+
+    suspend fun updateChat(chat: Chat): Resource<Chat>
 }
