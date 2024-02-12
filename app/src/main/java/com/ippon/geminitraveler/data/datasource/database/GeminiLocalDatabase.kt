@@ -11,11 +11,11 @@ import com.ippon.geminitraveler.data.datasource.database.dao.ChatDao
 import com.ippon.geminitraveler.data.datasource.database.dao.MessageDao
 import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntity
 import com.ippon.geminitraveler.data.datasource.database.entities.MessageEntity
-import org.koin.core.annotation.Single
 
 @Database(
     entities = [MessageEntity::class, ChatEntity::class],
     version = 1,
+    exportSchema = false,
 )
 @TypeConverters(
     value = [RoleConverter::class, DateConverter::class]

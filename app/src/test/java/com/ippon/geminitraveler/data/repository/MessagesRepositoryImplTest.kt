@@ -103,7 +103,7 @@ class MessagesRepositoryImplTest {
     fun `should return success resource when add messages user messages`() = runTest {
         // Given
         val modelRequest = ConstantsTestHelper.modelRequest
-        val expectedResult = ConstantsTestHelper.resourceSuccess
+        val expectedResult = ConstantsTestHelper.resourceSuccessChatId
 
         // When
         whenever(messageDatasource.insertMessage(any())).thenReturn(ConstantsTestHelper.MESSAGE_USER_ID)
@@ -120,7 +120,7 @@ class MessagesRepositoryImplTest {
     fun `should return error resource when exception is throw when user input fails`() = runTest {
         // Given
         val modelRequest = ConstantsTestHelper.modelRequest
-        val expectedResult = ConstantsTestHelper.resourceError
+        val expectedResult = ConstantsTestHelper.resourceErrorChatId
 
         // When
         whenever(messageDatasource.insertMessage(any()))
@@ -138,7 +138,7 @@ class MessagesRepositoryImplTest {
     fun `should return success resource when add messages model generate message`() = runTest {
         // Given
         val modelRequest = ConstantsTestHelper.modelRequest
-        val expectedResult = ConstantsTestHelper.resourceSuccess
+        val expectedResult = ConstantsTestHelper.resourceSuccessChatId
 
         // When
         whenever(messageDatasource.insertMessage(any()))
@@ -166,7 +166,7 @@ class MessagesRepositoryImplTest {
     fun `should return error resource when exception is throw model cannot generate response`() = runTest {
         // Given
         val modelRequest = ConstantsTestHelper.modelRequest
-        val expectedResult = ConstantsTestHelper.resourceError
+        val expectedResult = ConstantsTestHelper.resourceErrorChatId
 
         // When
         whenever(generativeDataSource.generateContent(any()))

@@ -8,4 +8,8 @@ interface ChatDatasource {
     fun getChats(): Flow<List<Chat>>
 
     suspend fun insert(chat: ChatRequest): Long
+
+    suspend fun delete(chatId: Long)
+
+    suspend fun updateTitle(id: Long, title: String)
 }

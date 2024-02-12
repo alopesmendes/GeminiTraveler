@@ -67,6 +67,19 @@ fun ContainerScreen(
                             onHandleEvent(
                                 ChatEvent.SelectChat(it)
                             )
+                        },
+                        onDelete = {
+                            onHandleEvent(
+                                ChatEvent.DeleteChat(it)
+                            )
+                        },
+                        onUpdateTitle = { id: Long, value: String ->
+                            onHandleEvent(
+                                ChatEvent.ChangeChatTitle(
+                                    chatId = id,
+                                    title = value
+                                )
+                            )
                         }
                     )
 

@@ -1,7 +1,9 @@
 package com.ippon.geminitraveler.domain.use_cases
 
 import com.google.common.truth.Truth
+import com.ippon.geminitraveler.core.utils.DataState
 import com.ippon.geminitraveler.domain.repository.ChatRepository
+import com.ippon.geminitraveler.ui.models.ChatUiState
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,7 +11,6 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -25,18 +26,18 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 @ExperimentalCoroutinesApi
-class AddChatUseCaseTest {
+class DeleteChatUseCaseTest {
     private val dispatcher = UnconfinedTestDispatcher()
 
     @Mock
     private lateinit var chatRepository: ChatRepository
-    private lateinit var addChatUseCase: AddChatUseCase
+    private lateinit var deleteChatUseCase: DeleteChatUseCase
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        addChatUseCase = AddChatUseCase(chatRepository)
+        deleteChatUseCase = DeleteChatUseCase(chatRepository)
     }
 
     @After
@@ -45,53 +46,53 @@ class AddChatUseCaseTest {
     }
 
     @Test
-    fun `should update to success state when adding chat resource is successful`() = runTest {
+    fun `should update state with delete chat when using chat repository delete succeed`() = runTest {
         // Given
-        val initialUiState = ConstantsTestHelper.initialChatsUiState
-            .copy(chats = ConstantsTestHelper.uiChats)
-        val expectResult = ConstantsTestHelper.successChatsUiState
-        val chatRequest = ConstantsTestHelper.chatRequest
-        var result = initialUiState
+        val chatId = ConstantsTestHelper.CHAT_ID
+        val initialState = ChatUiState()
+        val expectedResult = ChatUiState(
+            lastDeleteChatId = chatId,
+            dataState = DataState.SUCCESS
+        )
+        var result = ChatUiState()
 
         // When
-        whenever(chatRepository.addChat(any()))
+        whenever(chatRepository.deleteChat(any()))
             .thenReturn(ConstantsTestHelper.resourceSuccessChatId)
-        addChatUseCase.invoke(
-            title = ConstantsTestHelper.CHAT_TITLE,
-            createAt = ConstantsTestHelper.createAt,
+        deleteChatUseCase.invoke(
+            chatId = chatId,
             updateState = { state ->
-                result = state.invoke(initialUiState)
+                result = state.invoke(initialState)
             }
         )
 
         // Then
-        Truth.assertThat(result).isEqualTo(expectResult)
         verify(chatRepository, times(1))
-            .addChat(refEq( chatRequest))
+            .deleteChat(refEq(chatId))
+        Truth.assertThat(result).isEqualTo(expectedResult)
     }
 
     @Test
-    fun `should update to error state when adding chat resource fails`() = runTest {
+    fun `should update state with error when using chat repository delete fails`() = runTest {
         // Given
-        val initialUiState = ConstantsTestHelper.initialChatsUiState
-        val expectResult = ConstantsTestHelper.errorChatsUiState
-        val chatRequest = ConstantsTestHelper.chatRequest
-        var result = initialUiState
+        val chatId = ConstantsTestHelper.CHAT_ID
+        val initialState = ChatUiState()
+        val expectedResult = ConstantsTestHelper.errorChatsUiState
+        var result = ChatUiState()
 
         // When
-        whenever(chatRepository.addChat(any()))
+        whenever(chatRepository.deleteChat(any()))
             .thenReturn(ConstantsTestHelper.resourceErrorChatId)
-        addChatUseCase.invoke(
-            title = ConstantsTestHelper.CHAT_TITLE,
-            createAt = ConstantsTestHelper.createAt,
+        deleteChatUseCase.invoke(
+            chatId = chatId,
             updateState = { state ->
-                result = state.invoke(initialUiState)
+                result = state.invoke(initialState)
             }
         )
 
         // Then
-        Truth.assertThat(result).isEqualTo(expectResult)
         verify(chatRepository, times(1))
-            .addChat(refEq( chatRequest))
+            .deleteChat(refEq(chatId))
+        Truth.assertThat(result).isEqualTo(expectedResult)
     }
 }

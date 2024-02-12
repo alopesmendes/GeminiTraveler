@@ -3,6 +3,8 @@ package com.ippon.geminitraveler.data.datasource
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.data.datasource.database.dao.ChatDao
+import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntityId
+import com.ippon.geminitraveler.data.mappers.mapToChatEntity
 import com.ippon.geminitraveler.domain.datasources.ChatDatasource
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +23,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.refEq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -48,7 +51,7 @@ class ChatLocalDataSourceTest {
     }
 
     @Test
-    fun `should add message to database when using message local datasource`() = runTest {
+    fun `should add chat to database when using chat local datasource`() = runTest {
         // Given
         val chat = ConstantsTestHelper.chatRequest
         val chatEntity = ConstantsTestHelper.chatEntity
@@ -66,7 +69,7 @@ class ChatLocalDataSourceTest {
     }
 
     @Test
-    fun `should return messages successfully when getting messages from local datasource`() = runTest {
+    fun `should return chats successfully when getting chats from local datasource`() = runTest {
         // Given
         val chats = ConstantsTestHelper.chats
 
@@ -82,5 +85,40 @@ class ChatLocalDataSourceTest {
             verify(dao, times(1)).findAllChats()
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `should delete chat from database when using chat local datasource`() = runTest {
+        // Given
+        val chatId = ConstantsTestHelper.CHAT_ID
+
+        // When
+        whenever(dao.deleteById(any())).thenReturn(Unit)
+        chatDatasource.delete(chatId)
+
+        // Then
+        verify(dao, times(1))
+            .deleteById(ChatEntityId(chatId))
+    }
+
+    @Test
+    fun `should update chat from database when using chat local datasource`() = runTest {
+        // Given
+        val chat = ConstantsTestHelper.chat
+        val expectResult = chat.mapToChatEntity()
+
+        // When
+        whenever(dao.updateTitle(any())).thenReturn(Unit)
+        chatDatasource.updateTitle(
+            id = chat.id,
+            title = chat.title
+        )
+
+        // Then
+        verify(dao, times(1))
+            .update(argThat {
+                title == expectResult.title &&
+                        id == expectResult.id
+            })
     }
 }

@@ -87,7 +87,7 @@ class ChatRepositoryImplTest {
     fun `should return success resource when adding chat succeed`() = runTest {
         // Given
         val chat = ConstantsTestHelper.chatRequest
-        val expectResult = ConstantsTestHelper.resourceSuccess
+        val expectResult = ConstantsTestHelper.resourceSuccessChatId
 
         // When
         whenever(chatDatasource.insert(any()))
@@ -105,7 +105,7 @@ class ChatRepositoryImplTest {
     fun `should return error resource when adding chat failed`() = runTest {
         // Given
         val chat = ConstantsTestHelper.chatRequest
-        val expectResult = ConstantsTestHelper.resourceError
+        val expectResult = ConstantsTestHelper.resourceErrorChatId
 
         // When
         whenever(chatDatasource.insert(any()))
@@ -116,5 +116,77 @@ class ChatRepositoryImplTest {
         verify(chatDatasource, times(1))
             .insert(refEq(chat))
         Truth.assertThat(result).isEqualTo(expectResult)
+    }
+
+    @Test
+    fun `should return success resource when deleting chat succeed`() = runTest {
+        // Given
+        val chatId = ConstantsTestHelper.CHAT_ID
+        val expectedResult = ConstantsTestHelper.resourceSuccessChatId
+
+        // When
+        whenever(chatDatasource.delete(any())).thenReturn(Unit)
+        val result = chatRepository.deleteChat(chatId)
+
+        // Then
+        verify(chatDatasource, times(1)).delete(refEq(chatId))
+        Truth.assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `should return error resource when deleting chat fails`() = runTest {
+        // Given
+        val chat = ConstantsTestHelper.CHAT_ID
+        val expectedResult = ConstantsTestHelper.resourceErrorChatId
+
+        // When
+        whenever(chatDatasource.delete(any())).thenThrow(ConstantsTestHelper.throwable)
+        val result = chatRepository.deleteChat(chat)
+
+        // Then
+        verify(chatDatasource, times(1)).delete(refEq(chat))
+        Truth.assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `should return success resource when updating chat succeed`() = runTest {
+        // Given
+        val chat = ConstantsTestHelper.chat
+        val expectedResult = ConstantsTestHelper.resourceSuccessChat
+
+        // When
+        whenever(chatDatasource.updateTitle(any(), any())).thenReturn(Unit)
+        val result = chatRepository.updateChatTitle(
+            id = chat.id,
+            title = chat.title
+        )
+
+        // Then
+        verify(chatDatasource, times(1)).updateTitle(
+            id = refEq(chat.id),
+            title = refEq(chat.title)
+        )
+        Truth.assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
+    fun `should return error resource when updating chat fails`() = runTest {
+        // Given
+        val chat = ConstantsTestHelper.chat
+        val expectedResult = ConstantsTestHelper.resourceErrorChat
+
+        // When
+        whenever(chatDatasource.updateTitle(any(), any())).thenThrow(ConstantsTestHelper.throwable)
+        val result = chatRepository.updateChatTitle(
+            id = chat.id,
+            title = chat.title
+        )
+
+        // Then
+        verify(chatDatasource, times(1)).updateTitle(
+            id = refEq(chat.id),
+            title = refEq(chat.title)
+        )
+        Truth.assertThat(result).isEqualTo(expectedResult)
     }
 }
