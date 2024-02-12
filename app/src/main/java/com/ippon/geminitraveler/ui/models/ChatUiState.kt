@@ -12,4 +12,5 @@ data class ChatUiState(
     val errorMessage: String? = null,
     val currentChatId: Long? = null,
     val lastDeleteChatId: Long? = null,
+    val lastUpdateChatId: Long? = null,
 ): UiState

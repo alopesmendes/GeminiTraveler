@@ -12,5 +12,8 @@ interface ChatRepository {
 
     suspend fun deleteChat(chatId: Long): Resource<Long>
 
-    suspend fun updateChat(chat: Chat): Resource<Chat>
+    suspend fun updateChatTitle(
+        id: Long,
+        title: String
+    ): Resource<Long>
 }

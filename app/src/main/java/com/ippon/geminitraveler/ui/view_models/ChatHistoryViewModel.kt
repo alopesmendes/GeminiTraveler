@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ippon.geminitraveler.domain.use_cases.AddChatUseCase
 import com.ippon.geminitraveler.domain.use_cases.DeleteChatUseCase
 import com.ippon.geminitraveler.domain.use_cases.GetChatsUseCase
+import com.ippon.geminitraveler.domain.use_cases.UpdateChatTitleUseCase
 import com.ippon.geminitraveler.ui.models.ChatEvent
 import com.ippon.geminitraveler.ui.models.ChatUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ class ChatHistoryViewModel(
     private val getChatsUseCase: GetChatsUseCase,
     private val addChatUseCase: AddChatUseCase,
     private val deleteChatUseCase: DeleteChatUseCase,
+    private val updateChatTitleUseCase: UpdateChatTitleUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState = _uiState.asStateFlow()
@@ -37,14 +39,18 @@ class ChatHistoryViewModel(
                 }
 
                 ChatEvent.CreateNewChat -> {
-                    addChatUseCase.invoke(
+                    addChatUseCase(
                         title = "Default title",
                         updateState = _uiState::update
                     )
                 }
 
                 is ChatEvent.ChangeChatTitle -> {
-
+                    updateChatTitleUseCase(
+                        chatId = chatEvent.chatId,
+                        title = chatEvent.title,
+                        updateState = _uiState::update
+                    )
                 }
                 is ChatEvent.DeleteChat -> {
                     deleteChatUseCase(

@@ -55,10 +55,16 @@ class ChatRepositoryImpl(
         }
     }
 
-    override suspend fun updateChat(chat: Chat): Resource<Chat> {
+    override suspend fun updateChatTitle(
+        id: Long,
+        title: String
+    ): Resource<Long> {
         return try {
-            chatDatasource.update(chat)
-            Resource.Success(chat)
+            chatDatasource.updateTitle(
+                id = id,
+                title = title
+            )
+            Resource.Success(id)
         } catch (e: Exception) {
             Resource.Error(
                 errorMessage = e.message,

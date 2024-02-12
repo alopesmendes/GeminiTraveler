@@ -155,11 +155,17 @@ class ChatRepositoryImplTest {
         val expectedResult = ConstantsTestHelper.resourceSuccessChat
 
         // When
-        whenever(chatDatasource.update(any())).thenReturn(Unit)
-        val result = chatRepository.updateChat(chat)
+        whenever(chatDatasource.updateTitle(any(), any())).thenReturn(Unit)
+        val result = chatRepository.updateChatTitle(
+            id = chat.id,
+            title = chat.title
+        )
 
         // Then
-        verify(chatDatasource, times(1)).update(refEq(chat))
+        verify(chatDatasource, times(1)).updateTitle(
+            id = refEq(chat.id),
+            title = refEq(chat.title)
+        )
         Truth.assertThat(result).isEqualTo(expectedResult)
     }
 
@@ -170,11 +176,17 @@ class ChatRepositoryImplTest {
         val expectedResult = ConstantsTestHelper.resourceErrorChat
 
         // When
-        whenever(chatDatasource.update(any())).thenThrow(ConstantsTestHelper.throwable)
-        val result = chatRepository.updateChat(chat)
+        whenever(chatDatasource.updateTitle(any(), any())).thenThrow(ConstantsTestHelper.throwable)
+        val result = chatRepository.updateChatTitle(
+            id = chat.id,
+            title = chat.title
+        )
 
         // Then
-        verify(chatDatasource, times(1)).update(refEq(chat))
+        verify(chatDatasource, times(1)).updateTitle(
+            id = refEq(chat.id),
+            title = refEq(chat.title)
+        )
         Truth.assertThat(result).isEqualTo(expectedResult)
     }
 }

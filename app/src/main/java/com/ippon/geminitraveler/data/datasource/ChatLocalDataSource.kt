@@ -2,6 +2,7 @@ package com.ippon.geminitraveler.data.datasource
 
 import com.ippon.geminitraveler.data.datasource.database.dao.ChatDao
 import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntityId
+import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntityTitle
 import com.ippon.geminitraveler.data.mappers.mapToChat
 import com.ippon.geminitraveler.data.mappers.mapToChatEntity
 import com.ippon.geminitraveler.domain.datasources.ChatDatasource
@@ -30,8 +31,11 @@ class ChatLocalDataSource(
         chatDao.deleteById(ChatEntityId(chatId))
     }
 
-    override suspend fun update(chat: Chat) {
-        val chatEntity = chat.mapToChatEntity()
-        chatDao.update(chatEntity)
+    override suspend fun updateTitle(id: Long, title: String) {
+        val chatEntity = ChatEntityTitle(
+            id = id,
+            title = title
+        )
+        chatDao.updateTitle(chatEntity)
     }
 }

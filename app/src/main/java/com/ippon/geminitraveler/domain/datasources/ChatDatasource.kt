@@ -11,5 +11,5 @@ interface ChatDatasource {
 
     suspend fun delete(chatId: Long)
 
-    suspend fun update(chat: Chat)
+    suspend fun updateTitle(id: Long, title: String)
 }

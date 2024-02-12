@@ -10,6 +10,7 @@ sealed interface ChatEvent {
     data object CreateNewChat: ChatEvent
 
     data class ChangeChatTitle(
+        val chatId: Long,
         val title: String
     ): ChatEvent
 

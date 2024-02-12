@@ -108,8 +108,11 @@ class ChatLocalDataSourceTest {
         val expectResult = chat.mapToChatEntity()
 
         // When
-        whenever(dao.update(any())).thenReturn(Unit)
-        chatDatasource.update(chat)
+        whenever(dao.updateTitle(any())).thenReturn(Unit)
+        chatDatasource.updateTitle(
+            id = chat.id,
+            title = chat.title
+        )
 
         // Then
         verify(dao, times(1))
