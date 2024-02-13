@@ -15,8 +15,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
+import androidx.compose.ui.tooling.preview.PreviewFontScale
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.R
+
+@Composable
+fun ChatRow(
+    isGemini: Boolean,
+    content: @Composable () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .padding(8.dp),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        var backgroundColor = MaterialTheme.colorScheme.primary
+        if (isGemini) {
+            backgroundColor = MaterialTheme.colorScheme.tertiary
+            Image(
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(32.dp),
+                painter = painterResource(id = R.drawable.ic_robot),
+                contentDescription = "AI icon"
+            )
+        }
+        SpeechBubble(
+            color = backgroundColor,
+            content = content,
+            isGemini = isGemini
+        )
+    }
+}
 
 @Composable
 fun ChatRow(speechContent: String, isGemini: Boolean) {
@@ -25,8 +57,7 @@ fun ChatRow(speechContent: String, isGemini: Boolean) {
             .padding(8.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-    )
-    {
+    ) {
         var backgroundColor = MaterialTheme.colorScheme.primary
         if (isGemini) {
             backgroundColor = MaterialTheme.colorScheme.tertiary
@@ -42,7 +73,10 @@ fun ChatRow(speechContent: String, isGemini: Boolean) {
 }
 
 @Composable
-@Preview(apiLevel = 33)
+@Preview
+@PreviewFontScale
+@PreviewDynamicColors
+@PreviewLightDark
 fun ChatRowPreview() {
     Column {
         ChatRow(speechContent = "Hello, I'm Gemini", isGemini = true)
