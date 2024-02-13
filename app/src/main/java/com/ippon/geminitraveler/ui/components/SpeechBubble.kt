@@ -19,7 +19,9 @@ import com.ippon.geminitraveler.core.components.MarkdownText
 import com.ippon.geminitraveler.ui.theme.md_theme_light_primary
 
 @Composable
-fun SpeechBubble(color: Color, content: String, isGemini: Boolean) {
+fun SpeechBubble(
+    color: Color, content: @Composable () -> Unit, isGemini: Boolean
+) {
     Row {
         val cardShape: RoundedCornerShape by remember(isGemini) {
             derivedStateOf {
@@ -34,11 +36,24 @@ fun SpeechBubble(color: Color, content: String, isGemini: Boolean) {
                 contentColor = MaterialTheme.colorScheme.onTertiary
             )
         ) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                MarkdownText(markdownContent = content)
+            Column(
+                modifier = Modifier.padding(12.dp),
+            ) {
+                content()
             }
         }
     }
+}
+
+@Composable
+fun SpeechBubble(color: Color, content: String, isGemini: Boolean) {
+    SpeechBubble(
+        color = color,
+        content = {
+            MarkdownText(markdownContent = content)
+        },
+        isGemini = isGemini
+    )
 }
 
 @Composable

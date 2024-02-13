@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.ui.components.ChatList
 import com.ippon.geminitraveler.ui.components.CustomTextField
@@ -66,18 +67,8 @@ fun ChatbotScreen(
 }
 
 @Composable
-private fun SuccessChatbotScreenComponent(
-    modifier: Modifier = Modifier,
-    messagesUiState: MessagesUiState,
-) {
-    ChatList(
-        modifier = modifier,
-        messagesUiState = messagesUiState,
-    )
-}
-
-@Composable
 @Preview
+@PreviewScreenSizes
 fun ChatbotScreenPreview() {
     ChatbotScreen()
 }
