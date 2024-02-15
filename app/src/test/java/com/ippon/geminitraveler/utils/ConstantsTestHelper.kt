@@ -23,6 +23,7 @@ object ConstantsTestHelper {
     val createAt: Instant = Instant.parse("2024-02-06T08:51:17.775268Z")
     const val CHAT_ID = 1L
     const val MESSAGE_USER_ID = 1L
+    const val DESCRIPTION = "description for ai"
 
     val modelResponse = ModelResponse(
         data = MODEL_RESPONSE,
@@ -38,7 +39,7 @@ object ConstantsTestHelper {
         chatId = CHAT_ID
     )
 
-    private const val ERROR_MESSAGE = "error"
+    const val ERROR_MESSAGE = "error"
     val throwable = IllegalStateException(ERROR_MESSAGE)
 
     val responses = listOf(modelResponse)
