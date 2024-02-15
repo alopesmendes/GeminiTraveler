@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ippon.geminitraveler.domain.use_cases.AddMessageUseCase
 import com.ippon.geminitraveler.domain.use_cases.GetMessagesFromChatUseCase
 import com.ippon.geminitraveler.ui.models.MessagesUiState
-import com.ippon.geminitraveler.ui.models.ModelEvent
+import com.ippon.geminitraveler.ui.models.events.ModelEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

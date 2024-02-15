@@ -1,6 +1,4 @@
-package com.ippon.geminitraveler.ui.models
-
-import com.ippon.geminitraveler.domain.model.Chat
+package com.ippon.geminitraveler.ui.models.events
 
 sealed interface ChatEvent {
     data class SelectChat(

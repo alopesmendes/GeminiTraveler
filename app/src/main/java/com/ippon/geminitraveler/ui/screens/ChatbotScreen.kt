@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.ui.components.ChatList
 import com.ippon.geminitraveler.ui.components.CustomTextField
 import com.ippon.geminitraveler.ui.components.SendButton
-import com.ippon.geminitraveler.ui.models.ModelEvent
+import com.ippon.geminitraveler.ui.models.events.ModelEvent
 import com.ippon.geminitraveler.ui.models.MessagesUiState
 
 @Composable
