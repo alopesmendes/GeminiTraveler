@@ -6,7 +6,7 @@ import com.ippon.geminitraveler.domain.use_cases.AddChatUseCase
 import com.ippon.geminitraveler.domain.use_cases.DeleteChatUseCase
 import com.ippon.geminitraveler.domain.use_cases.GetChatsUseCase
 import com.ippon.geminitraveler.domain.use_cases.UpdateChatTitleUseCase
-import com.ippon.geminitraveler.ui.models.ChatEvent
+import com.ippon.geminitraveler.ui.models.events.ChatEvent
 import com.ippon.geminitraveler.ui.models.ChatUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

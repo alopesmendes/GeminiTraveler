@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.R
 import com.ippon.geminitraveler.ui.components.ChatHistoryList
 import com.ippon.geminitraveler.ui.components.CustomTopBar
-import com.ippon.geminitraveler.ui.models.ChatEvent
+import com.ippon.geminitraveler.ui.models.events.ChatEvent
 import com.ippon.geminitraveler.ui.models.ChatHistoryItem
 import kotlinx.coroutines.launch
 
