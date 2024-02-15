@@ -11,6 +11,7 @@ import com.ippon.geminitraveler.ui.screens.ChatbotScreen
 import com.ippon.geminitraveler.ui.screens.ContainerScreen
 import com.ippon.geminitraveler.ui.screens.HomeScreen
 import com.ippon.geminitraveler.ui.view_models.ChatHistoryViewModel
+import com.ippon.geminitraveler.ui.view_models.HomeViewModel
 import com.ippon.geminitraveler.ui.view_models.ModelViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -38,7 +39,12 @@ fun NavigationHost() {
                 route = Destination.Home.fullRoute,
                 arguments = Destination.Home.arguments,
             ) {
-                HomeScreen()
+                val homeViewModel: HomeViewModel = koinViewModel()
+                val uiState by homeViewModel.uiState.collectAsState()
+
+                HomeScreen(
+                    uiState = uiState,
+                )
             }
 
             composable(

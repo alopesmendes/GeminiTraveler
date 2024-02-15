@@ -1,6 +1,5 @@
 package com.ippon.geminitraveler.ui.components
 
-import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -35,6 +34,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ippon.geminitraveler.R
+import com.ippon.geminitraveler.core.utils.Tools
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -64,18 +64,7 @@ fun CustomTopBar(
     )
 
     val brush = remember(offset) {
-        object : ShaderBrush() {
-            override fun createShader(size: Size): Shader {
-                val widthOffset = size.width * offset
-                val heightOffset = size.height * offset
-                return LinearGradientShader(
-                    colors = GradientColors,
-                    from = Offset(widthOffset, heightOffset),
-                    to = Offset(widthOffset + size.width, heightOffset + size.height),
-                    tileMode = TileMode.Mirror
-                )
-            }
-        }
+        Tools.createGradientBrush(offset)
     }
     CenterAlignedTopAppBar(
         title = {
