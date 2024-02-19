@@ -8,5 +8,6 @@ import com.ippon.geminitraveler.core.utils.UiState
 data class HomeUiState(
     override val dataState: DataState = DataState.INITIAL,
     val errorMessage: String? = null,
-    val description: String = "",
+    val descriptions: List<String> = emptyList(),
+    val descriptionIndex: Int = 0,
 ): UiState

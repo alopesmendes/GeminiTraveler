@@ -7,6 +7,7 @@ import com.ippon.geminitraveler.ui.models.HomeUiState
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -52,14 +53,15 @@ class GetDescriptionUseCaseTest {
         var result = HomeUiState()
         val expectedResult = HomeUiState(
             dataState = DataState.SUCCESS,
-            description = ConstantsTestHelper.DESCRIPTION
+            descriptions = ConstantsTestHelper.descriptions
         )
 
         // When
-        whenever(generativeDataSource.generateContent(any()))
-            .thenReturn(ConstantsTestHelper.DESCRIPTION)
+        whenever(generativeDataSource.generateContentStream(any()))
+            .thenReturn(ConstantsTestHelper.descriptions.asFlow())
+
         getDescriptionUseCase.invoke(
-            prompt = ConstantsTestHelper.DESCRIPTION,
+            prompt = ConstantsTestHelper.MODEL_REQUEST_DATA,
             updateState = { state ->
                 result = state.invoke(result)
             }
@@ -67,7 +69,7 @@ class GetDescriptionUseCaseTest {
 
         // Then
         verify(generativeDataSource, times(1))
-            .generateContent(ConstantsTestHelper.DESCRIPTION)
+            .generateContentStream(ConstantsTestHelper.MODEL_REQUEST_DATA)
         Truth.assertThat(result).isEqualTo(expectedResult)
     }
 
@@ -81,10 +83,10 @@ class GetDescriptionUseCaseTest {
         )
 
         // When
-        whenever(generativeDataSource.generateContent(any()))
+        whenever(generativeDataSource.generateContentStream(any()))
             .thenThrow(ConstantsTestHelper.throwable)
         getDescriptionUseCase.invoke(
-            prompt = ConstantsTestHelper.DESCRIPTION,
+            prompt = ConstantsTestHelper.MODEL_REQUEST_DATA,
             updateState = { state ->
                 result = state.invoke(result)
             }
@@ -92,7 +94,7 @@ class GetDescriptionUseCaseTest {
 
         // Then
         verify(generativeDataSource, times(1))
-            .generateContent(ConstantsTestHelper.DESCRIPTION)
+            .generateContentStream(ConstantsTestHelper.MODEL_REQUEST_DATA)
         Truth.assertThat(result).isEqualTo(expectedResult)
     }
 

@@ -3,7 +3,6 @@ package com.ippon.geminitraveler.ui.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.ippon.geminitraveler.core.components.StateContainer
 import com.ippon.geminitraveler.core.utils.DataState
+import com.ippon.geminitraveler.core.utils.Tools.scrollToEnd
 import com.ippon.geminitraveler.ui.models.MessageUi
 import com.ippon.geminitraveler.ui.models.MessagesUiState
 import com.ippon.geminitraveler.ui.models.RoleUi
@@ -28,27 +28,19 @@ fun ChatList(
     modifier: Modifier = Modifier,
     messagesUiState: MessagesUiState,
 ) {
-    val visibleIndex by remember(messagesUiState.messages.lastIndex) {
-        derivedStateOf {
-            if (messagesUiState.messages.lastIndex == -1) {
-                0
-            } else {
-                messagesUiState.messages.lastIndex
-            }
-        }
+    val messages by remember(messagesUiState.messages.size) {
+        derivedStateOf { messagesUiState.messages }
     }
-    val state = rememberLazyListState(
-        initialFirstVisibleItemIndex = visibleIndex
-    )
+    val state = rememberLazyListState()
 
     LazyColumn(
         modifier = modifier,
         state = state
     ) {
-        items(messagesUiState.messages) { messageUi ->
+        items(messages.size) { index ->
             ChatRow(
-                speechContent = messageUi.data,
-                isGemini = messageUi.role == RoleUi.MODEL,
+                speechContent = messages[index].data,
+                isGemini = messages[index].role == RoleUi.MODEL,
             )
         }
         item {
@@ -64,15 +56,19 @@ fun ChatList(
                         errorMessage = messagesUiState.errorMessage
                     )
                 },
-                contentComponent = { }
+                contentComponent = {
+                    LaunchedEffect(Unit) {
+                        state.animateScrollToItem(
+                            index = messages.lastIndex
+                        )
+                    }
+                }
             )
         }
     }
 
-    LaunchedEffect(visibleIndex) {
-        state.animateScrollToItem(
-            index = visibleIndex,
-        )
+    LaunchedEffect(state.canScrollForward, messages.size) {
+        state.scrollToEnd()
     }
 }
 

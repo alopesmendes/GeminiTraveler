@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.ippon.geminitraveler.data.datasource.database.dao.ChatDao
 import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntityId
+import com.ippon.geminitraveler.data.datasource.database.entities.ChatEntityTitle
 import com.ippon.geminitraveler.data.mappers.mapToChatEntity
 import com.ippon.geminitraveler.domain.datasources.ChatDatasource
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
@@ -116,9 +117,11 @@ class ChatLocalDataSourceTest {
 
         // Then
         verify(dao, times(1))
-            .update(argThat {
-                title == expectResult.title &&
-                        id == expectResult.id
-            })
+            .updateTitle(
+                ChatEntityTitle(
+                    id = chat.id,
+                    title = chat.title
+                )
+            )
     }
 }

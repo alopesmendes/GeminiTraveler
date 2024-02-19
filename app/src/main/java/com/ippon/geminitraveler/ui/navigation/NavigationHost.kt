@@ -44,6 +44,7 @@ fun NavigationHost() {
 
                 HomeScreen(
                     uiState = uiState,
+                    onHandleEvent = homeViewModel::onHandleEvent,
                 )
             }
 
