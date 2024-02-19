@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ippon.geminitraveler.domain.use_cases.GetDescriptionUseCase
 import com.ippon.geminitraveler.ui.models.HomeUiState
+import com.ippon.geminitraveler.ui.models.events.HomeEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,7 +20,7 @@ class HomeViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
-        loadDescription()
+        onHandleEvent(HomeEvent.GetGeminiDescription)
     }
 
     companion object {
@@ -29,12 +30,30 @@ class HomeViewModel(
         """
     }
 
-    private fun loadDescription() {
+    fun onHandleEvent(homeEvent: HomeEvent) {
         viewModelScope.launch {
-            getDescriptionUseCase(
-                updateState = _uiState::update,
-                prompt = PROMPT
-            )
+            when (homeEvent) {
+                HomeEvent.GetGeminiDescription -> {
+                    getDescriptionUseCase(
+                        updateState = _uiState::update,
+                        prompt = PROMPT
+                    )
+                }
+
+                HomeEvent.GetNextPartDescription -> {
+                    _uiState.update { state ->
+                        val index = if (state.descriptionIndex < state.descriptions.lastIndex) {
+                            state.descriptionIndex + 1
+                        } else {
+                            state.descriptionIndex
+                        }
+                        state.copy(
+                            descriptionIndex = index
+                        )
+                    }
+                }
+            }
         }
     }
+
 }
