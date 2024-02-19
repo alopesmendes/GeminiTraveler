@@ -1,5 +1,8 @@
 package com.ippon.geminitraveler.core.utils
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -32,14 +35,16 @@ object Tools {
     }
 
     suspend fun LazyListState.scrollToEnd() {
-        if (!isScrolledToTheEnd()) {
-            val itmIndex = layoutInfo.totalItemsCount - 1
-            if (itmIndex >= 0) {
-                val lastItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                lastItem?.let {
-                    animateScrollToItem(itmIndex, it.size + it.offset)
-                }
-            }
+        while (!isScrolledToTheEnd()) {
+            val lastItem = layoutInfo.visibleItemsInfo.lastOrNull()
+            val height = lastItem?.let { lastItem.size + lastItem.offset } ?: layoutInfo.viewportEndOffset
+            animateScrollBy(
+                value = height.toFloat(),
+                animationSpec = tween(
+                    durationMillis = 100,
+                    easing = LinearEasing
+                )
+            )
         }
     }
 }
