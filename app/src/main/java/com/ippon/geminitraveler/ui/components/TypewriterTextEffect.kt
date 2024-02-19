@@ -1,12 +1,12 @@
 package com.ippon.geminitraveler.ui.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import com.ippon.geminitraveler.core.utils.Tools.scrollToEnd
 import kotlinx.coroutines.delay
+import java.util.StringJoiner
 import kotlin.random.Random
 
 /**
@@ -51,33 +51,23 @@ fun TypewriterTextEffect(
     displayTextComposable: @Composable (displayedText: String) -> Unit
 ) {
     val scrollState = rememberScrollState()
-    val state = rememberLazyListState()
 
     // Initialize and remember the displayedText
     var currentText by remember(text) { mutableStateOf("") }
-    var beginText by rememberSaveable {
-        mutableStateOf("")
-    }
-    val displayedTexts = remember {
-        mutableStateListOf<String>()
+    val beginText by remember {
+        mutableStateOf(StringJoiner(""))
     }
 
     LaunchedEffect(currentText) {
-        state.scrollToEnd()
+        scrollState.animateScrollTo(Int.MAX_VALUE)
     }
 
     // Call the displayTextComposable with the current displayedText value
 
-    LazyColumn(
-        modifier = modifier,
-        state = state
+    Column(
+        modifier = modifier.verticalScroll(scrollState)
     ) {
-        items(displayedTexts.size) { index ->
-            displayTextComposable(displayedTexts[index])
-        }
-        item {
-            displayTextComposable(currentText)
-        }
+        displayTextComposable("$beginText$currentText")
     }
 
     // Launch the effect to update the displayedText value over time
@@ -93,8 +83,7 @@ fun TypewriterTextEffect(
             currentText = text.substring(startIndex = 0, endIndex = endIndex)
             delay(Random.nextLong(minDelayInMillis, maxDelayInMillis))
         }
-        displayedTexts.add(currentText)
-        beginText += currentText
+        beginText.add(currentText)
         onEffectCompleted()
     }
 }
