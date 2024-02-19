@@ -2,6 +2,7 @@ package com.ippon.geminitraveler.data.repository
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.ippon.geminitraveler.core.utils.Resource
 import com.ippon.geminitraveler.domain.datasources.ChatDatasource
 import com.ippon.geminitraveler.domain.repository.ChatRepository
 import com.ippon.geminitraveler.utils.ConstantsTestHelper
@@ -152,7 +153,9 @@ class ChatRepositoryImplTest {
     fun `should return success resource when updating chat succeed`() = runTest {
         // Given
         val chat = ConstantsTestHelper.chat
-        val expectedResult = ConstantsTestHelper.resourceSuccessChat
+        val expectedResult = Resource.Success(
+            data = chat.id
+        )
 
         // When
         whenever(chatDatasource.updateTitle(any(), any())).thenReturn(Unit)
