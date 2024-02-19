@@ -1,5 +1,6 @@
 package com.ippon.geminitraveler.core.utils
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -22,6 +23,23 @@ object Tools {
                 to = Offset(widthOffset + size.width, heightOffset + size.height),
                 tileMode = TileMode.Mirror
             )
+        }
+    }
+
+    private fun LazyListState.isScrolledToTheEnd() : Boolean {
+        val lastItem = layoutInfo.visibleItemsInfo.lastOrNull()
+        return lastItem == null || lastItem.size + lastItem.offset <= layoutInfo.viewportEndOffset
+    }
+
+    suspend fun LazyListState.scrollToEnd() {
+        if (!isScrolledToTheEnd()) {
+            val itmIndex = layoutInfo.totalItemsCount - 1
+            if (itmIndex >= 0) {
+                val lastItem = layoutInfo.visibleItemsInfo.lastOrNull()
+                lastItem?.let {
+                    animateScrollToItem(itmIndex, it.size + it.offset)
+                }
+            }
         }
     }
 }
