@@ -16,12 +16,14 @@ class GetDescriptionUseCase(
     ) {
         try {
             updateState.invoke { state -> state.copy(dataState = DataState.LOADING) }
-            val content = generativeDataSource.generateContent(prompt)
-            updateState.invoke { state ->
-                state.copy(
-                    dataState = DataState.SUCCESS,
-                    description = content ?: ""
-                )
+            val content = generativeDataSource.generateContentStream(prompt)
+            content.collect {
+                updateState.invoke { state ->
+                    state.copy(
+                        dataState = DataState.SUCCESS,
+                        descriptions = listOf(*state.descriptions.toTypedArray(), it),
+                    )
+                }
             }
         } catch (e: Exception) {
             updateState.invoke { state ->
