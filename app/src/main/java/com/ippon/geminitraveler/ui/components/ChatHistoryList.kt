@@ -59,7 +59,7 @@ fun ChatHistoryList(
                 selected = item.id == selectedItem,
                 scope = scope,
                 drawerState = drawerState,
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
                 onEdit = {
                     onUpdateTitle(item.id, it)
                 },
