@@ -16,7 +16,7 @@ import org.koin.core.annotation.Single
 class AppModule {
     @Single
     fun provideGenerativeModel() = GenerativeModel(
-        modelName = "gemini-pro",
+        modelName = "gemini-1.5-flash",
         apiKey = BuildConfig.apiKey
     )
 
